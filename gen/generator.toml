@@ -1,0 +1,7 @@
+[general]
+library_name = "libWGPU"
+output_file_path = "../src/LibWGPU.jl"
+module_name = "LibWGPU"
+export_symbol_prefixes = ["WGPU", "wgpu"]
+use_deterministic_symbol = true
+prologue_file_path = "./prologue.jl"
