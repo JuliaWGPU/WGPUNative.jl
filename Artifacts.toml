@@ -5,7 +5,7 @@ os = "macos"
 
 	[[WGPUNative.download]]
 	sha256 = "de978faf8d4bfcec882850fb1d4375fcf7be6f0af06be5c88379bcef02eb8aa6"
-	url = "https://github.com/dvijaha/WGPU_jll.jl/releases/download/v.0.1.1/WGPU.v.0.1.1.arm64-macos.tar.gz"
+	url = "https://github.com/dvijaha/WGPUNative.jl/releases/download/v.0.1.1/WGPU.v.0.1.1.arm64-macos.tar.gz"
 
 [[WGPUNative]]
 arch = "x86_64"
@@ -14,7 +14,7 @@ os = "macos"
 
 	[[WGPUNative.download]]
 	sha256 = "ed9f483d231a171bff7e8088d3c1add24e69cff444b2afaa965925d561c13806"
-	url = "https://github.com/dvijaha/WGPU_jll.jl/releases/download/v.0.1.1/WGPU.v.0.1.1.x86_64-macos.tar.gz"
+	url = "https://github.com/dvijaha/WGPUNative.jl/releases/download/v.0.1.1/WGPU.v.0.1.1.x86_64-macos.tar.gz"
 
 [[WGPUNative]]
 arch = "i686"
@@ -23,7 +23,7 @@ os = "linux"
 
 	[[WGPUNative.download]]
 	sha256 = "63fb0b7505ad0be4ee0324b32e1f83bcca6b69fdc9b457e867904ae7aaa1e6cf"
-	url = "https://github.com/dvijaha/WGPU_jll.jl/releases/download/v.0.1.1/WGPU.v.0.1.1.i686-linux.tar.gz"
+	url = "https://github.com/dvijaha/WGPUNative.jl/releases/download/v.0.1.1/WGPU.v.0.1.1.i686-linux.tar.gz"
 
 [[WGPUNative]]
 arch = "x86_64"
@@ -32,7 +32,7 @@ os = "linux"
 
 	[[WGPUNative.download]]
 	sha256 = "0c001b560276bff65c752d790c19ea9445ae5e61c5aba91ce57ca783c370eda5"
-	url = "https://github.com/dvijaha/WGPU_jll.jl/releases/download/v.0.1.1/WGPU.v.0.1.1.x86_64-linux.tar.gz"
+	url = "https://github.com/dvijaha/WGPUNative.jl/releases/download/v.0.1.1/WGPU.v.0.1.1.x86_64-linux.tar.gz"
 
 [[WGPUNative]]
 arch = "i686"
@@ -41,7 +41,7 @@ os = "windows"
 
 	[[WGPUNative.download]]
 	sha256 = "cc5b2dc23fd85783288a57f126bfe4afea6a2e8664329c2041778d88d745c2c4"
-	url = "https://github.com/dvijaha/WGPU_jll.jl/releases/download/v.0.1.1/WGPU.v.0.1.1.i686-windows.tar.gz"
+	url = "https://github.com/dvijaha/WGPUNative.jl/releases/download/v.0.1.1/WGPU.v.0.1.1.i686-windows.tar.gz"
 
 [[WGPUNative]]
 arch = "x86_64"
@@ -50,5 +50,5 @@ os = "windows"
 
 	[[WGPUNative.download]]
 	sha256 = "9990468dd9778fe3661d4d34b3a9b7b41cfc24799d49d3504bff478e7874424e"
-	url = "https://github.com/dvijaha/WGPU_jll.jl/releases/download/v.0.1.1/WGPU.v.0.1.1.x86_64-windows.tar.gz"
+	url = "https://github.com/dvijaha/WGPUNative.jl/releases/download/v.0.1.1/WGPU.v.0.1.1.x86_64-windows.tar.gz"
 

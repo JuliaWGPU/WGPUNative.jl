@@ -32,7 +32,7 @@ function writeIO(io, arch, kernel, sha1, sha256, filename, url)
 	)
 end
 
-remoteurl = "https://github.com/dvijaha/WGPU_jll.jl/releases/download/v.0.1.1"
+remoteurl = "https://github.com/dvijaha/WGPUNative.jl/releases/download/v.0.1.1"
 
 function generateArtifacts()
 	for kernel in kernels
