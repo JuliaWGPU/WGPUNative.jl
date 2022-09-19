@@ -86,7 +86,7 @@ wgpuSetLogLevel(WGPULogLevel(4))
 ## X11 Surface
 using WGPU
 using WGPU: partialInit, defaultInit, pointerRef
-using WGPU_jll
+using WGPUNative
 using GLFW
 
 surface = Ref(Ptr{Nothing}())
@@ -195,7 +195,7 @@ wgpuAdapterRequestDevice(
 
                  
 ##
-b = read(pkgdir(WGPU_jll)*"/examples/shader.wgsl")  
+b = read(pkgdir(WGPUNative)*"/examples/shader.wgsl")  
 wgslDescriptor = WGPUShaderModuleWGSLDescriptor(
         defaultInit(WGPUChainedStruct),
         pointer(b)
@@ -218,7 +218,7 @@ function load_wgsl(filename)
 end
 
 
-shaderSource = Ref(pkgdir(WGPU_jll)*"/examples/triangle.wgsl")[1])
+shaderSource = Ref(pkgdir(WGPUNative)*"/examples/triangle.wgsl")[1])
 
 ##
 
