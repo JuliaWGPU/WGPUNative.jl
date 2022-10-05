@@ -1,9 +1,6 @@
 # WGPUNative.jl
 WGPU julia bindings
 
-- Atleast 70% is complete
-- Yet to be documented
-
 # TODO 
 - Add documentation
 - Add Docstrings
