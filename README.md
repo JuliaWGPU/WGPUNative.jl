@@ -1,11 +1,7 @@
 # WGPUNative.jl
 WGPU julia bindings
 
-# TODO 
-- Add documentation
-- Add Docstrings
-
-This will be replaced with BinaryBuilder generated ReadMe anyways but for context.
+Support following architectures
 
 * `macOS aarch64` (`aarch64-apple-darwin`)
 * `Linux i686 {libc=glibc}` (`i686-linux-gnu`)
