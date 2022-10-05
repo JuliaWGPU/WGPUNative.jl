@@ -1,9 +1,10 @@
 [![Aqua QA](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl)
 
 # WGPUNative.jl
-WGPU julia bindings
 
-Support following architectures
+WGPU (Wgpu-native) julia bindings
+
+Supports following architectures
 
 * `macOS aarch64` (`aarch64-apple-darwin`)
 * `Linux i686 {libc=glibc}` (`i686-linux-gnu`)

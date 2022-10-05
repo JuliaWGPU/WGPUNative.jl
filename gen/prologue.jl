@@ -1,3 +1,4 @@
+# SIZE_MAX needs verification
 const SIZE_MAX = 2^16
 using Libdl
 using Pkg

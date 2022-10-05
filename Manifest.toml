@@ -1,8 +1,14 @@
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.8.1"
+julia_version = "1.8.2"
 manifest_format = "2.0"
-project_hash = "3b6587a99a47a1ed21081af4ce0f1275cd348726"
+project_hash = "789c1744673d1d34e09ef4560c60b6879a57983a"
+
+[[deps.Aqua]]
+deps = ["Compat", "Pkg", "Test"]
+git-tree-sha1 = "81ba3aaf28af90fcd3e6ead8450747e418e45a7b"
+uuid = "4c88cf16-eb10-579e-8560-4a9242c79595"
+version = "0.5.5"
 
 [[deps.ArgTools]]
 uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
@@ -18,6 +24,17 @@ uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 git-tree-sha1 = "eb4cb44a499229b3b8426dcfb5dd85333951ff90"
 uuid = "fa961155-64e5-5f13-b03f-caf6b980ea82"
 version = "0.4.2"
+
+[[deps.Compat]]
+deps = ["Dates", "LinearAlgebra", "UUIDs"]
+git-tree-sha1 = "5856d3031cdb1f3b2b6340dfdc66b6d9a149a374"
+uuid = "34da2185-b29b-5c13-b0c7-acf172513d20"
+version = "4.2.0"
+
+[[deps.CompilerSupportLibraries_jll]]
+deps = ["Artifacts", "Libdl"]
+uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
+version = "0.5.2+0"
 
 [[deps.Dates]]
 deps = ["Printf"]
@@ -57,6 +74,10 @@ version = "1.10.2+0"
 [[deps.Libdl]]
 uuid = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 
+[[deps.LinearAlgebra]]
+deps = ["Libdl", "libblastrampoline_jll"]
+uuid = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+
 [[deps.Logging]]
 uuid = "56ddb016-857b-54e1-b83d-db4d58db5568"
 
@@ -76,6 +97,11 @@ version = "2022.2.1"
 [[deps.NetworkOptions]]
 uuid = "ca575930-c2e3-43a9-ace4-1e988b2c1908"
 version = "1.2.0"
+
+[[deps.OpenBLAS_jll]]
+deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl"]
+uuid = "4536629a-c528-5b80-bd46-f80d51c5b363"
+version = "0.3.20+0"
 
 [[deps.Pkg]]
 deps = ["Artifacts", "Dates", "Downloads", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "Serialization", "TOML", "Tar", "UUIDs", "p7zip_jll"]
@@ -117,7 +143,11 @@ version = "1.0.0"
 [[deps.Tar]]
 deps = ["ArgTools", "SHA"]
 uuid = "a4e569a6-e804-4fa4-b0f3-eef7a1d5b13e"
-version = "1.10.0"
+version = "1.10.1"
+
+[[deps.Test]]
+deps = ["InteractiveUtils", "Logging", "Random", "Serialization"]
+uuid = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [[deps.UUIDs]]
 deps = ["Random", "SHA"]
@@ -130,6 +160,11 @@ uuid = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
 deps = ["Libdl"]
 uuid = "83775a58-1f1d-513f-b197-d71354ab007a"
 version = "1.2.12+3"
+
+[[deps.libblastrampoline_jll]]
+deps = ["Artifacts", "Libdl", "OpenBLAS_jll"]
+uuid = "8e850b90-86db-534c-a0d3-1478176c7d93"
+version = "5.1.1+0"
 
 [[deps.nghttp2_jll]]
 deps = ["Artifacts", "Libdl"]
