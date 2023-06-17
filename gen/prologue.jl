@@ -10,4 +10,4 @@ wgpu_hash = artifact_hash("WGPUNative", artifact_toml)
 
 wgpulibpath = artifact_path(wgpu_hash)
 
-const libWGPU = "$wgpulibpath/libwgpu.$(Libdl.dlext)" |> normpath
+const libWGPU = "$wgpulibpath/libwgpu_native.$(Libdl.dlext)" |> normpath

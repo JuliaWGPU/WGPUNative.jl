@@ -70,7 +70,7 @@ end
 
 logcallback = @cfunction(logCallBack, Cvoid, (WGPULogLevel, Ptr{Cchar}))
 
-wgpuSetLogCallback(logcallback)
+wgpuSetLogCallback(logcallback, Ptr{Cvoid}())
 wgpuSetLogLevel(WGPULogLevel(4))
 
 ## 
@@ -105,42 +105,43 @@ end
 
 requestDeviceCallback = @cfunction(request_device_callback, Cvoid, (WGPURequestDeviceStatus, WGPUDevice, Ptr{Cchar}, Ptr{Cvoid}))
 
-
 ## request adapter 
 
-wgpuInstanceRequestAdapter(C_NULL, 
+instance = wgpuCreateInstance(WGPUInstanceDescriptor(0) |> Ref)
+
+wgpuInstanceRequestAdapter(instance, 
 						   adapterOptions, 
 						   requestAdapterCallback,
 						   adapter)
 
 ##
 
-chain = WGPUChainedStruct(C_NULL, WGPUSType(6))
-
-deviceName = Vector{UInt8}("Device")
-deviceExtras = WGPUDeviceExtras(chain, defaultInit(WGPUNativeFeature), pointer(deviceName), C_NULL)
-
-const DEFAULT_ARRAY_SIZE = 256
-
-wgpuLimits = partialInit(WGPULimits; maxBindGroups = 1)
-
-wgpuRequiredLimits = WGPURequiredLimits(C_NULL, wgpuLimits)
-
-wgpuQueueDescriptor = WGPUQueueDescriptor(C_NULL, C_NULL)
-
-wgpuDeviceDescriptor = Ref(
-                        partialInit(
-                            WGPUDeviceDescriptor,
-                            nextInChain = pointer_from_objref(Ref(partialInit(WGPUChainedStruct, chain=deviceExtras))),
-                            requiredLimits = pointer_from_objref(Ref(wgpuRequiredLimits)),
-                            defaultQueue = wgpuQueueDescriptor
-                        )
-                      )
+# chain = WGPUChainedStruct(C_NULL, WGPUSType(6))
+# 
+# deviceName = Vector{UInt8}("Device")
+# deviceExtras = WGPUDeviceExtras(chain, defaultInit(WGPUNativeFeature), pointer(deviceName), C_NULL)
+# 
+# const DEFAULT_ARRAY_SIZE = 256
+# 
+# wgpuLimits = partialInit(WGPULimits; maxBindGroups = 1)
+# 
+# wgpuRequiredLimits = WGPURequiredLimits(C_NULL, wgpuLimits)
+# 
+# wgpuQueueDescriptor = WGPUQueueDescriptor(C_NULL, C_NULL)
+# 
+# wgpuDeviceDescriptor = Ref(
+                        # partialInit(
+                            # WGPUDeviceDescriptor,
+                            # nextInChain = pointer_from_objref(Ref(partialInit(WGPUChainedStruct, chain=deviceExtras))),
+                            # requiredLimits = pointer_from_objref(Ref(wgpuRequiredLimits)),
+                            # defaultQueue = wgpuQueueDescriptor
+                        # )
+                      # )
 
 
 wgpuAdapterRequestDevice(
                  adapter[],
-                 wgpuDeviceDescriptor,
+                 C_NULL,
                  requestDeviceCallback,
                  device[])
 
@@ -191,8 +192,6 @@ textureExtent = partialInit(
 texture = wgpuDeviceCreateTexture(
     device[],
     pointer_from_objref(Ref(partialInit(WGPUTextureDescriptor;
-                                        nextInChain = C_NULL,
-                                        lable = C_NULL,
                                         size = textureExtent,
                                         mipLevelCount = 1,
                                         sampleCount = 1,
@@ -208,10 +207,14 @@ encoder = wgpuDeviceCreateCommandEncoder(
                pointer_from_objref(Ref(defaultInit(WGPUCommandEncoderDescriptor))))
 
 ## outputAttachment
+# outputAttachment = wgpuTextureCreateView(
+    # texture,
+    # pointer_from_objref(Ref(defaultInit(WGPUTextureViewDescriptor)))
+   # )
 outputAttachment = wgpuTextureCreateView(
     texture,
-    pointer_from_objref(Ref(defaultInit(WGPUTextureViewDescriptor)))
-   )
+    C_NULL
+)
 
            
 ## renderPass
@@ -249,7 +252,7 @@ wgpuCommandEncoderCopyTextureToBuffer(
                                         layout = partialInit(WGPUTextureDataLayout;
                                                              offset = 0,
                                                              bytesPerRow = bufferDimensions.padded_bytes_per_row,
-                                                             rowsPerImage = 0
+                                                             rowsPerImage = WGPU_COPY_STRIDE_UNDEFINED
                                                             )))),
     Ref(textureExtent))
 
@@ -307,7 +310,7 @@ print(asyncstatus[])
 
 ## device polling
 
-wgpuDevicePoll(device[], true)
+wgpuDevicePoll(device[], true, C_NULL)
 
 ## times
 times = convert(Ptr{UInt8}, wgpuBufferGetMappedRange(outputBuffer, 0, bufferSize))

@@ -9,7 +9,7 @@ kernel = lowercase(String(Sys.KERNEL))
 # modifying conventions for wgpu specifically based on
 # releases at https://github.com/gfx-rs/wgpu-native/releases/tag/v0.12.0.1
 
-version = "v.0.1.1"
+version = "v.0.1.2"
 kernels = ["macos", "linux", "windows"]
 archs = ["arm64", "i686", "x86_64"]
 
@@ -32,7 +32,7 @@ function writeIO(io, arch, kernel, sha1, sha256, filename, url)
 	)
 end
 
-remoteurl = "https://github.com/dvijaha/WGPUNative.jl/releases/download/v.0.1.1"
+remoteurl = "https://github.com/dvijaha/WGPUNative.jl/releases/download/v.0.1.2"
 
 function generateArtifacts()
 	for kernel in kernels
@@ -40,7 +40,7 @@ function generateArtifacts()
 			releasefile = "wgpu-$kernel-$arch-release.zip"
 			tarfile = "WGPU.$version.$(arch)-$(kernel).tar.gz"
 			try
-				url = "https://github.com/gfx-rs/wgpu-native/releases/download/v0.12.0.1/$releasefile"
+				url = "https://github.com/gfx-rs/wgpu-native/releases/download/v0.16.0.1/$releasefile"
 				Downloads.download(url, releasefile)
 				run(`rm -rf "wgpulibs$arch$kernel"`)
 				run(`mkdir wgpulibs$arch$kernel`)
@@ -77,4 +77,9 @@ function writeArtifactsTOML()
 end
 
 generateArtifacts()
+
+# TODO 
+# publish artifacts as a release through github through github API
+# for now we could simply add input for confirmation of upload.
+
 writeArtifactsTOML()

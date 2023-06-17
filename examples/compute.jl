@@ -78,14 +78,13 @@ end
 
 logcallback = @cfunction(logCallBack, Cvoid, (WGPULogLevel, Ptr{Cchar}))
 
-wgpuSetLogCallback(logcallback)
+wgpuSetLogCallback(logcallback, C_NULL)
 wgpuSetLogLevel(WGPULogLevel(4))
 
 ## 
 
 adapter = Ref(WGPUAdapter())
 device = Ref(WGPUDevice())
-
 
 adapterOptions = Ref(defaultInit(WGPURequestAdapterOptions))
 
@@ -113,42 +112,48 @@ end
 
 requestDeviceCallback = @cfunction(request_device_callback, Cvoid, (WGPURequestDeviceStatus, WGPUDevice, Ptr{Cchar}, Ptr{Cvoid}))
 
-
+instance = wgpuCreateInstance(WGPUInstanceDescriptor(0) |> Ref)
 ## request adapter 
 
-wgpuInstanceRequestAdapter(C_NULL, 
+wgpuInstanceRequestAdapter(instance, 
 						   adapterOptions, 
 						   requestAdapterCallback,
 						   adapter)
 
 ##
 
-chain = WGPUChainedStruct(C_NULL, WGPUSType(6))
+# chain = WGPUChainedStruct(C_NULL, WGPUSType(6))
+# 
+# deviceName = Vector{UInt8}("Device")
+# deviceExtras = WGPUDeviceExtras(chain, defaultInit(WGPUNativeFeature), pointer(deviceName), C_NULL)
+# 
+# const DEFAULT_ARRAY_SIZE = 256
+# 
+# wgpuLimits = partialInit(WGPULimits; maxBindGroups = 1)
+# 
+# wgpuRequiredLimits = WGPURequiredLimits(C_NULL, wgpuLimits)
+# 
+# wgpuQueueDescriptor = WGPUQueueDescriptor(C_NULL, C_NULL)
+# 
+# wgpuDeviceDescriptor = Ref(
+                        # partialInit(
+                            # WGPUDeviceDescriptor,
+                            # nextInChain = pointer_from_objref(Ref(partialInit(WGPUChainedStruct, chain=deviceExtras))),
+                            # requiredLimits = pointer_from_objref(Ref(wgpuRequiredLimits)),
+                            # defaultQueue = wgpuQueueDescriptor
+                        # )
+                      # )
 
-deviceName = Vector{UInt8}("Device")
-deviceExtras = WGPUDeviceExtras(chain, defaultInit(WGPUNativeFeature), pointer(deviceName), C_NULL)
 
-const DEFAULT_ARRAY_SIZE = 256
-
-wgpuLimits = partialInit(WGPULimits; maxBindGroups = 1)
-
-wgpuRequiredLimits = WGPURequiredLimits(C_NULL, wgpuLimits)
-
-wgpuQueueDescriptor = WGPUQueueDescriptor(C_NULL, C_NULL)
-
-wgpuDeviceDescriptor = Ref(
-                        partialInit(
-                            WGPUDeviceDescriptor,
-                            nextInChain = pointer_from_objref(Ref(partialInit(WGPUChainedStruct, chain=deviceExtras))),
-                            requiredLimits = pointer_from_objref(Ref(wgpuRequiredLimits)),
-                            defaultQueue = wgpuQueueDescriptor
-                        )
-                      )
-
-
+# wgpuAdapterRequestDevice(
+                 # adapter[],
+                 # wgpuDeviceDescriptor,
+                 # requestDeviceCallback,
+                 # device[])
+                 
 wgpuAdapterRequestDevice(
                  adapter[],
-                 wgpuDeviceDescriptor,
+                 C_NULL,
                  requestDeviceCallback,
                  device[])
 
@@ -311,7 +316,7 @@ computePass = wgpuCommandEncoderBeginComputePass(encoder,
 ## set pipeline
 wgpuComputePassEncoderSetPipeline(computePass, computePipeline)
 wgpuComputePassEncoderSetBindGroup(computePass, 0, bindGroup, 0, C_NULL)
-wgpuComputePassEncoderDispatch(computePass, length(numbers), 1, 1)
+wgpuComputePassEncoderDispatchWorkgroups(computePass, length(numbers), 1, 1)
 wgpuComputePassEncoderEnd(computePass)
 
 ## buffer copy buffer
@@ -353,7 +358,7 @@ print(asyncstatus[])
 
 ## device polling
 
-wgpuDevicePoll(device[], true)
+wgpuDevicePoll(device[], true, C_NULL)
 
 ## times
 times = convert(Ptr{UInt32}, wgpuBufferGetMappedRange(stagingBuffer, 0, sizeof(numbers)))
