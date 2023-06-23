@@ -9,5 +9,5 @@ artifact_toml = joinpath(@__DIR__, "..", "Artifacts.toml")
 wgpu_hash = artifact_hash("WGPUNative", artifact_toml)
 
 wgpulibpath = artifact_path(wgpu_hash)
-
-const libWGPU = "$wgpulibpath/libwgpu.$(Libdl.dlext)" |> normpath
+resourceName = Sys.iswindows() ? "wgpu_native" : "libwgpu_native"
+const libWGPU = "$wgpulibpath/$resourceName.$(Libdl.dlext)" |> normpath

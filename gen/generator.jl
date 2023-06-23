@@ -13,7 +13,7 @@ end
 releasefile = "wgpu-$kernel-$arch-release.zip"
 location = "$releasefile"
 
-url = "https://github.com/gfx-rs/wgpu-native/releases/download/v0.12.0.1/wgpu-$kernel-$arch-release.zip"
+url = "https://github.com/gfx-rs/wgpu-native/releases/download/v0.16.0.1/wgpu-$kernel-$arch-release.zip"
 download(url, location)
 run(`rm -rf wgpulib`)
 run(`mkdir wgpulib`)

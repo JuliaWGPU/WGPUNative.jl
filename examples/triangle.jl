@@ -79,13 +79,13 @@ end
 
 logcallback = @cfunction(logCallBack, Cvoid, (WGPULogLevel, Ptr{Cchar}))
 
-wgpuSetLogCallback(logcallback)
+wgpuSetLogCallback(logcallback, C_NULL)
 wgpuSetLogLevel(WGPULogLevel(4))
 
 ## Surface 
 ## X11 Surface
-using WGPU
-using WGPU: partialInit, defaultInit, pointerRef
+# using WGPU
+# using WGPU: partialInit, defaultInit, pointerRef
 using WGPUNative
 using GLFW
 
