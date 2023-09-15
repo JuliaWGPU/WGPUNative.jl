@@ -110,4 +110,11 @@ function fromCString(s::Ptr{Int8})
     s != C_NULL ? unsafe_string(s) : ""
 end
 
+Base.sizeof(cstruct::CStruct{T}) where T = sizeof(T)
+
+function toByteArray(cstruct::CStruct{T}) where T
+	bytePtr = convert(Ptr{UInt8}, cstruct |> ptr)
+	unsafe_wrap(Array, bytePtr, sizeof(cstruct))
+end 
+
 end
