@@ -25,23 +25,8 @@ wgpuSetLogLevel(WGPULogLevel_Debug)
 
 adapter = Ref{WGPUAdapter}()
 
-chain = cStruct(
-    WGPUChainedStruct;
-    sType = WGPUSType(Int64(WGPUSType_AdapterExtras)),
-)
-
-
-extras = cStruct(
-    WGPUAdapterExtras;
-    backend=WGPUBackendType_Vulkan, # TODO hardcoding on windows for now
-    chain = chain |> concrete
-)
-
-# extras.chain = chain |> concrete
-
 adapterOptions = cStruct(WGPURequestAdapterOptions)
 adapterOptions.compatibleSurface = C_NULL
-adapterOptions.nextInChain = rawCast(WGPUChainedStruct, extras)
 adapterOptions.powerPreference = WGPUPowerPreference_HighPerformance
 adapterOptions.forceFallbackAdapter = false
 

@@ -9,9 +9,11 @@ kernel = lowercase(String(Sys.KERNEL))
 # modifying conventions for wgpu specifically based on
 # releases at https://github.com/gfx-rs/wgpu-native/releases/tag/v0.12.0.1
 
-version = "v.0.1.2"
+version = "v.0.1.3"
 kernels = ["macos", "linux", "windows"]
 archs = ["arm64", "i686", "x86_64"]
+
+upstreamVersion = "v0.17.2.1"
 
 io = IOBuffer()
 
@@ -32,15 +34,15 @@ function writeIO(io, arch, kernel, sha1, sha256, filename, url)
 	)
 end
 
-remoteurl = "https://github.com/dvijaha/WGPUNative.jl/releases/download/v.0.1.2"
+remoteurl = "https://github.com/JuliaWGPU/WGPUNative.jl/releases/download/$(version)"
 
 function generateArtifacts()
 	for kernel in kernels
 		for arch in archs
 			releasefile = "wgpu-$kernel-$arch-release.zip"
-			tarfile = "WGPU.$version.$(arch)-$(kernel).tar.gz"
+			tarfile = "WGPU.$(upstreamVersion).$(arch)-$(kernel).tar.gz"
 			try
-				url = "https://github.com/gfx-rs/wgpu-native/releases/download/v0.16.0.1/$releasefile"
+				url = "https://github.com/gfx-rs/wgpu-native/releases/download/$(upstreamVersion)/$releasefile"
 				Downloads.download(url, releasefile)
 				run(`rm -rf "wgpulibs$arch$kernel"`)
 				run(`mkdir wgpulibs$arch$kernel`)
@@ -59,9 +61,9 @@ function writeArtifactsTOML()
 	for kernel in kernels
 		for arch in archs
 			releasefile = "wgpu-$kernel-$arch-release.zip"
-			tarfile = "WGPU.$version.$(arch)-$(kernel).tar.gz"
+			tarfile = "WGPU.$(upstreamVersion).$(arch)-$(kernel).tar.gz"
 			try
-				Downloads.download(joinpath(remoteurl, tarfile), tarfile)
+				# Downloads.download(joinpath(remoteurl, tarfile), tarfile)
 				sha256Val = bytes2hex(open(sha256, tarfile))
 				sha1Val = Tar.tree_hash(IOBuffer(inflate_gzip(tarfile)))
 				writeIO(io, arch, kernel, sha1Val, sha256Val, "", joinpath(remoteurl, tarfile))
