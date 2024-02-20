@@ -1,7 +1,7 @@
 
 module CUtils
 
-export CStruct, cStruct, ptr, concrete, rawCast, cast, toCString, fromCString
+export CStruct, cStruct, ptr, concrete, rawCast, cast, toByteArray, toCString, fromCString
 
 mutable struct CStruct{T}
 	ptr::Ptr{T}
