@@ -6,7 +6,7 @@ kernel = lowercase(String(Sys.KERNEL))
 if kernel == "darwin"
 	kernel = "macos"
 	if arch == "aarch64"
-		arch = "arm64"
+		arch = "aarch64"
 	end
 end
 

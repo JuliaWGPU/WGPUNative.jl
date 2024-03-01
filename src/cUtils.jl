@@ -1,7 +1,7 @@
 
 module CUtils
 
-export CStruct, cStruct, ptr, concrete, rawCast, cast, toByteArray, toCString, fromCString
+export CStruct, cStruct, ptr, concrete, rawCast, cast, toCString, fromCString, toByteArray
 
 mutable struct CStruct{T}
 	ptr::Ptr{T}
@@ -116,5 +116,8 @@ function toByteArray(cstruct::CStruct{T}) where T
 	bytePtr = convert(Ptr{UInt8}, cstruct |> ptr)
 	unsafe_wrap(Array, bytePtr, sizeof(cstruct))
 end 
+
+#Base.fieldnames(::Type{CStruct{T}}) where T = Base.fieldnames(T)
+Base.propertynames(a::CStruct{T}) where T = Base.fieldnames(T)
 
 end
