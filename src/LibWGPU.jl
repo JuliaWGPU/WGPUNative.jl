@@ -707,7 +707,7 @@ struct WGPUChainedStructOut
     sType::WGPUSType
 end
 
-struct WGPUAdapterProperties
+mutable struct WGPUAdapterProperties
     nextInChain::Ptr{WGPUChainedStructOut}
     vendorID::UInt32
     vendorName::Ptr{Cchar}
@@ -717,6 +717,7 @@ struct WGPUAdapterProperties
     driverDescription::Ptr{Cchar}
     adapterType::WGPUAdapterType
     backendType::WGPUBackendType
+    WGPUAdapterProperties() = new()
 end
 
 struct WGPUBindGroupEntry
@@ -742,12 +743,13 @@ struct WGPUBufferBindingLayout
     minBindingSize::UInt64
 end
 
-struct WGPUBufferDescriptor
+mutable struct WGPUBufferDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::Ptr{Cchar}
     usage::WGPUBufferUsageFlags
     size::UInt64
     mappedAtCreation::WGPUBool
+    WGPUBufferDescriptor() = new()
 end
 
 struct WGPUColor
@@ -757,14 +759,16 @@ struct WGPUColor
     a::Cdouble
 end
 
-struct WGPUCommandBufferDescriptor
+mutable struct WGPUCommandBufferDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::Ptr{Cchar}
+    WGPUCommandBufferDescriptor() = new()
 end
 
-struct WGPUCommandEncoderDescriptor
+mutable struct WGPUCommandEncoderDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::Ptr{Cchar}
+    WGPUCommandEncoderDescriptor() = new()
 end
 
 struct WGPUCompilationMessage
@@ -798,8 +802,9 @@ struct WGPUExtent3D
     depthOrArrayLayers::UInt32
 end
 
-struct WGPUInstanceDescriptor
+mutable struct WGPUInstanceDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
+    WGPUInstanceDescriptor() = new()
 end
 
 struct WGPULimits
@@ -850,16 +855,18 @@ struct WGPUOrigin3D
     z::UInt32
 end
 
-struct WGPUPipelineLayoutDescriptor
+mutable struct WGPUPipelineLayoutDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::Ptr{Cchar}
     bindGroupLayoutCount::Csize_t
     bindGroupLayouts::Ptr{WGPUBindGroupLayout}
+    WGPUPipelineLayoutDescriptor() = new()
 end
 
-struct WGPUPrimitiveDepthClipControl
+mutable struct WGPUPrimitiveDepthClipControl
     chain::WGPUChainedStruct
     unclippedDepth::WGPUBool
+    WGPUPrimitiveDepthClipControl() = new()
 end
 
 struct WGPUPrimitiveState
@@ -870,11 +877,12 @@ struct WGPUPrimitiveState
     cullMode::WGPUCullMode
 end
 
-struct WGPUQuerySetDescriptor
+mutable struct WGPUQuerySetDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::Ptr{Cchar}
     type::WGPUQueryType
     count::UInt32
+    WGPUQuerySetDescriptor() = new()
 end
 
 struct WGPUQueueDescriptor
@@ -882,12 +890,13 @@ struct WGPUQueueDescriptor
     label::Ptr{Cchar}
 end
 
-struct WGPURenderBundleDescriptor
+mutable struct WGPURenderBundleDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::Ptr{Cchar}
+    WGPURenderBundleDescriptor() = new()
 end
 
-struct WGPURenderBundleEncoderDescriptor
+mutable struct WGPURenderBundleEncoderDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::Ptr{Cchar}
     colorFormatCount::Csize_t
@@ -896,6 +905,7 @@ struct WGPURenderBundleEncoderDescriptor
     sampleCount::UInt32
     depthReadOnly::WGPUBool
     stencilReadOnly::WGPUBool
+    WGPURenderBundleEncoderDescriptor() = new()
 end
 
 struct WGPURenderPassDepthStencilAttachment
@@ -910,9 +920,10 @@ struct WGPURenderPassDepthStencilAttachment
     stencilReadOnly::WGPUBool
 end
 
-struct WGPURenderPassDescriptorMaxDrawCount
+mutable struct WGPURenderPassDescriptorMaxDrawCount
     chain::WGPUChainedStruct
     maxDrawCount::UInt64
+    WGPURenderPassDescriptorMaxDrawCount() = new()
 end
 
 struct WGPURenderPassTimestampWrites
@@ -921,12 +932,13 @@ struct WGPURenderPassTimestampWrites
     endOfPassWriteIndex::UInt32
 end
 
-struct WGPURequestAdapterOptions
+mutable struct WGPURequestAdapterOptions
     nextInChain::Ptr{WGPUChainedStruct}
     compatibleSurface::WGPUSurface
     powerPreference::WGPUPowerPreference
     backendType::WGPUBackendType
     forceFallbackAdapter::WGPUBool
+    WGPURequestAdapterOptions() = new()
 end
 
 struct WGPUSamplerBindingLayout
@@ -934,7 +946,7 @@ struct WGPUSamplerBindingLayout
     type::WGPUSamplerBindingType
 end
 
-struct WGPUSamplerDescriptor
+mutable struct WGPUSamplerDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::Ptr{Cchar}
     addressModeU::WGPUAddressMode
@@ -947,6 +959,7 @@ struct WGPUSamplerDescriptor
     lodMaxClamp::Cfloat
     compare::WGPUCompareFunction
     maxAnisotropy::UInt16
+    WGPUSamplerDescriptor() = new()
 end
 
 struct WGPUShaderModuleCompilationHint
@@ -955,15 +968,17 @@ struct WGPUShaderModuleCompilationHint
     layout::WGPUPipelineLayout
 end
 
-struct WGPUShaderModuleSPIRVDescriptor
+mutable struct WGPUShaderModuleSPIRVDescriptor
     chain::WGPUChainedStruct
     codeSize::UInt32
     code::Ptr{UInt32}
+    WGPUShaderModuleSPIRVDescriptor() = new()
 end
 
-struct WGPUShaderModuleWGSLDescriptor
+mutable struct WGPUShaderModuleWGSLDescriptor
     chain::WGPUChainedStruct
     code::Ptr{Cchar}
+    WGPUShaderModuleWGSLDescriptor() = new()
 end
 
 struct WGPUStencilFaceState
@@ -980,7 +995,7 @@ struct WGPUStorageTextureBindingLayout
     viewDimension::WGPUTextureViewDimension
 end
 
-struct WGPUSurfaceCapabilities
+mutable struct WGPUSurfaceCapabilities
     nextInChain::Ptr{WGPUChainedStructOut}
     formatCount::Csize_t
     formats::Ptr{WGPUTextureFormat}
@@ -988,9 +1003,10 @@ struct WGPUSurfaceCapabilities
     presentModes::Ptr{WGPUPresentMode}
     alphaModeCount::Csize_t
     alphaModes::Ptr{WGPUCompositeAlphaMode}
+    WGPUSurfaceCapabilities() = new()
 end
 
-struct WGPUSurfaceConfiguration
+mutable struct WGPUSurfaceConfiguration
     nextInChain::Ptr{WGPUChainedStruct}
     device::WGPUDevice
     format::WGPUTextureFormat
@@ -1001,56 +1017,66 @@ struct WGPUSurfaceConfiguration
     width::UInt32
     height::UInt32
     presentMode::WGPUPresentMode
+    WGPUSurfaceConfiguration() = new()
 end
 
-struct WGPUSurfaceDescriptor
+mutable struct WGPUSurfaceDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::Ptr{Cchar}
+    WGPUSurfaceDescriptor() = new()
 end
 
-struct WGPUSurfaceDescriptorFromAndroidNativeWindow
+mutable struct WGPUSurfaceDescriptorFromAndroidNativeWindow
     chain::WGPUChainedStruct
     window::Ptr{Cvoid}
+    WGPUSurfaceDescriptorFromAndroidNativeWindow() = new()
 end
 
-struct WGPUSurfaceDescriptorFromCanvasHTMLSelector
+mutable struct WGPUSurfaceDescriptorFromCanvasHTMLSelector
     chain::WGPUChainedStruct
     selector::Ptr{Cchar}
+    WGPUSurfaceDescriptorFromCanvasHTMLSelector() = new()
 end
 
-struct WGPUSurfaceDescriptorFromMetalLayer
+mutable struct WGPUSurfaceDescriptorFromMetalLayer
     chain::WGPUChainedStruct
     layer::Ptr{Cvoid}
+    WGPUSurfaceDescriptorFromMetalLayer() = new()
 end
 
-struct WGPUSurfaceDescriptorFromWaylandSurface
+mutable struct WGPUSurfaceDescriptorFromWaylandSurface
     chain::WGPUChainedStruct
     display::Ptr{Cvoid}
     surface::Ptr{Cvoid}
+    WGPUSurfaceDescriptorFromWaylandSurface() = new()
 end
 
-struct WGPUSurfaceDescriptorFromWindowsHWND
+mutable struct WGPUSurfaceDescriptorFromWindowsHWND
     chain::WGPUChainedStruct
     hinstance::Ptr{Cvoid}
     hwnd::Ptr{Cvoid}
+    WGPUSurfaceDescriptorFromWindowsHWND() = new()
 end
 
-struct WGPUSurfaceDescriptorFromXcbWindow
+mutable struct WGPUSurfaceDescriptorFromXcbWindow
     chain::WGPUChainedStruct
     connection::Ptr{Cvoid}
     window::UInt32
+    WGPUSurfaceDescriptorFromXcbWindow() = new()
 end
 
-struct WGPUSurfaceDescriptorFromXlibWindow
+mutable struct WGPUSurfaceDescriptorFromXlibWindow
     chain::WGPUChainedStruct
     display::Ptr{Cvoid}
     window::UInt64
+    WGPUSurfaceDescriptorFromXlibWindow() = new()
 end
 
-struct WGPUSurfaceTexture
+mutable struct WGPUSurfaceTexture
     texture::WGPUTexture
     suboptimal::WGPUBool
     status::WGPUSurfaceGetCurrentTextureStatus
+    WGPUSurfaceTexture() = new()
 end
 
 struct WGPUTextureBindingLayout
@@ -1067,7 +1093,7 @@ struct WGPUTextureDataLayout
     rowsPerImage::UInt32
 end
 
-struct WGPUTextureViewDescriptor
+mutable struct WGPUTextureViewDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::Ptr{Cchar}
     format::WGPUTextureFormat
@@ -1077,6 +1103,7 @@ struct WGPUTextureViewDescriptor
     baseArrayLayer::UInt32
     arrayLayerCount::UInt32
     aspect::WGPUTextureAspect
+    WGPUTextureViewDescriptor() = new()
 end
 
 struct WGPUVertexAttribute
@@ -1085,12 +1112,13 @@ struct WGPUVertexAttribute
     shaderLocation::UInt32
 end
 
-struct WGPUBindGroupDescriptor
+mutable struct WGPUBindGroupDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::Ptr{Cchar}
     layout::WGPUBindGroupLayout
     entryCount::Csize_t
     entries::Ptr{WGPUBindGroupEntry}
+    WGPUBindGroupDescriptor() = new()
 end
 
 struct WGPUBindGroupLayoutEntry
@@ -1108,16 +1136,18 @@ struct WGPUBlendState
     alpha::WGPUBlendComponent
 end
 
-struct WGPUCompilationInfo
+mutable struct WGPUCompilationInfo
     nextInChain::Ptr{WGPUChainedStruct}
     messageCount::Csize_t
     messages::Ptr{WGPUCompilationMessage}
+    WGPUCompilationInfo() = new()
 end
 
-struct WGPUComputePassDescriptor
+mutable struct WGPUComputePassDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::Ptr{Cchar}
     timestampWrites::Ptr{WGPUComputePassTimestampWrites}
+    WGPUComputePassDescriptor() = new()
 end
 
 struct WGPUDepthStencilState
@@ -1134,10 +1164,11 @@ struct WGPUDepthStencilState
     depthBiasClamp::Cfloat
 end
 
-struct WGPUImageCopyBuffer
+mutable struct WGPUImageCopyBuffer
     nextInChain::Ptr{WGPUChainedStruct}
     layout::WGPUTextureDataLayout
     buffer::WGPUBuffer
+    WGPUImageCopyBuffer() = new()
 end
 
 struct WGPUImageCopyTexture
@@ -1170,19 +1201,21 @@ struct WGPURequiredLimits
     limits::WGPULimits
 end
 
-struct WGPUShaderModuleDescriptor
+mutable struct WGPUShaderModuleDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::Ptr{Cchar}
     hintCount::Csize_t
     hints::Ptr{WGPUShaderModuleCompilationHint}
+    WGPUShaderModuleDescriptor() = new()
 end
 
-struct WGPUSupportedLimits
+mutable struct WGPUSupportedLimits
     nextInChain::Ptr{WGPUChainedStructOut}
     limits::WGPULimits
+    WGPUSupportedLimits() = new()
 end
 
-struct WGPUTextureDescriptor
+mutable struct WGPUTextureDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::Ptr{Cchar}
     usage::WGPUTextureUsageFlags
@@ -1193,6 +1226,7 @@ struct WGPUTextureDescriptor
     sampleCount::UInt32
     viewFormatCount::Csize_t
     viewFormats::Ptr{WGPUTextureFormat}
+    WGPUTextureDescriptor() = new()
 end
 
 struct WGPUVertexBufferLayout
@@ -1202,11 +1236,12 @@ struct WGPUVertexBufferLayout
     attributes::Ptr{WGPUVertexAttribute}
 end
 
-struct WGPUBindGroupLayoutDescriptor
+mutable struct WGPUBindGroupLayoutDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::Ptr{Cchar}
     entryCount::Csize_t
     entries::Ptr{WGPUBindGroupLayoutEntry}
+    WGPUBindGroupLayoutDescriptor() = new()
 end
 
 struct WGPUColorTargetState
@@ -1216,14 +1251,15 @@ struct WGPUColorTargetState
     writeMask::WGPUColorWriteMaskFlags
 end
 
-struct WGPUComputePipelineDescriptor
+mutable struct WGPUComputePipelineDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::Ptr{Cchar}
     layout::WGPUPipelineLayout
     compute::WGPUProgrammableStageDescriptor
+    WGPUComputePipelineDescriptor() = new()
 end
 
-struct WGPUDeviceDescriptor
+mutable struct WGPUDeviceDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::Ptr{Cchar}
     requiredFeatureCount::Csize_t
@@ -1232,9 +1268,10 @@ struct WGPUDeviceDescriptor
     defaultQueue::WGPUQueueDescriptor
     deviceLostCallback::WGPUDeviceLostCallback
     deviceLostUserdata::Ptr{Cvoid}
+    WGPUDeviceDescriptor() = new()
 end
 
-struct WGPURenderPassDescriptor
+mutable struct WGPURenderPassDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::Ptr{Cchar}
     colorAttachmentCount::Csize_t
@@ -1242,6 +1279,7 @@ struct WGPURenderPassDescriptor
     depthStencilAttachment::Ptr{WGPURenderPassDepthStencilAttachment}
     occlusionQuerySet::WGPUQuerySet
     timestampWrites::Ptr{WGPURenderPassTimestampWrites}
+    WGPURenderPassDescriptor() = new()
 end
 
 struct WGPUVertexState
@@ -1264,7 +1302,7 @@ struct WGPUFragmentState
     targets::Ptr{WGPUColorTargetState}
 end
 
-struct WGPURenderPipelineDescriptor
+mutable struct WGPURenderPipelineDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::Ptr{Cchar}
     layout::WGPUPipelineLayout
@@ -1273,6 +1311,7 @@ struct WGPURenderPipelineDescriptor
     depthStencil::Ptr{WGPUDepthStencilState}
     multisample::WGPUMultisampleState
     fragment::Ptr{WGPUFragmentState}
+    WGPURenderPipelineDescriptor() = new()
 end
 
 # typedef WGPUInstance ( * WGPUProcCreateInstance ) ( WGPU_NULLABLE WGPUInstanceDescriptor const * descriptor )
@@ -1822,731 +1861,731 @@ const WGPUProcTextureViewReference = Ptr{Cvoid}
 const WGPUProcTextureViewRelease = Ptr{Cvoid}
 
 function wgpuCreateInstance(descriptor)
-    ccall((:wgpuCreateInstance, libWGPU), WGPUInstance, (Ptr{WGPUInstanceDescriptor},), descriptor)
+    @ccall libWGPU.wgpuCreateInstance(descriptor::Ptr{WGPUInstanceDescriptor})::WGPUInstance
 end
 
 function wgpuGetProcAddress(device, procName)
-    ccall((:wgpuGetProcAddress, libWGPU), WGPUProc, (WGPUDevice, Ptr{Cchar}), device, procName)
+    @ccall libWGPU.wgpuGetProcAddress(device::WGPUDevice, procName::Ptr{Cchar})::WGPUProc
 end
 
 function wgpuAdapterEnumerateFeatures(adapter, features)
-    ccall((:wgpuAdapterEnumerateFeatures, libWGPU), Csize_t, (WGPUAdapter, Ptr{WGPUFeatureName}), adapter, features)
+    @ccall libWGPU.wgpuAdapterEnumerateFeatures(adapter::WGPUAdapter, features::Ptr{WGPUFeatureName})::Csize_t
 end
 
 function wgpuAdapterGetLimits(adapter, limits)
-    ccall((:wgpuAdapterGetLimits, libWGPU), WGPUBool, (WGPUAdapter, Ptr{WGPUSupportedLimits}), adapter, limits)
+    @ccall libWGPU.wgpuAdapterGetLimits(adapter::WGPUAdapter, limits::Ptr{WGPUSupportedLimits})::WGPUBool
 end
 
 function wgpuAdapterGetProperties(adapter, properties)
-    ccall((:wgpuAdapterGetProperties, libWGPU), Cvoid, (WGPUAdapter, Ptr{WGPUAdapterProperties}), adapter, properties)
+    @ccall libWGPU.wgpuAdapterGetProperties(adapter::WGPUAdapter, properties::Ptr{WGPUAdapterProperties})::Cvoid
 end
 
 function wgpuAdapterHasFeature(adapter, feature)
-    ccall((:wgpuAdapterHasFeature, libWGPU), WGPUBool, (WGPUAdapter, WGPUFeatureName), adapter, feature)
+    @ccall libWGPU.wgpuAdapterHasFeature(adapter::WGPUAdapter, feature::WGPUFeatureName)::WGPUBool
 end
 
 function wgpuAdapterRequestDevice(adapter, descriptor, callback, userdata)
-    ccall((:wgpuAdapterRequestDevice, libWGPU), Cvoid, (WGPUAdapter, Ptr{WGPUDeviceDescriptor}, WGPURequestDeviceCallback, Ptr{Cvoid}), adapter, descriptor, callback, userdata)
+    @ccall libWGPU.wgpuAdapterRequestDevice(adapter::WGPUAdapter, descriptor::Ptr{WGPUDeviceDescriptor}, callback::WGPURequestDeviceCallback, userdata::Ptr{Cvoid})::Cvoid
 end
 
 function wgpuAdapterReference(adapter)
-    ccall((:wgpuAdapterReference, libWGPU), Cvoid, (WGPUAdapter,), adapter)
+    @ccall libWGPU.wgpuAdapterReference(adapter::WGPUAdapter)::Cvoid
 end
 
 function wgpuAdapterRelease(adapter)
-    ccall((:wgpuAdapterRelease, libWGPU), Cvoid, (WGPUAdapter,), adapter)
+    @ccall libWGPU.wgpuAdapterRelease(adapter::WGPUAdapter)::Cvoid
 end
 
 function wgpuBindGroupSetLabel(bindGroup, label)
-    ccall((:wgpuBindGroupSetLabel, libWGPU), Cvoid, (WGPUBindGroup, Ptr{Cchar}), bindGroup, label)
+    @ccall libWGPU.wgpuBindGroupSetLabel(bindGroup::WGPUBindGroup, label::Ptr{Cchar})::Cvoid
 end
 
 function wgpuBindGroupReference(bindGroup)
-    ccall((:wgpuBindGroupReference, libWGPU), Cvoid, (WGPUBindGroup,), bindGroup)
+    @ccall libWGPU.wgpuBindGroupReference(bindGroup::WGPUBindGroup)::Cvoid
 end
 
 function wgpuBindGroupRelease(bindGroup)
-    ccall((:wgpuBindGroupRelease, libWGPU), Cvoid, (WGPUBindGroup,), bindGroup)
+    @ccall libWGPU.wgpuBindGroupRelease(bindGroup::WGPUBindGroup)::Cvoid
 end
 
 function wgpuBindGroupLayoutSetLabel(bindGroupLayout, label)
-    ccall((:wgpuBindGroupLayoutSetLabel, libWGPU), Cvoid, (WGPUBindGroupLayout, Ptr{Cchar}), bindGroupLayout, label)
+    @ccall libWGPU.wgpuBindGroupLayoutSetLabel(bindGroupLayout::WGPUBindGroupLayout, label::Ptr{Cchar})::Cvoid
 end
 
 function wgpuBindGroupLayoutReference(bindGroupLayout)
-    ccall((:wgpuBindGroupLayoutReference, libWGPU), Cvoid, (WGPUBindGroupLayout,), bindGroupLayout)
+    @ccall libWGPU.wgpuBindGroupLayoutReference(bindGroupLayout::WGPUBindGroupLayout)::Cvoid
 end
 
 function wgpuBindGroupLayoutRelease(bindGroupLayout)
-    ccall((:wgpuBindGroupLayoutRelease, libWGPU), Cvoid, (WGPUBindGroupLayout,), bindGroupLayout)
+    @ccall libWGPU.wgpuBindGroupLayoutRelease(bindGroupLayout::WGPUBindGroupLayout)::Cvoid
 end
 
 function wgpuBufferDestroy(buffer)
-    ccall((:wgpuBufferDestroy, libWGPU), Cvoid, (WGPUBuffer,), buffer)
+    @ccall libWGPU.wgpuBufferDestroy(buffer::WGPUBuffer)::Cvoid
 end
 
 function wgpuBufferGetConstMappedRange(buffer, offset, size)
-    ccall((:wgpuBufferGetConstMappedRange, libWGPU), Ptr{Cvoid}, (WGPUBuffer, Csize_t, Csize_t), buffer, offset, size)
+    @ccall libWGPU.wgpuBufferGetConstMappedRange(buffer::WGPUBuffer, offset::Csize_t, size::Csize_t)::Ptr{Cvoid}
 end
 
 function wgpuBufferGetMapState(buffer)
-    ccall((:wgpuBufferGetMapState, libWGPU), WGPUBufferMapState, (WGPUBuffer,), buffer)
+    @ccall libWGPU.wgpuBufferGetMapState(buffer::WGPUBuffer)::WGPUBufferMapState
 end
 
 function wgpuBufferGetMappedRange(buffer, offset, size)
-    ccall((:wgpuBufferGetMappedRange, libWGPU), Ptr{Cvoid}, (WGPUBuffer, Csize_t, Csize_t), buffer, offset, size)
+    @ccall libWGPU.wgpuBufferGetMappedRange(buffer::WGPUBuffer, offset::Csize_t, size::Csize_t)::Ptr{Cvoid}
 end
 
 function wgpuBufferGetSize(buffer)
-    ccall((:wgpuBufferGetSize, libWGPU), UInt64, (WGPUBuffer,), buffer)
+    @ccall libWGPU.wgpuBufferGetSize(buffer::WGPUBuffer)::UInt64
 end
 
 function wgpuBufferGetUsage(buffer)
-    ccall((:wgpuBufferGetUsage, libWGPU), WGPUBufferUsageFlags, (WGPUBuffer,), buffer)
+    @ccall libWGPU.wgpuBufferGetUsage(buffer::WGPUBuffer)::WGPUBufferUsageFlags
 end
 
 function wgpuBufferMapAsync(buffer, mode, offset, size, callback, userdata)
-    ccall((:wgpuBufferMapAsync, libWGPU), Cvoid, (WGPUBuffer, WGPUMapModeFlags, Csize_t, Csize_t, WGPUBufferMapCallback, Ptr{Cvoid}), buffer, mode, offset, size, callback, userdata)
+    @ccall libWGPU.wgpuBufferMapAsync(buffer::WGPUBuffer, mode::WGPUMapModeFlags, offset::Csize_t, size::Csize_t, callback::WGPUBufferMapCallback, userdata::Ptr{Cvoid})::Cvoid
 end
 
 function wgpuBufferSetLabel(buffer, label)
-    ccall((:wgpuBufferSetLabel, libWGPU), Cvoid, (WGPUBuffer, Ptr{Cchar}), buffer, label)
+    @ccall libWGPU.wgpuBufferSetLabel(buffer::WGPUBuffer, label::Ptr{Cchar})::Cvoid
 end
 
 function wgpuBufferUnmap(buffer)
-    ccall((:wgpuBufferUnmap, libWGPU), Cvoid, (WGPUBuffer,), buffer)
+    @ccall libWGPU.wgpuBufferUnmap(buffer::WGPUBuffer)::Cvoid
 end
 
 function wgpuBufferReference(buffer)
-    ccall((:wgpuBufferReference, libWGPU), Cvoid, (WGPUBuffer,), buffer)
+    @ccall libWGPU.wgpuBufferReference(buffer::WGPUBuffer)::Cvoid
 end
 
 function wgpuBufferRelease(buffer)
-    ccall((:wgpuBufferRelease, libWGPU), Cvoid, (WGPUBuffer,), buffer)
+    @ccall libWGPU.wgpuBufferRelease(buffer::WGPUBuffer)::Cvoid
 end
 
 function wgpuCommandBufferSetLabel(commandBuffer, label)
-    ccall((:wgpuCommandBufferSetLabel, libWGPU), Cvoid, (WGPUCommandBuffer, Ptr{Cchar}), commandBuffer, label)
+    @ccall libWGPU.wgpuCommandBufferSetLabel(commandBuffer::WGPUCommandBuffer, label::Ptr{Cchar})::Cvoid
 end
 
 function wgpuCommandBufferReference(commandBuffer)
-    ccall((:wgpuCommandBufferReference, libWGPU), Cvoid, (WGPUCommandBuffer,), commandBuffer)
+    @ccall libWGPU.wgpuCommandBufferReference(commandBuffer::WGPUCommandBuffer)::Cvoid
 end
 
 function wgpuCommandBufferRelease(commandBuffer)
-    ccall((:wgpuCommandBufferRelease, libWGPU), Cvoid, (WGPUCommandBuffer,), commandBuffer)
+    @ccall libWGPU.wgpuCommandBufferRelease(commandBuffer::WGPUCommandBuffer)::Cvoid
 end
 
 function wgpuCommandEncoderBeginComputePass(commandEncoder, descriptor)
-    ccall((:wgpuCommandEncoderBeginComputePass, libWGPU), WGPUComputePassEncoder, (WGPUCommandEncoder, Ptr{WGPUComputePassDescriptor}), commandEncoder, descriptor)
+    @ccall libWGPU.wgpuCommandEncoderBeginComputePass(commandEncoder::WGPUCommandEncoder, descriptor::Ptr{WGPUComputePassDescriptor})::WGPUComputePassEncoder
 end
 
 function wgpuCommandEncoderBeginRenderPass(commandEncoder, descriptor)
-    ccall((:wgpuCommandEncoderBeginRenderPass, libWGPU), WGPURenderPassEncoder, (WGPUCommandEncoder, Ptr{WGPURenderPassDescriptor}), commandEncoder, descriptor)
+    @ccall libWGPU.wgpuCommandEncoderBeginRenderPass(commandEncoder::WGPUCommandEncoder, descriptor::Ptr{WGPURenderPassDescriptor})::WGPURenderPassEncoder
 end
 
 function wgpuCommandEncoderClearBuffer(commandEncoder, buffer, offset, size)
-    ccall((:wgpuCommandEncoderClearBuffer, libWGPU), Cvoid, (WGPUCommandEncoder, WGPUBuffer, UInt64, UInt64), commandEncoder, buffer, offset, size)
+    @ccall libWGPU.wgpuCommandEncoderClearBuffer(commandEncoder::WGPUCommandEncoder, buffer::WGPUBuffer, offset::UInt64, size::UInt64)::Cvoid
 end
 
 function wgpuCommandEncoderCopyBufferToBuffer(commandEncoder, source, sourceOffset, destination, destinationOffset, size)
-    ccall((:wgpuCommandEncoderCopyBufferToBuffer, libWGPU), Cvoid, (WGPUCommandEncoder, WGPUBuffer, UInt64, WGPUBuffer, UInt64, UInt64), commandEncoder, source, sourceOffset, destination, destinationOffset, size)
+    @ccall libWGPU.wgpuCommandEncoderCopyBufferToBuffer(commandEncoder::WGPUCommandEncoder, source::WGPUBuffer, sourceOffset::UInt64, destination::WGPUBuffer, destinationOffset::UInt64, size::UInt64)::Cvoid
 end
 
 function wgpuCommandEncoderCopyBufferToTexture(commandEncoder, source, destination, copySize)
-    ccall((:wgpuCommandEncoderCopyBufferToTexture, libWGPU), Cvoid, (WGPUCommandEncoder, Ptr{WGPUImageCopyBuffer}, Ptr{WGPUImageCopyTexture}, Ptr{WGPUExtent3D}), commandEncoder, source, destination, copySize)
+    @ccall libWGPU.wgpuCommandEncoderCopyBufferToTexture(commandEncoder::WGPUCommandEncoder, source::Ptr{WGPUImageCopyBuffer}, destination::Ptr{WGPUImageCopyTexture}, copySize::Ptr{WGPUExtent3D})::Cvoid
 end
 
 function wgpuCommandEncoderCopyTextureToBuffer(commandEncoder, source, destination, copySize)
-    ccall((:wgpuCommandEncoderCopyTextureToBuffer, libWGPU), Cvoid, (WGPUCommandEncoder, Ptr{WGPUImageCopyTexture}, Ptr{WGPUImageCopyBuffer}, Ptr{WGPUExtent3D}), commandEncoder, source, destination, copySize)
+    @ccall libWGPU.wgpuCommandEncoderCopyTextureToBuffer(commandEncoder::WGPUCommandEncoder, source::Ptr{WGPUImageCopyTexture}, destination::Ptr{WGPUImageCopyBuffer}, copySize::Ptr{WGPUExtent3D})::Cvoid
 end
 
 function wgpuCommandEncoderCopyTextureToTexture(commandEncoder, source, destination, copySize)
-    ccall((:wgpuCommandEncoderCopyTextureToTexture, libWGPU), Cvoid, (WGPUCommandEncoder, Ptr{WGPUImageCopyTexture}, Ptr{WGPUImageCopyTexture}, Ptr{WGPUExtent3D}), commandEncoder, source, destination, copySize)
+    @ccall libWGPU.wgpuCommandEncoderCopyTextureToTexture(commandEncoder::WGPUCommandEncoder, source::Ptr{WGPUImageCopyTexture}, destination::Ptr{WGPUImageCopyTexture}, copySize::Ptr{WGPUExtent3D})::Cvoid
 end
 
 function wgpuCommandEncoderFinish(commandEncoder, descriptor)
-    ccall((:wgpuCommandEncoderFinish, libWGPU), WGPUCommandBuffer, (WGPUCommandEncoder, Ptr{WGPUCommandBufferDescriptor}), commandEncoder, descriptor)
+    @ccall libWGPU.wgpuCommandEncoderFinish(commandEncoder::WGPUCommandEncoder, descriptor::Ptr{WGPUCommandBufferDescriptor})::WGPUCommandBuffer
 end
 
 function wgpuCommandEncoderInsertDebugMarker(commandEncoder, markerLabel)
-    ccall((:wgpuCommandEncoderInsertDebugMarker, libWGPU), Cvoid, (WGPUCommandEncoder, Ptr{Cchar}), commandEncoder, markerLabel)
+    @ccall libWGPU.wgpuCommandEncoderInsertDebugMarker(commandEncoder::WGPUCommandEncoder, markerLabel::Ptr{Cchar})::Cvoid
 end
 
 function wgpuCommandEncoderPopDebugGroup(commandEncoder)
-    ccall((:wgpuCommandEncoderPopDebugGroup, libWGPU), Cvoid, (WGPUCommandEncoder,), commandEncoder)
+    @ccall libWGPU.wgpuCommandEncoderPopDebugGroup(commandEncoder::WGPUCommandEncoder)::Cvoid
 end
 
 function wgpuCommandEncoderPushDebugGroup(commandEncoder, groupLabel)
-    ccall((:wgpuCommandEncoderPushDebugGroup, libWGPU), Cvoid, (WGPUCommandEncoder, Ptr{Cchar}), commandEncoder, groupLabel)
+    @ccall libWGPU.wgpuCommandEncoderPushDebugGroup(commandEncoder::WGPUCommandEncoder, groupLabel::Ptr{Cchar})::Cvoid
 end
 
 function wgpuCommandEncoderResolveQuerySet(commandEncoder, querySet, firstQuery, queryCount, destination, destinationOffset)
-    ccall((:wgpuCommandEncoderResolveQuerySet, libWGPU), Cvoid, (WGPUCommandEncoder, WGPUQuerySet, UInt32, UInt32, WGPUBuffer, UInt64), commandEncoder, querySet, firstQuery, queryCount, destination, destinationOffset)
+    @ccall libWGPU.wgpuCommandEncoderResolveQuerySet(commandEncoder::WGPUCommandEncoder, querySet::WGPUQuerySet, firstQuery::UInt32, queryCount::UInt32, destination::WGPUBuffer, destinationOffset::UInt64)::Cvoid
 end
 
 function wgpuCommandEncoderSetLabel(commandEncoder, label)
-    ccall((:wgpuCommandEncoderSetLabel, libWGPU), Cvoid, (WGPUCommandEncoder, Ptr{Cchar}), commandEncoder, label)
+    @ccall libWGPU.wgpuCommandEncoderSetLabel(commandEncoder::WGPUCommandEncoder, label::Ptr{Cchar})::Cvoid
 end
 
 function wgpuCommandEncoderWriteTimestamp(commandEncoder, querySet, queryIndex)
-    ccall((:wgpuCommandEncoderWriteTimestamp, libWGPU), Cvoid, (WGPUCommandEncoder, WGPUQuerySet, UInt32), commandEncoder, querySet, queryIndex)
+    @ccall libWGPU.wgpuCommandEncoderWriteTimestamp(commandEncoder::WGPUCommandEncoder, querySet::WGPUQuerySet, queryIndex::UInt32)::Cvoid
 end
 
 function wgpuCommandEncoderReference(commandEncoder)
-    ccall((:wgpuCommandEncoderReference, libWGPU), Cvoid, (WGPUCommandEncoder,), commandEncoder)
+    @ccall libWGPU.wgpuCommandEncoderReference(commandEncoder::WGPUCommandEncoder)::Cvoid
 end
 
 function wgpuCommandEncoderRelease(commandEncoder)
-    ccall((:wgpuCommandEncoderRelease, libWGPU), Cvoid, (WGPUCommandEncoder,), commandEncoder)
+    @ccall libWGPU.wgpuCommandEncoderRelease(commandEncoder::WGPUCommandEncoder)::Cvoid
 end
 
 function wgpuComputePassEncoderDispatchWorkgroups(computePassEncoder, workgroupCountX, workgroupCountY, workgroupCountZ)
-    ccall((:wgpuComputePassEncoderDispatchWorkgroups, libWGPU), Cvoid, (WGPUComputePassEncoder, UInt32, UInt32, UInt32), computePassEncoder, workgroupCountX, workgroupCountY, workgroupCountZ)
+    @ccall libWGPU.wgpuComputePassEncoderDispatchWorkgroups(computePassEncoder::WGPUComputePassEncoder, workgroupCountX::UInt32, workgroupCountY::UInt32, workgroupCountZ::UInt32)::Cvoid
 end
 
 function wgpuComputePassEncoderDispatchWorkgroupsIndirect(computePassEncoder, indirectBuffer, indirectOffset)
-    ccall((:wgpuComputePassEncoderDispatchWorkgroupsIndirect, libWGPU), Cvoid, (WGPUComputePassEncoder, WGPUBuffer, UInt64), computePassEncoder, indirectBuffer, indirectOffset)
+    @ccall libWGPU.wgpuComputePassEncoderDispatchWorkgroupsIndirect(computePassEncoder::WGPUComputePassEncoder, indirectBuffer::WGPUBuffer, indirectOffset::UInt64)::Cvoid
 end
 
 function wgpuComputePassEncoderEnd(computePassEncoder)
-    ccall((:wgpuComputePassEncoderEnd, libWGPU), Cvoid, (WGPUComputePassEncoder,), computePassEncoder)
+    @ccall libWGPU.wgpuComputePassEncoderEnd(computePassEncoder::WGPUComputePassEncoder)::Cvoid
 end
 
 function wgpuComputePassEncoderInsertDebugMarker(computePassEncoder, markerLabel)
-    ccall((:wgpuComputePassEncoderInsertDebugMarker, libWGPU), Cvoid, (WGPUComputePassEncoder, Ptr{Cchar}), computePassEncoder, markerLabel)
+    @ccall libWGPU.wgpuComputePassEncoderInsertDebugMarker(computePassEncoder::WGPUComputePassEncoder, markerLabel::Ptr{Cchar})::Cvoid
 end
 
 function wgpuComputePassEncoderPopDebugGroup(computePassEncoder)
-    ccall((:wgpuComputePassEncoderPopDebugGroup, libWGPU), Cvoid, (WGPUComputePassEncoder,), computePassEncoder)
+    @ccall libWGPU.wgpuComputePassEncoderPopDebugGroup(computePassEncoder::WGPUComputePassEncoder)::Cvoid
 end
 
 function wgpuComputePassEncoderPushDebugGroup(computePassEncoder, groupLabel)
-    ccall((:wgpuComputePassEncoderPushDebugGroup, libWGPU), Cvoid, (WGPUComputePassEncoder, Ptr{Cchar}), computePassEncoder, groupLabel)
+    @ccall libWGPU.wgpuComputePassEncoderPushDebugGroup(computePassEncoder::WGPUComputePassEncoder, groupLabel::Ptr{Cchar})::Cvoid
 end
 
 function wgpuComputePassEncoderSetBindGroup(computePassEncoder, groupIndex, group, dynamicOffsetCount, dynamicOffsets)
-    ccall((:wgpuComputePassEncoderSetBindGroup, libWGPU), Cvoid, (WGPUComputePassEncoder, UInt32, WGPUBindGroup, Csize_t, Ptr{UInt32}), computePassEncoder, groupIndex, group, dynamicOffsetCount, dynamicOffsets)
+    @ccall libWGPU.wgpuComputePassEncoderSetBindGroup(computePassEncoder::WGPUComputePassEncoder, groupIndex::UInt32, group::WGPUBindGroup, dynamicOffsetCount::Csize_t, dynamicOffsets::Ptr{UInt32})::Cvoid
 end
 
 function wgpuComputePassEncoderSetLabel(computePassEncoder, label)
-    ccall((:wgpuComputePassEncoderSetLabel, libWGPU), Cvoid, (WGPUComputePassEncoder, Ptr{Cchar}), computePassEncoder, label)
+    @ccall libWGPU.wgpuComputePassEncoderSetLabel(computePassEncoder::WGPUComputePassEncoder, label::Ptr{Cchar})::Cvoid
 end
 
 function wgpuComputePassEncoderSetPipeline(computePassEncoder, pipeline)
-    ccall((:wgpuComputePassEncoderSetPipeline, libWGPU), Cvoid, (WGPUComputePassEncoder, WGPUComputePipeline), computePassEncoder, pipeline)
+    @ccall libWGPU.wgpuComputePassEncoderSetPipeline(computePassEncoder::WGPUComputePassEncoder, pipeline::WGPUComputePipeline)::Cvoid
 end
 
 function wgpuComputePassEncoderReference(computePassEncoder)
-    ccall((:wgpuComputePassEncoderReference, libWGPU), Cvoid, (WGPUComputePassEncoder,), computePassEncoder)
+    @ccall libWGPU.wgpuComputePassEncoderReference(computePassEncoder::WGPUComputePassEncoder)::Cvoid
 end
 
 function wgpuComputePassEncoderRelease(computePassEncoder)
-    ccall((:wgpuComputePassEncoderRelease, libWGPU), Cvoid, (WGPUComputePassEncoder,), computePassEncoder)
+    @ccall libWGPU.wgpuComputePassEncoderRelease(computePassEncoder::WGPUComputePassEncoder)::Cvoid
 end
 
 function wgpuComputePipelineGetBindGroupLayout(computePipeline, groupIndex)
-    ccall((:wgpuComputePipelineGetBindGroupLayout, libWGPU), WGPUBindGroupLayout, (WGPUComputePipeline, UInt32), computePipeline, groupIndex)
+    @ccall libWGPU.wgpuComputePipelineGetBindGroupLayout(computePipeline::WGPUComputePipeline, groupIndex::UInt32)::WGPUBindGroupLayout
 end
 
 function wgpuComputePipelineSetLabel(computePipeline, label)
-    ccall((:wgpuComputePipelineSetLabel, libWGPU), Cvoid, (WGPUComputePipeline, Ptr{Cchar}), computePipeline, label)
+    @ccall libWGPU.wgpuComputePipelineSetLabel(computePipeline::WGPUComputePipeline, label::Ptr{Cchar})::Cvoid
 end
 
 function wgpuComputePipelineReference(computePipeline)
-    ccall((:wgpuComputePipelineReference, libWGPU), Cvoid, (WGPUComputePipeline,), computePipeline)
+    @ccall libWGPU.wgpuComputePipelineReference(computePipeline::WGPUComputePipeline)::Cvoid
 end
 
 function wgpuComputePipelineRelease(computePipeline)
-    ccall((:wgpuComputePipelineRelease, libWGPU), Cvoid, (WGPUComputePipeline,), computePipeline)
+    @ccall libWGPU.wgpuComputePipelineRelease(computePipeline::WGPUComputePipeline)::Cvoid
 end
 
 function wgpuDeviceCreateBindGroup(device, descriptor)
-    ccall((:wgpuDeviceCreateBindGroup, libWGPU), WGPUBindGroup, (WGPUDevice, Ptr{WGPUBindGroupDescriptor}), device, descriptor)
+    @ccall libWGPU.wgpuDeviceCreateBindGroup(device::WGPUDevice, descriptor::Ptr{WGPUBindGroupDescriptor})::WGPUBindGroup
 end
 
 function wgpuDeviceCreateBindGroupLayout(device, descriptor)
-    ccall((:wgpuDeviceCreateBindGroupLayout, libWGPU), WGPUBindGroupLayout, (WGPUDevice, Ptr{WGPUBindGroupLayoutDescriptor}), device, descriptor)
+    @ccall libWGPU.wgpuDeviceCreateBindGroupLayout(device::WGPUDevice, descriptor::Ptr{WGPUBindGroupLayoutDescriptor})::WGPUBindGroupLayout
 end
 
 function wgpuDeviceCreateBuffer(device, descriptor)
-    ccall((:wgpuDeviceCreateBuffer, libWGPU), WGPUBuffer, (WGPUDevice, Ptr{WGPUBufferDescriptor}), device, descriptor)
+    @ccall libWGPU.wgpuDeviceCreateBuffer(device::WGPUDevice, descriptor::Ptr{WGPUBufferDescriptor})::WGPUBuffer
 end
 
 function wgpuDeviceCreateCommandEncoder(device, descriptor)
-    ccall((:wgpuDeviceCreateCommandEncoder, libWGPU), WGPUCommandEncoder, (WGPUDevice, Ptr{WGPUCommandEncoderDescriptor}), device, descriptor)
+    @ccall libWGPU.wgpuDeviceCreateCommandEncoder(device::WGPUDevice, descriptor::Ptr{WGPUCommandEncoderDescriptor})::WGPUCommandEncoder
 end
 
 function wgpuDeviceCreateComputePipeline(device, descriptor)
-    ccall((:wgpuDeviceCreateComputePipeline, libWGPU), WGPUComputePipeline, (WGPUDevice, Ptr{WGPUComputePipelineDescriptor}), device, descriptor)
+    @ccall libWGPU.wgpuDeviceCreateComputePipeline(device::WGPUDevice, descriptor::Ptr{WGPUComputePipelineDescriptor})::WGPUComputePipeline
 end
 
 function wgpuDeviceCreateComputePipelineAsync(device, descriptor, callback, userdata)
-    ccall((:wgpuDeviceCreateComputePipelineAsync, libWGPU), Cvoid, (WGPUDevice, Ptr{WGPUComputePipelineDescriptor}, WGPUCreateComputePipelineAsyncCallback, Ptr{Cvoid}), device, descriptor, callback, userdata)
+    @ccall libWGPU.wgpuDeviceCreateComputePipelineAsync(device::WGPUDevice, descriptor::Ptr{WGPUComputePipelineDescriptor}, callback::WGPUCreateComputePipelineAsyncCallback, userdata::Ptr{Cvoid})::Cvoid
 end
 
 function wgpuDeviceCreatePipelineLayout(device, descriptor)
-    ccall((:wgpuDeviceCreatePipelineLayout, libWGPU), WGPUPipelineLayout, (WGPUDevice, Ptr{WGPUPipelineLayoutDescriptor}), device, descriptor)
+    @ccall libWGPU.wgpuDeviceCreatePipelineLayout(device::WGPUDevice, descriptor::Ptr{WGPUPipelineLayoutDescriptor})::WGPUPipelineLayout
 end
 
 function wgpuDeviceCreateQuerySet(device, descriptor)
-    ccall((:wgpuDeviceCreateQuerySet, libWGPU), WGPUQuerySet, (WGPUDevice, Ptr{WGPUQuerySetDescriptor}), device, descriptor)
+    @ccall libWGPU.wgpuDeviceCreateQuerySet(device::WGPUDevice, descriptor::Ptr{WGPUQuerySetDescriptor})::WGPUQuerySet
 end
 
 function wgpuDeviceCreateRenderBundleEncoder(device, descriptor)
-    ccall((:wgpuDeviceCreateRenderBundleEncoder, libWGPU), WGPURenderBundleEncoder, (WGPUDevice, Ptr{WGPURenderBundleEncoderDescriptor}), device, descriptor)
+    @ccall libWGPU.wgpuDeviceCreateRenderBundleEncoder(device::WGPUDevice, descriptor::Ptr{WGPURenderBundleEncoderDescriptor})::WGPURenderBundleEncoder
 end
 
 function wgpuDeviceCreateRenderPipeline(device, descriptor)
-    ccall((:wgpuDeviceCreateRenderPipeline, libWGPU), WGPURenderPipeline, (WGPUDevice, Ptr{WGPURenderPipelineDescriptor}), device, descriptor)
+    @ccall libWGPU.wgpuDeviceCreateRenderPipeline(device::WGPUDevice, descriptor::Ptr{WGPURenderPipelineDescriptor})::WGPURenderPipeline
 end
 
 function wgpuDeviceCreateRenderPipelineAsync(device, descriptor, callback, userdata)
-    ccall((:wgpuDeviceCreateRenderPipelineAsync, libWGPU), Cvoid, (WGPUDevice, Ptr{WGPURenderPipelineDescriptor}, WGPUCreateRenderPipelineAsyncCallback, Ptr{Cvoid}), device, descriptor, callback, userdata)
+    @ccall libWGPU.wgpuDeviceCreateRenderPipelineAsync(device::WGPUDevice, descriptor::Ptr{WGPURenderPipelineDescriptor}, callback::WGPUCreateRenderPipelineAsyncCallback, userdata::Ptr{Cvoid})::Cvoid
 end
 
 function wgpuDeviceCreateSampler(device, descriptor)
-    ccall((:wgpuDeviceCreateSampler, libWGPU), WGPUSampler, (WGPUDevice, Ptr{WGPUSamplerDescriptor}), device, descriptor)
+    @ccall libWGPU.wgpuDeviceCreateSampler(device::WGPUDevice, descriptor::Ptr{WGPUSamplerDescriptor})::WGPUSampler
 end
 
 function wgpuDeviceCreateShaderModule(device, descriptor)
-    ccall((:wgpuDeviceCreateShaderModule, libWGPU), WGPUShaderModule, (WGPUDevice, Ptr{WGPUShaderModuleDescriptor}), device, descriptor)
+    @ccall libWGPU.wgpuDeviceCreateShaderModule(device::WGPUDevice, descriptor::Ptr{WGPUShaderModuleDescriptor})::WGPUShaderModule
 end
 
 function wgpuDeviceCreateTexture(device, descriptor)
-    ccall((:wgpuDeviceCreateTexture, libWGPU), WGPUTexture, (WGPUDevice, Ptr{WGPUTextureDescriptor}), device, descriptor)
+    @ccall libWGPU.wgpuDeviceCreateTexture(device::WGPUDevice, descriptor::Ptr{WGPUTextureDescriptor})::WGPUTexture
 end
 
 function wgpuDeviceDestroy(device)
-    ccall((:wgpuDeviceDestroy, libWGPU), Cvoid, (WGPUDevice,), device)
+    @ccall libWGPU.wgpuDeviceDestroy(device::WGPUDevice)::Cvoid
 end
 
 function wgpuDeviceEnumerateFeatures(device, features)
-    ccall((:wgpuDeviceEnumerateFeatures, libWGPU), Csize_t, (WGPUDevice, Ptr{WGPUFeatureName}), device, features)
+    @ccall libWGPU.wgpuDeviceEnumerateFeatures(device::WGPUDevice, features::Ptr{WGPUFeatureName})::Csize_t
 end
 
 function wgpuDeviceGetLimits(device, limits)
-    ccall((:wgpuDeviceGetLimits, libWGPU), WGPUBool, (WGPUDevice, Ptr{WGPUSupportedLimits}), device, limits)
+    @ccall libWGPU.wgpuDeviceGetLimits(device::WGPUDevice, limits::Ptr{WGPUSupportedLimits})::WGPUBool
 end
 
 function wgpuDeviceGetQueue(device)
-    ccall((:wgpuDeviceGetQueue, libWGPU), WGPUQueue, (WGPUDevice,), device)
+    @ccall libWGPU.wgpuDeviceGetQueue(device::WGPUDevice)::WGPUQueue
 end
 
 function wgpuDeviceHasFeature(device, feature)
-    ccall((:wgpuDeviceHasFeature, libWGPU), WGPUBool, (WGPUDevice, WGPUFeatureName), device, feature)
+    @ccall libWGPU.wgpuDeviceHasFeature(device::WGPUDevice, feature::WGPUFeatureName)::WGPUBool
 end
 
 function wgpuDevicePopErrorScope(device, callback, userdata)
-    ccall((:wgpuDevicePopErrorScope, libWGPU), Cvoid, (WGPUDevice, WGPUErrorCallback, Ptr{Cvoid}), device, callback, userdata)
+    @ccall libWGPU.wgpuDevicePopErrorScope(device::WGPUDevice, callback::WGPUErrorCallback, userdata::Ptr{Cvoid})::Cvoid
 end
 
 function wgpuDevicePushErrorScope(device, filter)
-    ccall((:wgpuDevicePushErrorScope, libWGPU), Cvoid, (WGPUDevice, WGPUErrorFilter), device, filter)
+    @ccall libWGPU.wgpuDevicePushErrorScope(device::WGPUDevice, filter::WGPUErrorFilter)::Cvoid
 end
 
 function wgpuDeviceSetLabel(device, label)
-    ccall((:wgpuDeviceSetLabel, libWGPU), Cvoid, (WGPUDevice, Ptr{Cchar}), device, label)
+    @ccall libWGPU.wgpuDeviceSetLabel(device::WGPUDevice, label::Ptr{Cchar})::Cvoid
 end
 
 function wgpuDeviceSetUncapturedErrorCallback(device, callback, userdata)
-    ccall((:wgpuDeviceSetUncapturedErrorCallback, libWGPU), Cvoid, (WGPUDevice, WGPUErrorCallback, Ptr{Cvoid}), device, callback, userdata)
+    @ccall libWGPU.wgpuDeviceSetUncapturedErrorCallback(device::WGPUDevice, callback::WGPUErrorCallback, userdata::Ptr{Cvoid})::Cvoid
 end
 
 function wgpuDeviceReference(device)
-    ccall((:wgpuDeviceReference, libWGPU), Cvoid, (WGPUDevice,), device)
+    @ccall libWGPU.wgpuDeviceReference(device::WGPUDevice)::Cvoid
 end
 
 function wgpuDeviceRelease(device)
-    ccall((:wgpuDeviceRelease, libWGPU), Cvoid, (WGPUDevice,), device)
+    @ccall libWGPU.wgpuDeviceRelease(device::WGPUDevice)::Cvoid
 end
 
 function wgpuInstanceCreateSurface(instance, descriptor)
-    ccall((:wgpuInstanceCreateSurface, libWGPU), WGPUSurface, (WGPUInstance, Ptr{WGPUSurfaceDescriptor}), instance, descriptor)
+    @ccall libWGPU.wgpuInstanceCreateSurface(instance::WGPUInstance, descriptor::Ptr{WGPUSurfaceDescriptor})::WGPUSurface
 end
 
 function wgpuInstanceProcessEvents(instance)
-    ccall((:wgpuInstanceProcessEvents, libWGPU), Cvoid, (WGPUInstance,), instance)
+    @ccall libWGPU.wgpuInstanceProcessEvents(instance::WGPUInstance)::Cvoid
 end
 
 function wgpuInstanceRequestAdapter(instance, options, callback, userdata)
-    ccall((:wgpuInstanceRequestAdapter, libWGPU), Cvoid, (WGPUInstance, Ptr{WGPURequestAdapterOptions}, WGPURequestAdapterCallback, Ptr{Cvoid}), instance, options, callback, userdata)
+    @ccall libWGPU.wgpuInstanceRequestAdapter(instance::WGPUInstance, options::Ptr{WGPURequestAdapterOptions}, callback::WGPURequestAdapterCallback, userdata::Ptr{Cvoid})::Cvoid
 end
 
 function wgpuInstanceReference(instance)
-    ccall((:wgpuInstanceReference, libWGPU), Cvoid, (WGPUInstance,), instance)
+    @ccall libWGPU.wgpuInstanceReference(instance::WGPUInstance)::Cvoid
 end
 
 function wgpuInstanceRelease(instance)
-    ccall((:wgpuInstanceRelease, libWGPU), Cvoid, (WGPUInstance,), instance)
+    @ccall libWGPU.wgpuInstanceRelease(instance::WGPUInstance)::Cvoid
 end
 
 function wgpuPipelineLayoutSetLabel(pipelineLayout, label)
-    ccall((:wgpuPipelineLayoutSetLabel, libWGPU), Cvoid, (WGPUPipelineLayout, Ptr{Cchar}), pipelineLayout, label)
+    @ccall libWGPU.wgpuPipelineLayoutSetLabel(pipelineLayout::WGPUPipelineLayout, label::Ptr{Cchar})::Cvoid
 end
 
 function wgpuPipelineLayoutReference(pipelineLayout)
-    ccall((:wgpuPipelineLayoutReference, libWGPU), Cvoid, (WGPUPipelineLayout,), pipelineLayout)
+    @ccall libWGPU.wgpuPipelineLayoutReference(pipelineLayout::WGPUPipelineLayout)::Cvoid
 end
 
 function wgpuPipelineLayoutRelease(pipelineLayout)
-    ccall((:wgpuPipelineLayoutRelease, libWGPU), Cvoid, (WGPUPipelineLayout,), pipelineLayout)
+    @ccall libWGPU.wgpuPipelineLayoutRelease(pipelineLayout::WGPUPipelineLayout)::Cvoid
 end
 
 function wgpuQuerySetDestroy(querySet)
-    ccall((:wgpuQuerySetDestroy, libWGPU), Cvoid, (WGPUQuerySet,), querySet)
+    @ccall libWGPU.wgpuQuerySetDestroy(querySet::WGPUQuerySet)::Cvoid
 end
 
 function wgpuQuerySetGetCount(querySet)
-    ccall((:wgpuQuerySetGetCount, libWGPU), UInt32, (WGPUQuerySet,), querySet)
+    @ccall libWGPU.wgpuQuerySetGetCount(querySet::WGPUQuerySet)::UInt32
 end
 
 function wgpuQuerySetGetType(querySet)
-    ccall((:wgpuQuerySetGetType, libWGPU), WGPUQueryType, (WGPUQuerySet,), querySet)
+    @ccall libWGPU.wgpuQuerySetGetType(querySet::WGPUQuerySet)::WGPUQueryType
 end
 
 function wgpuQuerySetSetLabel(querySet, label)
-    ccall((:wgpuQuerySetSetLabel, libWGPU), Cvoid, (WGPUQuerySet, Ptr{Cchar}), querySet, label)
+    @ccall libWGPU.wgpuQuerySetSetLabel(querySet::WGPUQuerySet, label::Ptr{Cchar})::Cvoid
 end
 
 function wgpuQuerySetReference(querySet)
-    ccall((:wgpuQuerySetReference, libWGPU), Cvoid, (WGPUQuerySet,), querySet)
+    @ccall libWGPU.wgpuQuerySetReference(querySet::WGPUQuerySet)::Cvoid
 end
 
 function wgpuQuerySetRelease(querySet)
-    ccall((:wgpuQuerySetRelease, libWGPU), Cvoid, (WGPUQuerySet,), querySet)
+    @ccall libWGPU.wgpuQuerySetRelease(querySet::WGPUQuerySet)::Cvoid
 end
 
 function wgpuQueueOnSubmittedWorkDone(queue, callback, userdata)
-    ccall((:wgpuQueueOnSubmittedWorkDone, libWGPU), Cvoid, (WGPUQueue, WGPUQueueWorkDoneCallback, Ptr{Cvoid}), queue, callback, userdata)
+    @ccall libWGPU.wgpuQueueOnSubmittedWorkDone(queue::WGPUQueue, callback::WGPUQueueWorkDoneCallback, userdata::Ptr{Cvoid})::Cvoid
 end
 
 function wgpuQueueSetLabel(queue, label)
-    ccall((:wgpuQueueSetLabel, libWGPU), Cvoid, (WGPUQueue, Ptr{Cchar}), queue, label)
+    @ccall libWGPU.wgpuQueueSetLabel(queue::WGPUQueue, label::Ptr{Cchar})::Cvoid
 end
 
 function wgpuQueueSubmit(queue, commandCount, commands)
-    ccall((:wgpuQueueSubmit, libWGPU), Cvoid, (WGPUQueue, Csize_t, Ptr{WGPUCommandBuffer}), queue, commandCount, commands)
+    @ccall libWGPU.wgpuQueueSubmit(queue::WGPUQueue, commandCount::Csize_t, commands::Ptr{WGPUCommandBuffer})::Cvoid
 end
 
 function wgpuQueueWriteBuffer(queue, buffer, bufferOffset, data, size)
-    ccall((:wgpuQueueWriteBuffer, libWGPU), Cvoid, (WGPUQueue, WGPUBuffer, UInt64, Ptr{Cvoid}, Csize_t), queue, buffer, bufferOffset, data, size)
+    @ccall libWGPU.wgpuQueueWriteBuffer(queue::WGPUQueue, buffer::WGPUBuffer, bufferOffset::UInt64, data::Ptr{Cvoid}, size::Csize_t)::Cvoid
 end
 
 function wgpuQueueWriteTexture(queue, destination, data, dataSize, dataLayout, writeSize)
-    ccall((:wgpuQueueWriteTexture, libWGPU), Cvoid, (WGPUQueue, Ptr{WGPUImageCopyTexture}, Ptr{Cvoid}, Csize_t, Ptr{WGPUTextureDataLayout}, Ptr{WGPUExtent3D}), queue, destination, data, dataSize, dataLayout, writeSize)
+    @ccall libWGPU.wgpuQueueWriteTexture(queue::WGPUQueue, destination::Ptr{WGPUImageCopyTexture}, data::Ptr{Cvoid}, dataSize::Csize_t, dataLayout::Ptr{WGPUTextureDataLayout}, writeSize::Ptr{WGPUExtent3D})::Cvoid
 end
 
 function wgpuQueueReference(queue)
-    ccall((:wgpuQueueReference, libWGPU), Cvoid, (WGPUQueue,), queue)
+    @ccall libWGPU.wgpuQueueReference(queue::WGPUQueue)::Cvoid
 end
 
 function wgpuQueueRelease(queue)
-    ccall((:wgpuQueueRelease, libWGPU), Cvoid, (WGPUQueue,), queue)
+    @ccall libWGPU.wgpuQueueRelease(queue::WGPUQueue)::Cvoid
 end
 
 function wgpuRenderBundleSetLabel(renderBundle, label)
-    ccall((:wgpuRenderBundleSetLabel, libWGPU), Cvoid, (WGPURenderBundle, Ptr{Cchar}), renderBundle, label)
+    @ccall libWGPU.wgpuRenderBundleSetLabel(renderBundle::WGPURenderBundle, label::Ptr{Cchar})::Cvoid
 end
 
 function wgpuRenderBundleReference(renderBundle)
-    ccall((:wgpuRenderBundleReference, libWGPU), Cvoid, (WGPURenderBundle,), renderBundle)
+    @ccall libWGPU.wgpuRenderBundleReference(renderBundle::WGPURenderBundle)::Cvoid
 end
 
 function wgpuRenderBundleRelease(renderBundle)
-    ccall((:wgpuRenderBundleRelease, libWGPU), Cvoid, (WGPURenderBundle,), renderBundle)
+    @ccall libWGPU.wgpuRenderBundleRelease(renderBundle::WGPURenderBundle)::Cvoid
 end
 
 function wgpuRenderBundleEncoderDraw(renderBundleEncoder, vertexCount, instanceCount, firstVertex, firstInstance)
-    ccall((:wgpuRenderBundleEncoderDraw, libWGPU), Cvoid, (WGPURenderBundleEncoder, UInt32, UInt32, UInt32, UInt32), renderBundleEncoder, vertexCount, instanceCount, firstVertex, firstInstance)
+    @ccall libWGPU.wgpuRenderBundleEncoderDraw(renderBundleEncoder::WGPURenderBundleEncoder, vertexCount::UInt32, instanceCount::UInt32, firstVertex::UInt32, firstInstance::UInt32)::Cvoid
 end
 
 function wgpuRenderBundleEncoderDrawIndexed(renderBundleEncoder, indexCount, instanceCount, firstIndex, baseVertex, firstInstance)
-    ccall((:wgpuRenderBundleEncoderDrawIndexed, libWGPU), Cvoid, (WGPURenderBundleEncoder, UInt32, UInt32, UInt32, Int32, UInt32), renderBundleEncoder, indexCount, instanceCount, firstIndex, baseVertex, firstInstance)
+    @ccall libWGPU.wgpuRenderBundleEncoderDrawIndexed(renderBundleEncoder::WGPURenderBundleEncoder, indexCount::UInt32, instanceCount::UInt32, firstIndex::UInt32, baseVertex::Int32, firstInstance::UInt32)::Cvoid
 end
 
 function wgpuRenderBundleEncoderDrawIndexedIndirect(renderBundleEncoder, indirectBuffer, indirectOffset)
-    ccall((:wgpuRenderBundleEncoderDrawIndexedIndirect, libWGPU), Cvoid, (WGPURenderBundleEncoder, WGPUBuffer, UInt64), renderBundleEncoder, indirectBuffer, indirectOffset)
+    @ccall libWGPU.wgpuRenderBundleEncoderDrawIndexedIndirect(renderBundleEncoder::WGPURenderBundleEncoder, indirectBuffer::WGPUBuffer, indirectOffset::UInt64)::Cvoid
 end
 
 function wgpuRenderBundleEncoderDrawIndirect(renderBundleEncoder, indirectBuffer, indirectOffset)
-    ccall((:wgpuRenderBundleEncoderDrawIndirect, libWGPU), Cvoid, (WGPURenderBundleEncoder, WGPUBuffer, UInt64), renderBundleEncoder, indirectBuffer, indirectOffset)
+    @ccall libWGPU.wgpuRenderBundleEncoderDrawIndirect(renderBundleEncoder::WGPURenderBundleEncoder, indirectBuffer::WGPUBuffer, indirectOffset::UInt64)::Cvoid
 end
 
 function wgpuRenderBundleEncoderFinish(renderBundleEncoder, descriptor)
-    ccall((:wgpuRenderBundleEncoderFinish, libWGPU), WGPURenderBundle, (WGPURenderBundleEncoder, Ptr{WGPURenderBundleDescriptor}), renderBundleEncoder, descriptor)
+    @ccall libWGPU.wgpuRenderBundleEncoderFinish(renderBundleEncoder::WGPURenderBundleEncoder, descriptor::Ptr{WGPURenderBundleDescriptor})::WGPURenderBundle
 end
 
 function wgpuRenderBundleEncoderInsertDebugMarker(renderBundleEncoder, markerLabel)
-    ccall((:wgpuRenderBundleEncoderInsertDebugMarker, libWGPU), Cvoid, (WGPURenderBundleEncoder, Ptr{Cchar}), renderBundleEncoder, markerLabel)
+    @ccall libWGPU.wgpuRenderBundleEncoderInsertDebugMarker(renderBundleEncoder::WGPURenderBundleEncoder, markerLabel::Ptr{Cchar})::Cvoid
 end
 
 function wgpuRenderBundleEncoderPopDebugGroup(renderBundleEncoder)
-    ccall((:wgpuRenderBundleEncoderPopDebugGroup, libWGPU), Cvoid, (WGPURenderBundleEncoder,), renderBundleEncoder)
+    @ccall libWGPU.wgpuRenderBundleEncoderPopDebugGroup(renderBundleEncoder::WGPURenderBundleEncoder)::Cvoid
 end
 
 function wgpuRenderBundleEncoderPushDebugGroup(renderBundleEncoder, groupLabel)
-    ccall((:wgpuRenderBundleEncoderPushDebugGroup, libWGPU), Cvoid, (WGPURenderBundleEncoder, Ptr{Cchar}), renderBundleEncoder, groupLabel)
+    @ccall libWGPU.wgpuRenderBundleEncoderPushDebugGroup(renderBundleEncoder::WGPURenderBundleEncoder, groupLabel::Ptr{Cchar})::Cvoid
 end
 
 function wgpuRenderBundleEncoderSetBindGroup(renderBundleEncoder, groupIndex, group, dynamicOffsetCount, dynamicOffsets)
-    ccall((:wgpuRenderBundleEncoderSetBindGroup, libWGPU), Cvoid, (WGPURenderBundleEncoder, UInt32, WGPUBindGroup, Csize_t, Ptr{UInt32}), renderBundleEncoder, groupIndex, group, dynamicOffsetCount, dynamicOffsets)
+    @ccall libWGPU.wgpuRenderBundleEncoderSetBindGroup(renderBundleEncoder::WGPURenderBundleEncoder, groupIndex::UInt32, group::WGPUBindGroup, dynamicOffsetCount::Csize_t, dynamicOffsets::Ptr{UInt32})::Cvoid
 end
 
 function wgpuRenderBundleEncoderSetIndexBuffer(renderBundleEncoder, buffer, format, offset, size)
-    ccall((:wgpuRenderBundleEncoderSetIndexBuffer, libWGPU), Cvoid, (WGPURenderBundleEncoder, WGPUBuffer, WGPUIndexFormat, UInt64, UInt64), renderBundleEncoder, buffer, format, offset, size)
+    @ccall libWGPU.wgpuRenderBundleEncoderSetIndexBuffer(renderBundleEncoder::WGPURenderBundleEncoder, buffer::WGPUBuffer, format::WGPUIndexFormat, offset::UInt64, size::UInt64)::Cvoid
 end
 
 function wgpuRenderBundleEncoderSetLabel(renderBundleEncoder, label)
-    ccall((:wgpuRenderBundleEncoderSetLabel, libWGPU), Cvoid, (WGPURenderBundleEncoder, Ptr{Cchar}), renderBundleEncoder, label)
+    @ccall libWGPU.wgpuRenderBundleEncoderSetLabel(renderBundleEncoder::WGPURenderBundleEncoder, label::Ptr{Cchar})::Cvoid
 end
 
 function wgpuRenderBundleEncoderSetPipeline(renderBundleEncoder, pipeline)
-    ccall((:wgpuRenderBundleEncoderSetPipeline, libWGPU), Cvoid, (WGPURenderBundleEncoder, WGPURenderPipeline), renderBundleEncoder, pipeline)
+    @ccall libWGPU.wgpuRenderBundleEncoderSetPipeline(renderBundleEncoder::WGPURenderBundleEncoder, pipeline::WGPURenderPipeline)::Cvoid
 end
 
 function wgpuRenderBundleEncoderSetVertexBuffer(renderBundleEncoder, slot, buffer, offset, size)
-    ccall((:wgpuRenderBundleEncoderSetVertexBuffer, libWGPU), Cvoid, (WGPURenderBundleEncoder, UInt32, WGPUBuffer, UInt64, UInt64), renderBundleEncoder, slot, buffer, offset, size)
+    @ccall libWGPU.wgpuRenderBundleEncoderSetVertexBuffer(renderBundleEncoder::WGPURenderBundleEncoder, slot::UInt32, buffer::WGPUBuffer, offset::UInt64, size::UInt64)::Cvoid
 end
 
 function wgpuRenderBundleEncoderReference(renderBundleEncoder)
-    ccall((:wgpuRenderBundleEncoderReference, libWGPU), Cvoid, (WGPURenderBundleEncoder,), renderBundleEncoder)
+    @ccall libWGPU.wgpuRenderBundleEncoderReference(renderBundleEncoder::WGPURenderBundleEncoder)::Cvoid
 end
 
 function wgpuRenderBundleEncoderRelease(renderBundleEncoder)
-    ccall((:wgpuRenderBundleEncoderRelease, libWGPU), Cvoid, (WGPURenderBundleEncoder,), renderBundleEncoder)
+    @ccall libWGPU.wgpuRenderBundleEncoderRelease(renderBundleEncoder::WGPURenderBundleEncoder)::Cvoid
 end
 
 function wgpuRenderPassEncoderBeginOcclusionQuery(renderPassEncoder, queryIndex)
-    ccall((:wgpuRenderPassEncoderBeginOcclusionQuery, libWGPU), Cvoid, (WGPURenderPassEncoder, UInt32), renderPassEncoder, queryIndex)
+    @ccall libWGPU.wgpuRenderPassEncoderBeginOcclusionQuery(renderPassEncoder::WGPURenderPassEncoder, queryIndex::UInt32)::Cvoid
 end
 
 function wgpuRenderPassEncoderDraw(renderPassEncoder, vertexCount, instanceCount, firstVertex, firstInstance)
-    ccall((:wgpuRenderPassEncoderDraw, libWGPU), Cvoid, (WGPURenderPassEncoder, UInt32, UInt32, UInt32, UInt32), renderPassEncoder, vertexCount, instanceCount, firstVertex, firstInstance)
+    @ccall libWGPU.wgpuRenderPassEncoderDraw(renderPassEncoder::WGPURenderPassEncoder, vertexCount::UInt32, instanceCount::UInt32, firstVertex::UInt32, firstInstance::UInt32)::Cvoid
 end
 
 function wgpuRenderPassEncoderDrawIndexed(renderPassEncoder, indexCount, instanceCount, firstIndex, baseVertex, firstInstance)
-    ccall((:wgpuRenderPassEncoderDrawIndexed, libWGPU), Cvoid, (WGPURenderPassEncoder, UInt32, UInt32, UInt32, Int32, UInt32), renderPassEncoder, indexCount, instanceCount, firstIndex, baseVertex, firstInstance)
+    @ccall libWGPU.wgpuRenderPassEncoderDrawIndexed(renderPassEncoder::WGPURenderPassEncoder, indexCount::UInt32, instanceCount::UInt32, firstIndex::UInt32, baseVertex::Int32, firstInstance::UInt32)::Cvoid
 end
 
 function wgpuRenderPassEncoderDrawIndexedIndirect(renderPassEncoder, indirectBuffer, indirectOffset)
-    ccall((:wgpuRenderPassEncoderDrawIndexedIndirect, libWGPU), Cvoid, (WGPURenderPassEncoder, WGPUBuffer, UInt64), renderPassEncoder, indirectBuffer, indirectOffset)
+    @ccall libWGPU.wgpuRenderPassEncoderDrawIndexedIndirect(renderPassEncoder::WGPURenderPassEncoder, indirectBuffer::WGPUBuffer, indirectOffset::UInt64)::Cvoid
 end
 
 function wgpuRenderPassEncoderDrawIndirect(renderPassEncoder, indirectBuffer, indirectOffset)
-    ccall((:wgpuRenderPassEncoderDrawIndirect, libWGPU), Cvoid, (WGPURenderPassEncoder, WGPUBuffer, UInt64), renderPassEncoder, indirectBuffer, indirectOffset)
+    @ccall libWGPU.wgpuRenderPassEncoderDrawIndirect(renderPassEncoder::WGPURenderPassEncoder, indirectBuffer::WGPUBuffer, indirectOffset::UInt64)::Cvoid
 end
 
 function wgpuRenderPassEncoderEnd(renderPassEncoder)
-    ccall((:wgpuRenderPassEncoderEnd, libWGPU), Cvoid, (WGPURenderPassEncoder,), renderPassEncoder)
+    @ccall libWGPU.wgpuRenderPassEncoderEnd(renderPassEncoder::WGPURenderPassEncoder)::Cvoid
 end
 
 function wgpuRenderPassEncoderEndOcclusionQuery(renderPassEncoder)
-    ccall((:wgpuRenderPassEncoderEndOcclusionQuery, libWGPU), Cvoid, (WGPURenderPassEncoder,), renderPassEncoder)
+    @ccall libWGPU.wgpuRenderPassEncoderEndOcclusionQuery(renderPassEncoder::WGPURenderPassEncoder)::Cvoid
 end
 
 function wgpuRenderPassEncoderExecuteBundles(renderPassEncoder, bundleCount, bundles)
-    ccall((:wgpuRenderPassEncoderExecuteBundles, libWGPU), Cvoid, (WGPURenderPassEncoder, Csize_t, Ptr{WGPURenderBundle}), renderPassEncoder, bundleCount, bundles)
+    @ccall libWGPU.wgpuRenderPassEncoderExecuteBundles(renderPassEncoder::WGPURenderPassEncoder, bundleCount::Csize_t, bundles::Ptr{WGPURenderBundle})::Cvoid
 end
 
 function wgpuRenderPassEncoderInsertDebugMarker(renderPassEncoder, markerLabel)
-    ccall((:wgpuRenderPassEncoderInsertDebugMarker, libWGPU), Cvoid, (WGPURenderPassEncoder, Ptr{Cchar}), renderPassEncoder, markerLabel)
+    @ccall libWGPU.wgpuRenderPassEncoderInsertDebugMarker(renderPassEncoder::WGPURenderPassEncoder, markerLabel::Ptr{Cchar})::Cvoid
 end
 
 function wgpuRenderPassEncoderPopDebugGroup(renderPassEncoder)
-    ccall((:wgpuRenderPassEncoderPopDebugGroup, libWGPU), Cvoid, (WGPURenderPassEncoder,), renderPassEncoder)
+    @ccall libWGPU.wgpuRenderPassEncoderPopDebugGroup(renderPassEncoder::WGPURenderPassEncoder)::Cvoid
 end
 
 function wgpuRenderPassEncoderPushDebugGroup(renderPassEncoder, groupLabel)
-    ccall((:wgpuRenderPassEncoderPushDebugGroup, libWGPU), Cvoid, (WGPURenderPassEncoder, Ptr{Cchar}), renderPassEncoder, groupLabel)
+    @ccall libWGPU.wgpuRenderPassEncoderPushDebugGroup(renderPassEncoder::WGPURenderPassEncoder, groupLabel::Ptr{Cchar})::Cvoid
 end
 
 function wgpuRenderPassEncoderSetBindGroup(renderPassEncoder, groupIndex, group, dynamicOffsetCount, dynamicOffsets)
-    ccall((:wgpuRenderPassEncoderSetBindGroup, libWGPU), Cvoid, (WGPURenderPassEncoder, UInt32, WGPUBindGroup, Csize_t, Ptr{UInt32}), renderPassEncoder, groupIndex, group, dynamicOffsetCount, dynamicOffsets)
+    @ccall libWGPU.wgpuRenderPassEncoderSetBindGroup(renderPassEncoder::WGPURenderPassEncoder, groupIndex::UInt32, group::WGPUBindGroup, dynamicOffsetCount::Csize_t, dynamicOffsets::Ptr{UInt32})::Cvoid
 end
 
 function wgpuRenderPassEncoderSetBlendConstant(renderPassEncoder, color)
-    ccall((:wgpuRenderPassEncoderSetBlendConstant, libWGPU), Cvoid, (WGPURenderPassEncoder, Ptr{WGPUColor}), renderPassEncoder, color)
+    @ccall libWGPU.wgpuRenderPassEncoderSetBlendConstant(renderPassEncoder::WGPURenderPassEncoder, color::Ptr{WGPUColor})::Cvoid
 end
 
 function wgpuRenderPassEncoderSetIndexBuffer(renderPassEncoder, buffer, format, offset, size)
-    ccall((:wgpuRenderPassEncoderSetIndexBuffer, libWGPU), Cvoid, (WGPURenderPassEncoder, WGPUBuffer, WGPUIndexFormat, UInt64, UInt64), renderPassEncoder, buffer, format, offset, size)
+    @ccall libWGPU.wgpuRenderPassEncoderSetIndexBuffer(renderPassEncoder::WGPURenderPassEncoder, buffer::WGPUBuffer, format::WGPUIndexFormat, offset::UInt64, size::UInt64)::Cvoid
 end
 
 function wgpuRenderPassEncoderSetLabel(renderPassEncoder, label)
-    ccall((:wgpuRenderPassEncoderSetLabel, libWGPU), Cvoid, (WGPURenderPassEncoder, Ptr{Cchar}), renderPassEncoder, label)
+    @ccall libWGPU.wgpuRenderPassEncoderSetLabel(renderPassEncoder::WGPURenderPassEncoder, label::Ptr{Cchar})::Cvoid
 end
 
 function wgpuRenderPassEncoderSetPipeline(renderPassEncoder, pipeline)
-    ccall((:wgpuRenderPassEncoderSetPipeline, libWGPU), Cvoid, (WGPURenderPassEncoder, WGPURenderPipeline), renderPassEncoder, pipeline)
+    @ccall libWGPU.wgpuRenderPassEncoderSetPipeline(renderPassEncoder::WGPURenderPassEncoder, pipeline::WGPURenderPipeline)::Cvoid
 end
 
 function wgpuRenderPassEncoderSetScissorRect(renderPassEncoder, x, y, width, height)
-    ccall((:wgpuRenderPassEncoderSetScissorRect, libWGPU), Cvoid, (WGPURenderPassEncoder, UInt32, UInt32, UInt32, UInt32), renderPassEncoder, x, y, width, height)
+    @ccall libWGPU.wgpuRenderPassEncoderSetScissorRect(renderPassEncoder::WGPURenderPassEncoder, x::UInt32, y::UInt32, width::UInt32, height::UInt32)::Cvoid
 end
 
 function wgpuRenderPassEncoderSetStencilReference(renderPassEncoder, reference)
-    ccall((:wgpuRenderPassEncoderSetStencilReference, libWGPU), Cvoid, (WGPURenderPassEncoder, UInt32), renderPassEncoder, reference)
+    @ccall libWGPU.wgpuRenderPassEncoderSetStencilReference(renderPassEncoder::WGPURenderPassEncoder, reference::UInt32)::Cvoid
 end
 
 function wgpuRenderPassEncoderSetVertexBuffer(renderPassEncoder, slot, buffer, offset, size)
-    ccall((:wgpuRenderPassEncoderSetVertexBuffer, libWGPU), Cvoid, (WGPURenderPassEncoder, UInt32, WGPUBuffer, UInt64, UInt64), renderPassEncoder, slot, buffer, offset, size)
+    @ccall libWGPU.wgpuRenderPassEncoderSetVertexBuffer(renderPassEncoder::WGPURenderPassEncoder, slot::UInt32, buffer::WGPUBuffer, offset::UInt64, size::UInt64)::Cvoid
 end
 
 function wgpuRenderPassEncoderSetViewport(renderPassEncoder, x, y, width, height, minDepth, maxDepth)
-    ccall((:wgpuRenderPassEncoderSetViewport, libWGPU), Cvoid, (WGPURenderPassEncoder, Cfloat, Cfloat, Cfloat, Cfloat, Cfloat, Cfloat), renderPassEncoder, x, y, width, height, minDepth, maxDepth)
+    @ccall libWGPU.wgpuRenderPassEncoderSetViewport(renderPassEncoder::WGPURenderPassEncoder, x::Cfloat, y::Cfloat, width::Cfloat, height::Cfloat, minDepth::Cfloat, maxDepth::Cfloat)::Cvoid
 end
 
 function wgpuRenderPassEncoderReference(renderPassEncoder)
-    ccall((:wgpuRenderPassEncoderReference, libWGPU), Cvoid, (WGPURenderPassEncoder,), renderPassEncoder)
+    @ccall libWGPU.wgpuRenderPassEncoderReference(renderPassEncoder::WGPURenderPassEncoder)::Cvoid
 end
 
 function wgpuRenderPassEncoderRelease(renderPassEncoder)
-    ccall((:wgpuRenderPassEncoderRelease, libWGPU), Cvoid, (WGPURenderPassEncoder,), renderPassEncoder)
+    @ccall libWGPU.wgpuRenderPassEncoderRelease(renderPassEncoder::WGPURenderPassEncoder)::Cvoid
 end
 
 function wgpuRenderPipelineGetBindGroupLayout(renderPipeline, groupIndex)
-    ccall((:wgpuRenderPipelineGetBindGroupLayout, libWGPU), WGPUBindGroupLayout, (WGPURenderPipeline, UInt32), renderPipeline, groupIndex)
+    @ccall libWGPU.wgpuRenderPipelineGetBindGroupLayout(renderPipeline::WGPURenderPipeline, groupIndex::UInt32)::WGPUBindGroupLayout
 end
 
 function wgpuRenderPipelineSetLabel(renderPipeline, label)
-    ccall((:wgpuRenderPipelineSetLabel, libWGPU), Cvoid, (WGPURenderPipeline, Ptr{Cchar}), renderPipeline, label)
+    @ccall libWGPU.wgpuRenderPipelineSetLabel(renderPipeline::WGPURenderPipeline, label::Ptr{Cchar})::Cvoid
 end
 
 function wgpuRenderPipelineReference(renderPipeline)
-    ccall((:wgpuRenderPipelineReference, libWGPU), Cvoid, (WGPURenderPipeline,), renderPipeline)
+    @ccall libWGPU.wgpuRenderPipelineReference(renderPipeline::WGPURenderPipeline)::Cvoid
 end
 
 function wgpuRenderPipelineRelease(renderPipeline)
-    ccall((:wgpuRenderPipelineRelease, libWGPU), Cvoid, (WGPURenderPipeline,), renderPipeline)
+    @ccall libWGPU.wgpuRenderPipelineRelease(renderPipeline::WGPURenderPipeline)::Cvoid
 end
 
 function wgpuSamplerSetLabel(sampler, label)
-    ccall((:wgpuSamplerSetLabel, libWGPU), Cvoid, (WGPUSampler, Ptr{Cchar}), sampler, label)
+    @ccall libWGPU.wgpuSamplerSetLabel(sampler::WGPUSampler, label::Ptr{Cchar})::Cvoid
 end
 
 function wgpuSamplerReference(sampler)
-    ccall((:wgpuSamplerReference, libWGPU), Cvoid, (WGPUSampler,), sampler)
+    @ccall libWGPU.wgpuSamplerReference(sampler::WGPUSampler)::Cvoid
 end
 
 function wgpuSamplerRelease(sampler)
-    ccall((:wgpuSamplerRelease, libWGPU), Cvoid, (WGPUSampler,), sampler)
+    @ccall libWGPU.wgpuSamplerRelease(sampler::WGPUSampler)::Cvoid
 end
 
 function wgpuShaderModuleGetCompilationInfo(shaderModule, callback, userdata)
-    ccall((:wgpuShaderModuleGetCompilationInfo, libWGPU), Cvoid, (WGPUShaderModule, WGPUCompilationInfoCallback, Ptr{Cvoid}), shaderModule, callback, userdata)
+    @ccall libWGPU.wgpuShaderModuleGetCompilationInfo(shaderModule::WGPUShaderModule, callback::WGPUCompilationInfoCallback, userdata::Ptr{Cvoid})::Cvoid
 end
 
 function wgpuShaderModuleSetLabel(shaderModule, label)
-    ccall((:wgpuShaderModuleSetLabel, libWGPU), Cvoid, (WGPUShaderModule, Ptr{Cchar}), shaderModule, label)
+    @ccall libWGPU.wgpuShaderModuleSetLabel(shaderModule::WGPUShaderModule, label::Ptr{Cchar})::Cvoid
 end
 
 function wgpuShaderModuleReference(shaderModule)
-    ccall((:wgpuShaderModuleReference, libWGPU), Cvoid, (WGPUShaderModule,), shaderModule)
+    @ccall libWGPU.wgpuShaderModuleReference(shaderModule::WGPUShaderModule)::Cvoid
 end
 
 function wgpuShaderModuleRelease(shaderModule)
-    ccall((:wgpuShaderModuleRelease, libWGPU), Cvoid, (WGPUShaderModule,), shaderModule)
+    @ccall libWGPU.wgpuShaderModuleRelease(shaderModule::WGPUShaderModule)::Cvoid
 end
 
 function wgpuSurfaceConfigure(surface, config)
-    ccall((:wgpuSurfaceConfigure, libWGPU), Cvoid, (WGPUSurface, Ptr{WGPUSurfaceConfiguration}), surface, config)
+    @ccall libWGPU.wgpuSurfaceConfigure(surface::WGPUSurface, config::Ptr{WGPUSurfaceConfiguration})::Cvoid
 end
 
 function wgpuSurfaceGetCapabilities(surface, adapter, capabilities)
-    ccall((:wgpuSurfaceGetCapabilities, libWGPU), Cvoid, (WGPUSurface, WGPUAdapter, Ptr{WGPUSurfaceCapabilities}), surface, adapter, capabilities)
+    @ccall libWGPU.wgpuSurfaceGetCapabilities(surface::WGPUSurface, adapter::WGPUAdapter, capabilities::Ptr{WGPUSurfaceCapabilities})::Cvoid
 end
 
 function wgpuSurfaceGetCurrentTexture(surface, surfaceTexture)
-    ccall((:wgpuSurfaceGetCurrentTexture, libWGPU), Cvoid, (WGPUSurface, Ptr{WGPUSurfaceTexture}), surface, surfaceTexture)
+    @ccall libWGPU.wgpuSurfaceGetCurrentTexture(surface::WGPUSurface, surfaceTexture::Ptr{WGPUSurfaceTexture})::Cvoid
 end
 
 function wgpuSurfaceGetPreferredFormat(surface, adapter)
-    ccall((:wgpuSurfaceGetPreferredFormat, libWGPU), WGPUTextureFormat, (WGPUSurface, WGPUAdapter), surface, adapter)
+    @ccall libWGPU.wgpuSurfaceGetPreferredFormat(surface::WGPUSurface, adapter::WGPUAdapter)::WGPUTextureFormat
 end
 
 function wgpuSurfacePresent(surface)
-    ccall((:wgpuSurfacePresent, libWGPU), Cvoid, (WGPUSurface,), surface)
+    @ccall libWGPU.wgpuSurfacePresent(surface::WGPUSurface)::Cvoid
 end
 
 function wgpuSurfaceUnconfigure(surface)
-    ccall((:wgpuSurfaceUnconfigure, libWGPU), Cvoid, (WGPUSurface,), surface)
+    @ccall libWGPU.wgpuSurfaceUnconfigure(surface::WGPUSurface)::Cvoid
 end
 
 function wgpuSurfaceReference(surface)
-    ccall((:wgpuSurfaceReference, libWGPU), Cvoid, (WGPUSurface,), surface)
+    @ccall libWGPU.wgpuSurfaceReference(surface::WGPUSurface)::Cvoid
 end
 
 function wgpuSurfaceRelease(surface)
-    ccall((:wgpuSurfaceRelease, libWGPU), Cvoid, (WGPUSurface,), surface)
+    @ccall libWGPU.wgpuSurfaceRelease(surface::WGPUSurface)::Cvoid
 end
 
 function wgpuSurfaceCapabilitiesFreeMembers(capabilities)
-    ccall((:wgpuSurfaceCapabilitiesFreeMembers, libWGPU), Cvoid, (WGPUSurfaceCapabilities,), capabilities)
+    @ccall libWGPU.wgpuSurfaceCapabilitiesFreeMembers(capabilities::WGPUSurfaceCapabilities)::Cvoid
 end
 
 function wgpuTextureCreateView(texture, descriptor)
-    ccall((:wgpuTextureCreateView, libWGPU), WGPUTextureView, (WGPUTexture, Ptr{WGPUTextureViewDescriptor}), texture, descriptor)
+    @ccall libWGPU.wgpuTextureCreateView(texture::WGPUTexture, descriptor::Ptr{WGPUTextureViewDescriptor})::WGPUTextureView
 end
 
 function wgpuTextureDestroy(texture)
-    ccall((:wgpuTextureDestroy, libWGPU), Cvoid, (WGPUTexture,), texture)
+    @ccall libWGPU.wgpuTextureDestroy(texture::WGPUTexture)::Cvoid
 end
 
 function wgpuTextureGetDepthOrArrayLayers(texture)
-    ccall((:wgpuTextureGetDepthOrArrayLayers, libWGPU), UInt32, (WGPUTexture,), texture)
+    @ccall libWGPU.wgpuTextureGetDepthOrArrayLayers(texture::WGPUTexture)::UInt32
 end
 
 function wgpuTextureGetDimension(texture)
-    ccall((:wgpuTextureGetDimension, libWGPU), WGPUTextureDimension, (WGPUTexture,), texture)
+    @ccall libWGPU.wgpuTextureGetDimension(texture::WGPUTexture)::WGPUTextureDimension
 end
 
 function wgpuTextureGetFormat(texture)
-    ccall((:wgpuTextureGetFormat, libWGPU), WGPUTextureFormat, (WGPUTexture,), texture)
+    @ccall libWGPU.wgpuTextureGetFormat(texture::WGPUTexture)::WGPUTextureFormat
 end
 
 function wgpuTextureGetHeight(texture)
-    ccall((:wgpuTextureGetHeight, libWGPU), UInt32, (WGPUTexture,), texture)
+    @ccall libWGPU.wgpuTextureGetHeight(texture::WGPUTexture)::UInt32
 end
 
 function wgpuTextureGetMipLevelCount(texture)
-    ccall((:wgpuTextureGetMipLevelCount, libWGPU), UInt32, (WGPUTexture,), texture)
+    @ccall libWGPU.wgpuTextureGetMipLevelCount(texture::WGPUTexture)::UInt32
 end
 
 function wgpuTextureGetSampleCount(texture)
-    ccall((:wgpuTextureGetSampleCount, libWGPU), UInt32, (WGPUTexture,), texture)
+    @ccall libWGPU.wgpuTextureGetSampleCount(texture::WGPUTexture)::UInt32
 end
 
 function wgpuTextureGetUsage(texture)
-    ccall((:wgpuTextureGetUsage, libWGPU), WGPUTextureUsageFlags, (WGPUTexture,), texture)
+    @ccall libWGPU.wgpuTextureGetUsage(texture::WGPUTexture)::WGPUTextureUsageFlags
 end
 
 function wgpuTextureGetWidth(texture)
-    ccall((:wgpuTextureGetWidth, libWGPU), UInt32, (WGPUTexture,), texture)
+    @ccall libWGPU.wgpuTextureGetWidth(texture::WGPUTexture)::UInt32
 end
 
 function wgpuTextureSetLabel(texture, label)
-    ccall((:wgpuTextureSetLabel, libWGPU), Cvoid, (WGPUTexture, Ptr{Cchar}), texture, label)
+    @ccall libWGPU.wgpuTextureSetLabel(texture::WGPUTexture, label::Ptr{Cchar})::Cvoid
 end
 
 function wgpuTextureReference(texture)
-    ccall((:wgpuTextureReference, libWGPU), Cvoid, (WGPUTexture,), texture)
+    @ccall libWGPU.wgpuTextureReference(texture::WGPUTexture)::Cvoid
 end
 
 function wgpuTextureRelease(texture)
-    ccall((:wgpuTextureRelease, libWGPU), Cvoid, (WGPUTexture,), texture)
+    @ccall libWGPU.wgpuTextureRelease(texture::WGPUTexture)::Cvoid
 end
 
 function wgpuTextureViewSetLabel(textureView, label)
-    ccall((:wgpuTextureViewSetLabel, libWGPU), Cvoid, (WGPUTextureView, Ptr{Cchar}), textureView, label)
+    @ccall libWGPU.wgpuTextureViewSetLabel(textureView::WGPUTextureView, label::Ptr{Cchar})::Cvoid
 end
 
 function wgpuTextureViewReference(textureView)
-    ccall((:wgpuTextureViewReference, libWGPU), Cvoid, (WGPUTextureView,), textureView)
+    @ccall libWGPU.wgpuTextureViewReference(textureView::WGPUTextureView)::Cvoid
 end
 
 function wgpuTextureViewRelease(textureView)
-    ccall((:wgpuTextureViewRelease, libWGPU), Cvoid, (WGPUTextureView,), textureView)
+    @ccall libWGPU.wgpuTextureViewRelease(textureView::WGPUTextureView)::Cvoid
 end
 
 @cenum WGPUNativeSType::UInt32 begin
@@ -2572,6 +2611,8 @@ end
     WGPUNativeFeature_TextureBindingArray = 196614
     WGPUNativeFeature_SampledTextureAndStorageBufferArrayNonUniformIndexing = 196615
     WGPUNativeFeature_PipelineStatisticsQuery = 196616
+    WGPUNativeFeature_StorageResourceBindingArray = 196617
+    WGPUNativeFeature_PartiallyBoundBindingArray = 196618
     WGPUNativeFeature_Force32 = 2147483647
 end
 
@@ -2639,7 +2680,7 @@ end
     WGPUNativeQueryType_Force32 = 2147483647
 end
 
-struct WGPUInstanceExtras
+mutable struct WGPUInstanceExtras
     chain::WGPUChainedStruct
     backends::WGPUInstanceBackendFlags
     flags::WGPUInstanceFlags
@@ -2647,11 +2688,13 @@ struct WGPUInstanceExtras
     gles3MinorVersion::WGPUGles3MinorVersion
     dxilPath::Ptr{Cchar}
     dxcPath::Ptr{Cchar}
+    WGPUInstanceExtras() = new()
 end
 
-struct WGPUDeviceExtras
+mutable struct WGPUDeviceExtras
     chain::WGPUChainedStruct
     tracePath::Ptr{Cchar}
+    WGPUDeviceExtras() = new()
 end
 
 struct WGPUNativeLimits
@@ -2659,14 +2702,16 @@ struct WGPUNativeLimits
     maxNonSamplerBindings::UInt32
 end
 
-struct WGPURequiredLimitsExtras
+mutable struct WGPURequiredLimitsExtras
     chain::WGPUChainedStruct
     limits::WGPUNativeLimits
+    WGPURequiredLimitsExtras() = new()
 end
 
-struct WGPUSupportedLimitsExtras
+mutable struct WGPUSupportedLimitsExtras
     chain::WGPUChainedStructOut
     limits::WGPUNativeLimits
+    WGPUSupportedLimitsExtras() = new()
 end
 
 struct WGPUPushConstantRange
@@ -2675,17 +2720,19 @@ struct WGPUPushConstantRange
     _end::UInt32
 end
 
-struct WGPUPipelineLayoutExtras
+mutable struct WGPUPipelineLayoutExtras
     chain::WGPUChainedStruct
     pushConstantRangeCount::Csize_t
     pushConstantRanges::Ptr{WGPUPushConstantRange}
+    WGPUPipelineLayoutExtras() = new()
 end
 
 const WGPUSubmissionIndex = UInt64
 
-struct WGPUWrappedSubmissionIndex
+mutable struct WGPUWrappedSubmissionIndex
     queue::WGPUQueue
     submissionIndex::WGPUSubmissionIndex
+    WGPUWrappedSubmissionIndex() = new()
 end
 
 struct WGPUShaderDefine
@@ -2693,12 +2740,13 @@ struct WGPUShaderDefine
     value::Ptr{Cchar}
 end
 
-struct WGPUShaderModuleGLSLDescriptor
+mutable struct WGPUShaderModuleGLSLDescriptor
     chain::WGPUChainedStruct
     stage::WGPUShaderStage
     code::Ptr{Cchar}
     defineCount::UInt32
     defines::Ptr{WGPUShaderDefine}
+    WGPUShaderModuleGLSLDescriptor() = new()
 end
 
 struct WGPURegistryReport
@@ -2728,21 +2776,23 @@ struct WGPUHubReport
     samplers::WGPURegistryReport
 end
 
-struct WGPUGlobalReport
+mutable struct WGPUGlobalReport
     surfaces::WGPURegistryReport
     backendType::WGPUBackendType
     vulkan::WGPUHubReport
     metal::WGPUHubReport
     dx12::WGPUHubReport
     gl::WGPUHubReport
+    WGPUGlobalReport() = new()
 end
 
-struct WGPUInstanceEnumerateAdapterOptions
+mutable struct WGPUInstanceEnumerateAdapterOptions
     nextInChain::Ptr{WGPUChainedStruct}
     backends::WGPUInstanceBackendFlags
+    WGPUInstanceEnumerateAdapterOptions() = new()
 end
 
-struct WGPUBindGroupEntryExtras
+mutable struct WGPUBindGroupEntryExtras
     chain::WGPUChainedStruct
     buffers::Ptr{WGPUBuffer}
     bufferCount::Csize_t
@@ -2750,89 +2800,93 @@ struct WGPUBindGroupEntryExtras
     samplerCount::Csize_t
     textureViews::Ptr{WGPUTextureView}
     textureViewCount::Csize_t
+    WGPUBindGroupEntryExtras() = new()
 end
 
-struct WGPUBindGroupLayoutEntryExtras
+mutable struct WGPUBindGroupLayoutEntryExtras
     chain::WGPUChainedStruct
     count::UInt32
+    WGPUBindGroupLayoutEntryExtras() = new()
 end
 
-struct WGPUQuerySetDescriptorExtras
+mutable struct WGPUQuerySetDescriptorExtras
     chain::WGPUChainedStruct
     pipelineStatistics::Ptr{WGPUPipelineStatisticName}
     pipelineStatisticCount::Csize_t
+    WGPUQuerySetDescriptorExtras() = new()
 end
 
-struct WGPUSurfaceConfigurationExtras
+mutable struct WGPUSurfaceConfigurationExtras
     chain::WGPUChainedStruct
     desiredMaximumFrameLatency::WGPUBool
+    WGPUSurfaceConfigurationExtras() = new()
 end
 
 # typedef void ( * WGPULogCallback ) ( WGPULogLevel level , char const * message , void * userdata )
 const WGPULogCallback = Ptr{Cvoid}
 
 function wgpuGenerateReport(instance, report)
-    ccall((:wgpuGenerateReport, libWGPU), Cvoid, (WGPUInstance, Ptr{WGPUGlobalReport}), instance, report)
+    @ccall libWGPU.wgpuGenerateReport(instance::WGPUInstance, report::Ptr{WGPUGlobalReport})::Cvoid
 end
 
 function wgpuInstanceEnumerateAdapters(instance, options, adapters)
-    ccall((:wgpuInstanceEnumerateAdapters, libWGPU), Csize_t, (WGPUInstance, Ptr{WGPUInstanceEnumerateAdapterOptions}, Ptr{WGPUAdapter}), instance, options, adapters)
+    @ccall libWGPU.wgpuInstanceEnumerateAdapters(instance::WGPUInstance, options::Ptr{WGPUInstanceEnumerateAdapterOptions}, adapters::Ptr{WGPUAdapter})::Csize_t
 end
 
 function wgpuQueueSubmitForIndex(queue, commandCount, commands)
-    ccall((:wgpuQueueSubmitForIndex, libWGPU), WGPUSubmissionIndex, (WGPUQueue, Csize_t, Ptr{WGPUCommandBuffer}), queue, commandCount, commands)
+    @ccall libWGPU.wgpuQueueSubmitForIndex(queue::WGPUQueue, commandCount::Csize_t, commands::Ptr{WGPUCommandBuffer})::WGPUSubmissionIndex
 end
 
 function wgpuDevicePoll(device, wait, wrappedSubmissionIndex)
-    ccall((:wgpuDevicePoll, libWGPU), WGPUBool, (WGPUDevice, WGPUBool, Ptr{WGPUWrappedSubmissionIndex}), device, wait, wrappedSubmissionIndex)
+    @ccall libWGPU.wgpuDevicePoll(device::WGPUDevice, wait::WGPUBool, wrappedSubmissionIndex::Ptr{WGPUWrappedSubmissionIndex})::WGPUBool
 end
 
 function wgpuSetLogCallback(callback, userdata)
-    ccall((:wgpuSetLogCallback, libWGPU), Cvoid, (WGPULogCallback, Ptr{Cvoid}), callback, userdata)
+    @ccall libWGPU.wgpuSetLogCallback(callback::WGPULogCallback, userdata::Ptr{Cvoid})::Cvoid
 end
 
 function wgpuSetLogLevel(level)
-    ccall((:wgpuSetLogLevel, libWGPU), Cvoid, (WGPULogLevel,), level)
+    @ccall libWGPU.wgpuSetLogLevel(level::WGPULogLevel)::Cvoid
 end
 
 function wgpuGetVersion()
-    ccall((:wgpuGetVersion, libWGPU), UInt32, ())
+    @ccall libWGPU.wgpuGetVersion()::UInt32
 end
 
 function wgpuRenderPassEncoderSetPushConstants(encoder, stages, offset, sizeBytes, data)
-    ccall((:wgpuRenderPassEncoderSetPushConstants, libWGPU), Cvoid, (WGPURenderPassEncoder, WGPUShaderStageFlags, UInt32, UInt32, Ptr{Cvoid}), encoder, stages, offset, sizeBytes, data)
+    @ccall libWGPU.wgpuRenderPassEncoderSetPushConstants(encoder::WGPURenderPassEncoder, stages::WGPUShaderStageFlags, offset::UInt32, sizeBytes::UInt32, data::Ptr{Cvoid})::Cvoid
 end
 
 function wgpuRenderPassEncoderMultiDrawIndirect(encoder, buffer, offset, count)
-    ccall((:wgpuRenderPassEncoderMultiDrawIndirect, libWGPU), Cvoid, (WGPURenderPassEncoder, WGPUBuffer, UInt64, UInt32), encoder, buffer, offset, count)
+    @ccall libWGPU.wgpuRenderPassEncoderMultiDrawIndirect(encoder::WGPURenderPassEncoder, buffer::WGPUBuffer, offset::UInt64, count::UInt32)::Cvoid
 end
 
 function wgpuRenderPassEncoderMultiDrawIndexedIndirect(encoder, buffer, offset, count)
-    ccall((:wgpuRenderPassEncoderMultiDrawIndexedIndirect, libWGPU), Cvoid, (WGPURenderPassEncoder, WGPUBuffer, UInt64, UInt32), encoder, buffer, offset, count)
+    @ccall libWGPU.wgpuRenderPassEncoderMultiDrawIndexedIndirect(encoder::WGPURenderPassEncoder, buffer::WGPUBuffer, offset::UInt64, count::UInt32)::Cvoid
 end
 
 function wgpuRenderPassEncoderMultiDrawIndirectCount(encoder, buffer, offset, count_buffer, count_buffer_offset, max_count)
-    ccall((:wgpuRenderPassEncoderMultiDrawIndirectCount, libWGPU), Cvoid, (WGPURenderPassEncoder, WGPUBuffer, UInt64, WGPUBuffer, UInt64, UInt32), encoder, buffer, offset, count_buffer, count_buffer_offset, max_count)
+    @ccall libWGPU.wgpuRenderPassEncoderMultiDrawIndirectCount(encoder::WGPURenderPassEncoder, buffer::WGPUBuffer, offset::UInt64, count_buffer::WGPUBuffer, count_buffer_offset::UInt64, max_count::UInt32)::Cvoid
 end
 
 function wgpuRenderPassEncoderMultiDrawIndexedIndirectCount(encoder, buffer, offset, count_buffer, count_buffer_offset, max_count)
-    ccall((:wgpuRenderPassEncoderMultiDrawIndexedIndirectCount, libWGPU), Cvoid, (WGPURenderPassEncoder, WGPUBuffer, UInt64, WGPUBuffer, UInt64, UInt32), encoder, buffer, offset, count_buffer, count_buffer_offset, max_count)
+    @ccall libWGPU.wgpuRenderPassEncoderMultiDrawIndexedIndirectCount(encoder::WGPURenderPassEncoder, buffer::WGPUBuffer, offset::UInt64, count_buffer::WGPUBuffer, count_buffer_offset::UInt64, max_count::UInt32)::Cvoid
 end
 
 function wgpuComputePassEncoderBeginPipelineStatisticsQuery(computePassEncoder, querySet, queryIndex)
-    ccall((:wgpuComputePassEncoderBeginPipelineStatisticsQuery, libWGPU), Cvoid, (WGPUComputePassEncoder, WGPUQuerySet, UInt32), computePassEncoder, querySet, queryIndex)
+    @ccall libWGPU.wgpuComputePassEncoderBeginPipelineStatisticsQuery(computePassEncoder::WGPUComputePassEncoder, querySet::WGPUQuerySet, queryIndex::UInt32)::Cvoid
 end
 
 function wgpuComputePassEncoderEndPipelineStatisticsQuery(computePassEncoder)
-    ccall((:wgpuComputePassEncoderEndPipelineStatisticsQuery, libWGPU), Cvoid, (WGPUComputePassEncoder,), computePassEncoder)
+    @ccall libWGPU.wgpuComputePassEncoderEndPipelineStatisticsQuery(computePassEncoder::WGPUComputePassEncoder)::Cvoid
 end
 
 function wgpuRenderPassEncoderBeginPipelineStatisticsQuery(renderPassEncoder, querySet, queryIndex)
-    ccall((:wgpuRenderPassEncoderBeginPipelineStatisticsQuery, libWGPU), Cvoid, (WGPURenderPassEncoder, WGPUQuerySet, UInt32), renderPassEncoder, querySet, queryIndex)
+    @ccall libWGPU.wgpuRenderPassEncoderBeginPipelineStatisticsQuery(renderPassEncoder::WGPURenderPassEncoder, querySet::WGPUQuerySet, queryIndex::UInt32)::Cvoid
 end
 
 function wgpuRenderPassEncoderEndPipelineStatisticsQuery(renderPassEncoder)
-    ccall((:wgpuRenderPassEncoderEndPipelineStatisticsQuery, libWGPU), Cvoid, (WGPURenderPassEncoder,), renderPassEncoder)
+    @ccall libWGPU.wgpuRenderPassEncoderEndPipelineStatisticsQuery(renderPassEncoder::WGPURenderPassEncoder)::Cvoid
 end
 
 const WGPU_ARRAY_LAYER_COUNT_UNDEFINED = Culong(0xffffffff)

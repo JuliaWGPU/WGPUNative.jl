@@ -13,7 +13,7 @@ end
 releasefile = "wgpu-$kernel-$arch-release.zip"
 location = "$releasefile"
 
-upstreamVersion = "v0.19.1.1"
+upstreamVersion = "v0.19.3.1"
 
 url = "https://github.com/gfx-rs/wgpu-native/releases/download/$(upstreamVersion)/wgpu-$kernel-$arch-release.zip"
 download(url, location)
