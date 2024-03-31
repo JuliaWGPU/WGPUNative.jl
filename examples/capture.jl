@@ -1,7 +1,6 @@
 ## Load WGPU
 @warn "Garbage Collector State"  GC.enable(false)
 using WGPUNative
-using WGPUNative: toCString
 
 include("$(pkgdir(WGPUNative))/examples/logcallback.jl")
 include("$(pkgdir(WGPUNative))/examples/requestAdapter.jl")
