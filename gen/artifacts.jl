@@ -9,11 +9,11 @@ kernel = lowercase(String(Sys.KERNEL))
 # modifying conventions for wgpu specifically based on
 # releases at https://github.com/gfx-rs/wgpu-native/releases/tag/v0.12.0.1
 
-version = "v0.1.4"
+version = "v0.1.5"
 kernels = ["macos", "linux", "windows"]
 archs = ["aarch64", "i686", "x86_64"]
 
-upstreamVersion = "v0.19.1.1"
+upstreamVersion = "v0.19.3.1"
 
 io = IOBuffer()
 
