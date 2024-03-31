@@ -1,7 +1,7 @@
 name = "WGPUNative"
 uuid = "c14bfd16-04f9-4c2f-a915-b355584b5509"
 authors = ["arhik <arhik23@gmail.com>"]
-version = "0.1.4"
+version = "0.1.5"
 
 [deps]
 Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
