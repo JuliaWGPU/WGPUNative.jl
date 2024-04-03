@@ -5,9 +5,6 @@ kernel = lowercase(String(Sys.KERNEL))
 
 if kernel == "darwin"
 	kernel = "macos"
-	if arch == "aarch64"
-		arch = "aarch64"
-	end
 end
 
 releasefile = "wgpu-$kernel-$arch-release.zip"
