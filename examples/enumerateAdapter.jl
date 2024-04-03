@@ -1,4 +1,3 @@
-@warn "Garbage Collector State"  GC.enable(false)
 using WGPUNative
 
 instance = wgpuCreateInstance(C_NULL)
@@ -13,7 +12,7 @@ wgpuInstanceEnumerateAdapters(instance, C_NULL, adapters |> pointer)
 
 for (idx, adapter) in enumerate(adapters)
 	properties = WGPUAdapterProperties()
-	wgpuAdapterGetProperties(adapter, properties |> pointer_from_objref)
+	GC.@preserve properties wgpuAdapterGetProperties(adapter, properties |> pointer_from_objref)
 	vendorID = properties.vendorID |> Int
 	architecture = properties.architecture |> unsafe_string
 	deviceID = properties.deviceID |> Int
