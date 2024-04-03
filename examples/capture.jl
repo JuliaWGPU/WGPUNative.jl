@@ -1,5 +1,5 @@
+
 ## Load WGPU
-@warn "Garbage Collector State"  GC.enable(false)
 using WGPUNative
 
 include("$(pkgdir(WGPUNative))/examples/logcallback.jl")
@@ -8,6 +8,7 @@ include("$(pkgdir(WGPUNative))/examples/requestDevice.jl")
 
 ## Buffer dimensions
 width, height = (20, 20)
+using StaticTools
 
 struct BufferDimensions
     height::UInt32
@@ -24,21 +25,28 @@ struct BufferDimensions
     end
 end
 
+
 bufferDimensions = BufferDimensions(width, height)
 
 bufferSize = bufferDimensions.padded_bytes_per_row*bufferDimensions.height
+bufferLabel = m"Output Buffer"
 
-bufferDesc = WGPUBufferDescriptor()
-bufferLabel = "Output Buffer"
-bufferDesc.label = pointer(bufferLabel)
-bufferDesc.usage = WGPUBufferUsage_MapRead | WGPUBufferUsage_CopyDst
-bufferDesc.size = bufferSize
-bufferDesc.mappedAtCreation = false
+bufferDesc = GC.@preserve bufferSize bufferLabel begin
+	bufferDesc = WGPUBufferDescriptor()
+	bufferDesc.nextInChain = C_NULL
+	bufferDesc.label = pointer(bufferLabel)
+	bufferDesc.usage = WGPUBufferUsage_MapRead | WGPUBufferUsage_CopyDst
+	bufferDesc.size = bufferSize
+	bufferDesc.mappedAtCreation = false
+	bufferDesc
+end
 
 outputBuffer = GC.@preserve bufferDesc bufferLabel wgpuDeviceCreateBuffer(
     device,
     pointer_from_objref(bufferDesc)
 )
+
+free(bufferLabel)
 
 ## textureExtent 
 
@@ -49,14 +57,21 @@ textureExtent = WGPUExtent3D(
 )
 
 ## texture
+textureDesc = GC.@preserve textureExtent begin
+	textureDesc = WGPUTextureDescriptor()
+	textureDesc.nextInChain = C_NULL
+	textureDesc.label = C_NULL
+	textureDesc.size = textureExtent
+	textureDesc.mipLevelCount = 1
+	textureDesc.sampleCount = 1
+	textureDesc.dimension = WGPUTextureDimension_2D
+	textureDesc.format = WGPUTextureFormat_RGBA8UnormSrgb
+	textureDesc.usage = WGPUTextureUsage_RenderAttachment | WGPUTextureUsage_CopySrc
+	textureDesc.viewFormatCount = 0
+	textureDesc.viewFormats = C_NULL
+	textureDesc
+end
 
-textureDesc = WGPUTextureDescriptor()
-textureDesc.size = textureExtent
-textureDesc.mipLevelCount = 1
-textureDesc.sampleCount = 1
-textureDesc.dimension = WGPUTextureDimension_2D
-textureDesc.format = WGPUTextureFormat_RGBA8UnormSrgb
-textureDesc.usage = WGPUTextureUsage_RenderAttachment | WGPUTextureUsage_CopySrc
 
 texture = GC.@preserve device textureDesc wgpuDeviceCreateTexture(
     device,
@@ -65,6 +80,8 @@ texture = GC.@preserve device textureDesc wgpuDeviceCreateTexture(
 
 ## encoder
 encoderDesc = WGPUCommandEncoderDescriptor()
+encoderDesc.nextInChain = C_NULL
+encoderDesc.label = C_NULL
 encoder = GC.@preserve device encoderDesc wgpuDeviceCreateCommandEncoder(
         device, 
         pointer_from_objref(encoderDesc)
@@ -78,25 +95,38 @@ outputAttachment = GC.@preserve texture wgpuTextureCreateView(
 )
 
 ## renderPass
-renderPassDesc = WGPURenderPassDescriptor()
-colorAttachments = WGPURenderPassColorAttachment[]
-push!(colorAttachments, WGPURenderPassColorAttachment(
-		C_NULL,
-		outputAttachment,
-		0,
-		WGPULoadOp_Clear,
-		WGPUStoreOp_Store,
-		WGPUColor(1.0, 0.0, 0.0, 1.0)
+colorAttachments = GC.@preserve outputAttachment begin
+	colorAttachments = WGPURenderPassColorAttachment[]
+	push!(colorAttachments, WGPURenderPassColorAttachment(
+			C_NULL,
+			outputAttachment,
+			0,
+			WGPULoadOp_Clear,
+			WGPUStoreOp_Store,
+			WGPUColor(1.0, 0.0, 0.0, 1.0)
+		)
 	)
-)
-renderPassDesc.colorAttachments = pointer(colorAttachments)
-renderPassDesc.colorAttachmentCount = 1
+	colorAttachments
+end
 
-renderPass = GC.@preserve renderPassDesc wgpuCommandEncoderBeginRenderPass(
+renderPassDesc = GC.@preserve colorAttachments begin
+	renderpassdesc = WGPURenderPassDescriptor()
+	renderpassdesc.nextInChain = C_NULL
+	renderpassdesc.label = C_NULL
+	renderpassdesc.colorAttachments = pointer(colorAttachments)
+	renderpassdesc.depthStencilAttachment = C_NULL
+	renderpassdesc.occlusionQuerySet = C_NULL
+	renderpassdesc.timestampWrites = C_NULL
+	renderpassdesc.colorAttachmentCount = 1
+	renderpassdesc
+end
+
+renderPass = GC.@preserve renderPassDesc colorAttachments wgpuCommandEncoderBeginRenderPass(
     encoder,
     pointer_from_objref(renderPassDesc)
 )
 
+GC.gc()
 ## end renderpass 
 wgpuRenderPassEncoderEnd(renderPass)
 
@@ -131,6 +161,8 @@ queue = wgpuDeviceGetQueue(device)
 
 ## commandBuffer
 cmdDesc = WGPUCommandBufferDescriptor()
+cmdDesc.nextInChain = C_NULL
+cmdDesc.label = C_NULL
 cmdBuffer = GC.@preserve cmdDesc encoder wgpuCommandEncoderFinish(
     encoder,
     pointer_from_objref(cmdDesc)
@@ -146,6 +178,7 @@ asyncstatus = WGPUBufferMapAsyncStatus(2)
 function readBufferMap(
         status::WGPUBufferMapAsyncStatus,
         userData)
+    global asyncstatus
     asyncstatus = status
     return nothing
 end
@@ -154,11 +187,13 @@ readbuffermap = @cfunction(readBufferMap, Cvoid, (WGPUBufferMapAsyncStatus, Ptr{
 
 wgpuBufferMapAsync(outputBuffer, WGPUMapMode_Read, 0, bufferSize, readbuffermap, C_NULL)
 
-print(asyncstatus)
 
 ## device polling
 
 wgpuDevicePoll(device, true, C_NULL)
+print(asyncstatus)
+
+@assert asyncstatus == WGPUBufferMapAsyncStatus_Success
 
 ## times
 times = convert(Ptr{UInt8}, wgpuBufferGetMappedRange(outputBuffer, 0, bufferSize))
@@ -171,4 +206,5 @@ end
 ## Unmap
 wgpuBufferUnmap(outputBuffer)
 
+GC.gc()
 ## TODO dump as an image

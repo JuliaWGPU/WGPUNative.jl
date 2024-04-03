@@ -1,6 +1,6 @@
 ## Load WGPU
 using WGPUNative
-
+using Infiltrator
 adapter = WGPUAdapter()
 
 function request_adapter_callback(
@@ -10,6 +10,18 @@ function request_adapter_callback(
 			   userData::Ptr{Cvoid})
     global adapter = returnAdapter
     return nothing
+end
+
+Base.cconvert(::Type{Ptr{WGPUAdapterProperties}}, properties::WGPUAdapterProperties) = begin
+	pointer_from_objref(properties)
+end
+
+Base.cconvert(::Type{Ptr{WGPUSupportedLimits}}, supportedLimits::WGPUSupportedLimits) = begin\
+	pointer_from_objref(supportedLimits)
+end
+
+Base.cconvert(::Type{Ptr{WGPUSupportedLimits}}, supportedLimits::Array{WGPUSupportedLimits, 1}) = begin
+	pointer(supportedLimits)
 end
 
 requestAdapterCallback = @cfunction(request_adapter_callback, Cvoid, (WGPURequestAdapterStatus, WGPUAdapter, Ptr{Cchar}, Ptr{Cvoid}))
@@ -25,12 +37,25 @@ wgpuInstanceRequestAdapter(
 
 @assert adapter != C_NULL
 
-properties = WGPUAdapterProperties()
+propertiesArray = Ptr{WGPUAdapterProperties}()
+function getWGPUAdapterProperties()
+	properties = WGPUAdapterProperties()
+	GC.@preserve adapter propertiesArray wgpuAdapterGetProperties(adapter, properties)
+	return properties
+end
 
-wgpuAdapterGetProperties(adapter, pointer_from_objref(properties))
+properties = getWGPUAdapterProperties()
 
-supportedLimits = WGPUSupportedLimits()
+function getWGPUAdapterLimits()
+	supportedLimits = WGPUSupportedLimits()
+	extrasPtr = Ptr{WGPUSupportedLimitsExtras}(Libc.malloc(sizeof(WGPUSupportedLimitsExtras)))
+	supportedLimits.nextInChain = extrasPtr
+	chainsOutSet = GC.@preserve adapter supportedLimits wgpuAdapterGetLimits(adapter, supportedLimits)
+	finalizer(supportedLimits) do x
+		Libc.free(x.nextInChain)
+	end
+	return supportedLimits
+end
 
-wgpuAdapterGetLimits(adapter, pointer_from_objref(supportedLimits))
-
+supportedLimits =  GC.@preserve getWGPUAdapterLimits()
 
