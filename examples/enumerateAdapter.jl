@@ -8,7 +8,7 @@ adapterCount = wgpuInstanceEnumerateAdapters(instance, C_NULL, C_NULL)
 
 adapters = WGPUAdapter[WGPUAdapter() for _ in 1:adapterCount]
 
-wgpuInstanceEnumerateAdapters(instance, C_NULL, adapters |> pointer)
+GC.@preserve adapters wgpuInstanceEnumerateAdapters(instance, C_NULL, adapters |> pointer)
 
 for (idx, adapter) in enumerate(adapters)
 	properties = WGPUAdapterProperties()
@@ -21,14 +21,13 @@ for (idx, adapter) in enumerate(adapters)
 	description = properties.driverDescription |> unsafe_string
 	adapterType = properties.adapterType
 	backendType = properties.backendType
-	@info(
+	@info( name,
 		adapter, 
 		idx, 
 		vendorID,
 		vendorName,
 		architecture,
 		deviceID,
-		name,
 		description,
 		adapterType,
 		backendType
