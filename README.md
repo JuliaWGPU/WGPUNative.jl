@@ -1,5 +1,3 @@
-[![Aqua QA](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl)
-
 # WGPUNative.jl
 
 WGPU (wgpu-native) julia bindings
