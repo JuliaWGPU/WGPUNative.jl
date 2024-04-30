@@ -4,4 +4,4 @@
 - Second run both scripts 1. gen/generator.jl 2. gen/artifacts.jl
 - These should overwrite src/LibWGPU.jl file with new ffi interface changes and also overwrite Artifacts.toml
 - file
-
+- finally add version tag and change version in Project.toml
