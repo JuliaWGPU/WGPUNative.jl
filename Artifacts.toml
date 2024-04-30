@@ -1,54 +1,54 @@
 [[WGPUNative]]
 arch = "aarch64"
-git-tree-sha1 = "8e207917f3748d7a51a6164da7b78236957c2a94"
+git-tree-sha1 = "d9089649fee1ac6fc363077a8b9cda5f1bd219b7"
 os = "macos"
 
 	[[WGPUNative.download]]
-	sha256 = "850906df062b78356460258bda86bd5799de6e06d8275df81adc09c0cff83552"
-	url = "https://github.com/JuliaWGPU/WGPUNative.jl/releases/download/v0.1.5/WGPU.v0.19.3.1.aarch64-macos.tar.gz"
+	sha256 = "c7bf9525a1e21f39ebd990cc5dfa76c4a8c18b4e75c6c1a03f9151575b98bce0"
+	url = "https://github.com/JuliaWGPU/WGPUNative.jl/releases/download/v0.1.5/WGPU.v0.19.4.1.aarch64-macos.tar.gz"
 
 [[WGPUNative]]
 arch = "x86_64"
-git-tree-sha1 = "c6f40c48970bca33d58cced76c0c41069a38bf93"
+git-tree-sha1 = "71e5c82e314013f269c513895e348934b937b635"
 os = "macos"
 
 	[[WGPUNative.download]]
-	sha256 = "6da6354d67ba34db70cdca8373d8f05ae25d5f402fe1c402942b7c374ca7a38a"
-	url = "https://github.com/JuliaWGPU/WGPUNative.jl/releases/download/v0.1.5/WGPU.v0.19.3.1.x86_64-macos.tar.gz"
+	sha256 = "28d20d677a25455f744f2c8bd4249844394d7348cda72a064e931a520612f8d5"
+	url = "https://github.com/JuliaWGPU/WGPUNative.jl/releases/download/v0.1.5/WGPU.v0.19.4.1.x86_64-macos.tar.gz"
 
 [[WGPUNative]]
 arch = "aarch64"
-git-tree-sha1 = "b164ef408f2975371586be0aa3b74f3032bad1f0"
+git-tree-sha1 = "aa0c0b131b23a2c38c3ffe62392b50373988dd01"
 os = "linux"
 
 	[[WGPUNative.download]]
-	sha256 = "bd5733aac1840d509389270c6cd0a5a158b65ddaf9f65270b070841c9178c169"
-	url = "https://github.com/JuliaWGPU/WGPUNative.jl/releases/download/v0.1.5/WGPU.v0.19.3.1.aarch64-linux.tar.gz"
+	sha256 = "c09b78e696983f44fe74b4f2cbdacacf3ceb2c84cb86d30648843f25b57f7d2a"
+	url = "https://github.com/JuliaWGPU/WGPUNative.jl/releases/download/v0.1.5/WGPU.v0.19.4.1.aarch64-linux.tar.gz"
 
 [[WGPUNative]]
 arch = "x86_64"
-git-tree-sha1 = "1c577a3512f6c1cc23b06d0f603b06e100135095"
+git-tree-sha1 = "90fc6d98a289bbbc91cb97ae9b54ecd275345967"
 os = "linux"
 
 	[[WGPUNative.download]]
-	sha256 = "63ac8b035182d63425d1b1a2f02a9f6923f18058bc17bead6472276f215b83e2"
-	url = "https://github.com/JuliaWGPU/WGPUNative.jl/releases/download/v0.1.5/WGPU.v0.19.3.1.x86_64-linux.tar.gz"
+	sha256 = "5b7cd332321c561d3a7c534be77987cdc33fdf9aab4e292e4cb28819a499d400"
+	url = "https://github.com/JuliaWGPU/WGPUNative.jl/releases/download/v0.1.5/WGPU.v0.19.4.1.x86_64-linux.tar.gz"
 
 [[WGPUNative]]
 arch = "i686"
-git-tree-sha1 = "4c938f8c5c11f35ef7c1c52d221baecb42b55330"
+git-tree-sha1 = "74fb9120769e6c257f10a96dcaff892f9d8beac7"
 os = "windows"
 
 	[[WGPUNative.download]]
-	sha256 = "4023e50bd0513c7bd0fdc5e28dab9b42f1c9b62d38b27027f754d56cfbe14482"
-	url = "https://github.com/JuliaWGPU/WGPUNative.jl/releases/download/v0.1.5/WGPU.v0.19.3.1.i686-windows.tar.gz"
+	sha256 = "c0bedfde3535beb095f9140d45431ed27d7d8c2c07691da031d8c82e21fc33cc"
+	url = "https://github.com/JuliaWGPU/WGPUNative.jl/releases/download/v0.1.5/WGPU.v0.19.4.1.i686-windows.tar.gz"
 
 [[WGPUNative]]
 arch = "x86_64"
-git-tree-sha1 = "aa78d9eb9c984867d00ada63dfccaa5b8c9bda35"
+git-tree-sha1 = "b3e764baaeba358079dfbb2405230aae0907070a"
 os = "windows"
 
 	[[WGPUNative.download]]
-	sha256 = "b5157b13763f3d9fb48cc480fad7507e5dd27378fbf40c75f3ac39c0c413df10"
-	url = "https://github.com/JuliaWGPU/WGPUNative.jl/releases/download/v0.1.5/WGPU.v0.19.3.1.x86_64-windows.tar.gz"
+	sha256 = "e452beff466cb507742e2a2cc2de996fa944d93074ceab7ce883eb748b9f5a48"
+	url = "https://github.com/JuliaWGPU/WGPUNative.jl/releases/download/v0.1.5/WGPU.v0.19.4.1.x86_64-windows.tar.gz"
 
