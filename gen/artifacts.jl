@@ -13,7 +13,7 @@ version = "v0.1.5"
 kernels = ["macos", "linux", "windows"]
 archs = ["aarch64", "i686", "x86_64"]
 
-upstreamVersion = "v0.19.3.1"
+upstreamVersion = "v0.19.4.1"
 
 io = IOBuffer()
 
@@ -49,6 +49,8 @@ function generateArtifacts()
 				run(`unzip $releasefile -d wgpulibs$arch$kernel`)
 				run(`cd "wgpulibs$arch$kernel"`)
 				run(`tar -C wgpulibs$arch$kernel -czvf $tarfile .`)
+				run(`rm -rf "wgpulibs$arch$kernel"`)
+				run(`rm $releasefile`)
 				run(`cd ".."`)
 			catch(e)
 				println("$e")
@@ -76,7 +78,9 @@ function writeArtifactsTOML()
 	f = open("Artifacts.toml", "w")
 	write(f, io)
 	close(f)
+	run(`mv Artifacts.toml ../`)
 end
+
 
 generateArtifacts()
 
