@@ -1,7 +1,7 @@
 name = "WGPUNative"
 uuid = "c14bfd16-04f9-4c2f-a915-b355584b5509"
 authors = ["arhik <arhik23@gmail.com>"]
-version = "0.1.5"
+version = "0.1.6"
 
 [deps]
 CEnum = "fa961155-64e5-5f13-b03f-caf6b980ea82"
