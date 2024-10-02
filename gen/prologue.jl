@@ -10,4 +10,5 @@ wgpu_hash = artifact_hash("WGPUNative", artifact_toml)
 
 wgpulibpath = artifact_path(wgpu_hash)
 resourceName = Sys.iswindows() ? "wgpu_native" : "libwgpu_native"
-const libWGPU = "$wgpulibpath/$resourceName.$(Libdl.dlext)" |> normpath
+const libWGPU = "$wgpulibpath/lib/$resourceName.$(Libdl.dlext)" |> normpath
+

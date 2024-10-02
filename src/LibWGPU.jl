@@ -14,7 +14,8 @@ wgpu_hash = artifact_hash("WGPUNative", artifact_toml)
 
 wgpulibpath = artifact_path(wgpu_hash)
 resourceName = Sys.iswindows() ? "wgpu_native" : "libwgpu_native"
-const libWGPU = "$wgpulibpath/$resourceName.$(Libdl.dlext)" |> normpath
+const libWGPU = "$wgpulibpath/lib/$resourceName.$(Libdl.dlext)" |> normpath
+
 
 
 const WGPUFlags = UInt32
@@ -246,8 +247,8 @@ end
 end
 
 @cenum WGPUDeviceLostReason::UInt32 begin
-    WGPUDeviceLostReason_Undefined = 0
-    WGPUDeviceLostReason_Destroyed = 1
+    WGPUDeviceLostReason_Unknown = 1
+    WGPUDeviceLostReason_Destroyed = 2
     WGPUDeviceLostReason_Force32 = 2147483647
 end
 
@@ -607,6 +608,15 @@ end
     WGPUVertexStepMode_Force32 = 2147483647
 end
 
+@cenum WGPUWGSLFeatureName::UInt32 begin
+    WGPUWGSLFeatureName_Undefined = 0
+    WGPUWGSLFeatureName_ReadonlyAndReadwriteStorageTextures = 1
+    WGPUWGSLFeatureName_Packed4x8IntegerDotProduct = 2
+    WGPUWGSLFeatureName_UnrestrictedPointerParameters = 3
+    WGPUWGSLFeatureName_PointerCompositeAccess = 4
+    WGPUWGSLFeatureName_Force32 = 2147483647
+end
+
 @cenum WGPUBufferUsage::UInt32 begin
     WGPUBufferUsage_None = 0
     WGPUBufferUsage_MapRead = 1
@@ -667,17 +677,8 @@ end
 
 const WGPUTextureUsageFlags = WGPUFlags
 
-# typedef void ( * WGPUBufferMapCallback ) ( WGPUBufferMapAsyncStatus status , void * userdata )
-const WGPUBufferMapCallback = Ptr{Cvoid}
-
-# typedef void ( * WGPUCompilationInfoCallback ) ( WGPUCompilationInfoRequestStatus status , struct WGPUCompilationInfo const * compilationInfo , void * userdata )
-const WGPUCompilationInfoCallback = Ptr{Cvoid}
-
-# typedef void ( * WGPUCreateComputePipelineAsyncCallback ) ( WGPUCreatePipelineAsyncStatus status , WGPUComputePipeline pipeline , char const * message , void * userdata )
-const WGPUCreateComputePipelineAsyncCallback = Ptr{Cvoid}
-
-# typedef void ( * WGPUCreateRenderPipelineAsyncCallback ) ( WGPUCreatePipelineAsyncStatus status , WGPURenderPipeline pipeline , char const * message , void * userdata )
-const WGPUCreateRenderPipelineAsyncCallback = Ptr{Cvoid}
+# typedef void ( * WGPUProc ) ( void )
+const WGPUProc = Ptr{Cvoid}
 
 # typedef void ( * WGPUDeviceLostCallback ) ( WGPUDeviceLostReason reason , char const * message , void * userdata )
 const WGPUDeviceLostCallback = Ptr{Cvoid}
@@ -685,17 +686,26 @@ const WGPUDeviceLostCallback = Ptr{Cvoid}
 # typedef void ( * WGPUErrorCallback ) ( WGPUErrorType type , char const * message , void * userdata )
 const WGPUErrorCallback = Ptr{Cvoid}
 
-# typedef void ( * WGPUProc ) ( void )
-const WGPUProc = Ptr{Cvoid}
+# typedef void ( * WGPUAdapterRequestDeviceCallback ) ( WGPURequestDeviceStatus status , WGPUDevice device , char const * message , WGPU_NULLABLE void * userdata )
+const WGPUAdapterRequestDeviceCallback = Ptr{Cvoid}
 
-# typedef void ( * WGPUQueueWorkDoneCallback ) ( WGPUQueueWorkDoneStatus status , void * userdata )
-const WGPUQueueWorkDoneCallback = Ptr{Cvoid}
+# typedef void ( * WGPUBufferMapAsyncCallback ) ( WGPUBufferMapAsyncStatus status , WGPU_NULLABLE void * userdata )
+const WGPUBufferMapAsyncCallback = Ptr{Cvoid}
 
-# typedef void ( * WGPURequestAdapterCallback ) ( WGPURequestAdapterStatus status , WGPUAdapter adapter , char const * message , void * userdata )
-const WGPURequestAdapterCallback = Ptr{Cvoid}
+# typedef void ( * WGPUDeviceCreateComputePipelineAsyncCallback ) ( WGPUCreatePipelineAsyncStatus status , WGPUComputePipeline pipeline , char const * message , WGPU_NULLABLE void * userdata )
+const WGPUDeviceCreateComputePipelineAsyncCallback = Ptr{Cvoid}
 
-# typedef void ( * WGPURequestDeviceCallback ) ( WGPURequestDeviceStatus status , WGPUDevice device , char const * message , void * userdata )
-const WGPURequestDeviceCallback = Ptr{Cvoid}
+# typedef void ( * WGPUDeviceCreateRenderPipelineAsyncCallback ) ( WGPUCreatePipelineAsyncStatus status , WGPURenderPipeline pipeline , char const * message , WGPU_NULLABLE void * userdata )
+const WGPUDeviceCreateRenderPipelineAsyncCallback = Ptr{Cvoid}
+
+# typedef void ( * WGPUInstanceRequestAdapterCallback ) ( WGPURequestAdapterStatus status , WGPUAdapter adapter , char const * message , WGPU_NULLABLE void * userdata )
+const WGPUInstanceRequestAdapterCallback = Ptr{Cvoid}
+
+# typedef void ( * WGPUQueueOnSubmittedWorkDoneCallback ) ( WGPUQueueWorkDoneStatus status , WGPU_NULLABLE void * userdata )
+const WGPUQueueOnSubmittedWorkDoneCallback = Ptr{Cvoid}
+
+# typedef void ( * WGPUShaderModuleGetCompilationInfoCallback ) ( WGPUCompilationInfoRequestStatus status , struct WGPUCompilationInfo const * compilationInfo , WGPU_NULLABLE void * userdata )
+const WGPUShaderModuleGetCompilationInfoCallback = Ptr{Cvoid}
 
 struct WGPUChainedStruct
     next::Ptr{WGPUChainedStruct}
@@ -707,17 +717,17 @@ struct WGPUChainedStructOut
     sType::WGPUSType
 end
 
-mutable struct WGPUAdapterProperties
+mutable struct WGPUAdapterInfo
     nextInChain::Ptr{WGPUChainedStructOut}
-    vendorID::UInt32
-    vendorName::Ptr{Cchar}
+    vendor::Ptr{Cchar}
     architecture::Ptr{Cchar}
-    deviceID::UInt32
-    name::Ptr{Cchar}
-    driverDescription::Ptr{Cchar}
-    adapterType::WGPUAdapterType
+    device::Ptr{Cchar}
+    description::Ptr{Cchar}
     backendType::WGPUBackendType
-    WGPUAdapterProperties() = new()
+    adapterType::WGPUAdapterType
+    vendorID::UInt32
+    deviceID::UInt32
+    WGPUAdapterInfo() = new()
 end
 
 struct WGPUBindGroupEntry
@@ -997,6 +1007,7 @@ end
 
 mutable struct WGPUSurfaceCapabilities
     nextInChain::Ptr{WGPUChainedStructOut}
+    usages::WGPUTextureUsageFlags
     formatCount::Csize_t
     formats::Ptr{WGPUTextureFormat}
     presentModeCount::Csize_t
@@ -1106,6 +1117,12 @@ mutable struct WGPUTextureViewDescriptor
     WGPUTextureViewDescriptor() = new()
 end
 
+struct WGPUUncapturedErrorCallbackInfo
+    nextInChain::Ptr{WGPUChainedStruct}
+    callback::WGPUErrorCallback
+    userdata::Ptr{Cvoid}
+end
+
 struct WGPUVertexAttribute
     format::WGPUVertexFormat
     offset::UInt64
@@ -1190,6 +1207,7 @@ end
 struct WGPURenderPassColorAttachment
     nextInChain::Ptr{WGPUChainedStruct}
     view::WGPUTextureView
+    depthSlice::UInt32
     resolveTarget::WGPUTextureView
     loadOp::WGPULoadOp
     storeOp::WGPUStoreOp
@@ -1268,6 +1286,7 @@ mutable struct WGPUDeviceDescriptor
     defaultQueue::WGPUQueueDescriptor
     deviceLostCallback::WGPUDeviceLostCallback
     deviceLostUserdata::Ptr{Cvoid}
+    uncapturedErrorCallbackInfo::WGPUUncapturedErrorCallbackInfo
     WGPUDeviceDescriptor() = new()
 end
 
@@ -1323,16 +1342,16 @@ const WGPUProcGetProcAddress = Ptr{Cvoid}
 # typedef size_t ( * WGPUProcAdapterEnumerateFeatures ) ( WGPUAdapter adapter , WGPUFeatureName * features )
 const WGPUProcAdapterEnumerateFeatures = Ptr{Cvoid}
 
+# typedef void ( * WGPUProcAdapterGetInfo ) ( WGPUAdapter adapter , WGPUAdapterInfo * info )
+const WGPUProcAdapterGetInfo = Ptr{Cvoid}
+
 # typedef WGPUBool ( * WGPUProcAdapterGetLimits ) ( WGPUAdapter adapter , WGPUSupportedLimits * limits )
 const WGPUProcAdapterGetLimits = Ptr{Cvoid}
-
-# typedef void ( * WGPUProcAdapterGetProperties ) ( WGPUAdapter adapter , WGPUAdapterProperties * properties )
-const WGPUProcAdapterGetProperties = Ptr{Cvoid}
 
 # typedef WGPUBool ( * WGPUProcAdapterHasFeature ) ( WGPUAdapter adapter , WGPUFeatureName feature )
 const WGPUProcAdapterHasFeature = Ptr{Cvoid}
 
-# typedef void ( * WGPUProcAdapterRequestDevice ) ( WGPUAdapter adapter , WGPU_NULLABLE WGPUDeviceDescriptor const * descriptor , WGPURequestDeviceCallback callback , void * userdata )
+# typedef void ( * WGPUProcAdapterRequestDevice ) ( WGPUAdapter adapter , WGPU_NULLABLE WGPUDeviceDescriptor const * descriptor , WGPUAdapterRequestDeviceCallback callback , WGPU_NULLABLE void * userdata )
 const WGPUProcAdapterRequestDevice = Ptr{Cvoid}
 
 # typedef void ( * WGPUProcAdapterReference ) ( WGPUAdapter adapter )
@@ -1340,6 +1359,9 @@ const WGPUProcAdapterReference = Ptr{Cvoid}
 
 # typedef void ( * WGPUProcAdapterRelease ) ( WGPUAdapter adapter )
 const WGPUProcAdapterRelease = Ptr{Cvoid}
+
+# typedef void ( * WGPUProcAdapterInfoFreeMembers ) ( WGPUAdapterInfo adapterInfo )
+const WGPUProcAdapterInfoFreeMembers = Ptr{Cvoid}
 
 # typedef void ( * WGPUProcBindGroupSetLabel ) ( WGPUBindGroup bindGroup , char const * label )
 const WGPUProcBindGroupSetLabel = Ptr{Cvoid}
@@ -1377,7 +1399,7 @@ const WGPUProcBufferGetSize = Ptr{Cvoid}
 # typedef WGPUBufferUsageFlags ( * WGPUProcBufferGetUsage ) ( WGPUBuffer buffer )
 const WGPUProcBufferGetUsage = Ptr{Cvoid}
 
-# typedef void ( * WGPUProcBufferMapAsync ) ( WGPUBuffer buffer , WGPUMapModeFlags mode , size_t offset , size_t size , WGPUBufferMapCallback callback , void * userdata )
+# typedef void ( * WGPUProcBufferMapAsync ) ( WGPUBuffer buffer , WGPUMapModeFlags mode , size_t offset , size_t size , WGPUBufferMapAsyncCallback callback , WGPU_NULLABLE void * userdata )
 const WGPUProcBufferMapAsync = Ptr{Cvoid}
 
 # typedef void ( * WGPUProcBufferSetLabel ) ( WGPUBuffer buffer , char const * label )
@@ -1509,7 +1531,7 @@ const WGPUProcDeviceCreateCommandEncoder = Ptr{Cvoid}
 # typedef WGPUComputePipeline ( * WGPUProcDeviceCreateComputePipeline ) ( WGPUDevice device , WGPUComputePipelineDescriptor const * descriptor )
 const WGPUProcDeviceCreateComputePipeline = Ptr{Cvoid}
 
-# typedef void ( * WGPUProcDeviceCreateComputePipelineAsync ) ( WGPUDevice device , WGPUComputePipelineDescriptor const * descriptor , WGPUCreateComputePipelineAsyncCallback callback , void * userdata )
+# typedef void ( * WGPUProcDeviceCreateComputePipelineAsync ) ( WGPUDevice device , WGPUComputePipelineDescriptor const * descriptor , WGPUDeviceCreateComputePipelineAsyncCallback callback , WGPU_NULLABLE void * userdata )
 const WGPUProcDeviceCreateComputePipelineAsync = Ptr{Cvoid}
 
 # typedef WGPUPipelineLayout ( * WGPUProcDeviceCreatePipelineLayout ) ( WGPUDevice device , WGPUPipelineLayoutDescriptor const * descriptor )
@@ -1524,7 +1546,7 @@ const WGPUProcDeviceCreateRenderBundleEncoder = Ptr{Cvoid}
 # typedef WGPURenderPipeline ( * WGPUProcDeviceCreateRenderPipeline ) ( WGPUDevice device , WGPURenderPipelineDescriptor const * descriptor )
 const WGPUProcDeviceCreateRenderPipeline = Ptr{Cvoid}
 
-# typedef void ( * WGPUProcDeviceCreateRenderPipelineAsync ) ( WGPUDevice device , WGPURenderPipelineDescriptor const * descriptor , WGPUCreateRenderPipelineAsyncCallback callback , void * userdata )
+# typedef void ( * WGPUProcDeviceCreateRenderPipelineAsync ) ( WGPUDevice device , WGPURenderPipelineDescriptor const * descriptor , WGPUDeviceCreateRenderPipelineAsyncCallback callback , WGPU_NULLABLE void * userdata )
 const WGPUProcDeviceCreateRenderPipelineAsync = Ptr{Cvoid}
 
 # typedef WGPUSampler ( * WGPUProcDeviceCreateSampler ) ( WGPUDevice device , WGPU_NULLABLE WGPUSamplerDescriptor const * descriptor )
@@ -1560,9 +1582,6 @@ const WGPUProcDevicePushErrorScope = Ptr{Cvoid}
 # typedef void ( * WGPUProcDeviceSetLabel ) ( WGPUDevice device , char const * label )
 const WGPUProcDeviceSetLabel = Ptr{Cvoid}
 
-# typedef void ( * WGPUProcDeviceSetUncapturedErrorCallback ) ( WGPUDevice device , WGPUErrorCallback callback , void * userdata )
-const WGPUProcDeviceSetUncapturedErrorCallback = Ptr{Cvoid}
-
 # typedef void ( * WGPUProcDeviceReference ) ( WGPUDevice device )
 const WGPUProcDeviceReference = Ptr{Cvoid}
 
@@ -1572,10 +1591,13 @@ const WGPUProcDeviceRelease = Ptr{Cvoid}
 # typedef WGPUSurface ( * WGPUProcInstanceCreateSurface ) ( WGPUInstance instance , WGPUSurfaceDescriptor const * descriptor )
 const WGPUProcInstanceCreateSurface = Ptr{Cvoid}
 
+# typedef WGPUBool ( * WGPUProcInstanceHasWGSLLanguageFeature ) ( WGPUInstance instance , WGPUWGSLFeatureName feature )
+const WGPUProcInstanceHasWGSLLanguageFeature = Ptr{Cvoid}
+
 # typedef void ( * WGPUProcInstanceProcessEvents ) ( WGPUInstance instance )
 const WGPUProcInstanceProcessEvents = Ptr{Cvoid}
 
-# typedef void ( * WGPUProcInstanceRequestAdapter ) ( WGPUInstance instance , WGPU_NULLABLE WGPURequestAdapterOptions const * options , WGPURequestAdapterCallback callback , void * userdata )
+# typedef void ( * WGPUProcInstanceRequestAdapter ) ( WGPUInstance instance , WGPU_NULLABLE WGPURequestAdapterOptions const * options , WGPUInstanceRequestAdapterCallback callback , WGPU_NULLABLE void * userdata )
 const WGPUProcInstanceRequestAdapter = Ptr{Cvoid}
 
 # typedef void ( * WGPUProcInstanceReference ) ( WGPUInstance instance )
@@ -1611,7 +1633,7 @@ const WGPUProcQuerySetReference = Ptr{Cvoid}
 # typedef void ( * WGPUProcQuerySetRelease ) ( WGPUQuerySet querySet )
 const WGPUProcQuerySetRelease = Ptr{Cvoid}
 
-# typedef void ( * WGPUProcQueueOnSubmittedWorkDone ) ( WGPUQueue queue , WGPUQueueWorkDoneCallback callback , void * userdata )
+# typedef void ( * WGPUProcQueueOnSubmittedWorkDone ) ( WGPUQueue queue , WGPUQueueOnSubmittedWorkDoneCallback callback , WGPU_NULLABLE void * userdata )
 const WGPUProcQueueOnSubmittedWorkDone = Ptr{Cvoid}
 
 # typedef void ( * WGPUProcQueueSetLabel ) ( WGPUQueue queue , char const * label )
@@ -1773,7 +1795,7 @@ const WGPUProcSamplerReference = Ptr{Cvoid}
 # typedef void ( * WGPUProcSamplerRelease ) ( WGPUSampler sampler )
 const WGPUProcSamplerRelease = Ptr{Cvoid}
 
-# typedef void ( * WGPUProcShaderModuleGetCompilationInfo ) ( WGPUShaderModule shaderModule , WGPUCompilationInfoCallback callback , void * userdata )
+# typedef void ( * WGPUProcShaderModuleGetCompilationInfo ) ( WGPUShaderModule shaderModule , WGPUShaderModuleGetCompilationInfoCallback callback , WGPU_NULLABLE void * userdata )
 const WGPUProcShaderModuleGetCompilationInfo = Ptr{Cvoid}
 
 # typedef void ( * WGPUProcShaderModuleSetLabel ) ( WGPUShaderModule shaderModule , char const * label )
@@ -1794,11 +1816,11 @@ const WGPUProcSurfaceGetCapabilities = Ptr{Cvoid}
 # typedef void ( * WGPUProcSurfaceGetCurrentTexture ) ( WGPUSurface surface , WGPUSurfaceTexture * surfaceTexture )
 const WGPUProcSurfaceGetCurrentTexture = Ptr{Cvoid}
 
-# typedef WGPUTextureFormat ( * WGPUProcSurfaceGetPreferredFormat ) ( WGPUSurface surface , WGPUAdapter adapter )
-const WGPUProcSurfaceGetPreferredFormat = Ptr{Cvoid}
-
 # typedef void ( * WGPUProcSurfacePresent ) ( WGPUSurface surface )
 const WGPUProcSurfacePresent = Ptr{Cvoid}
+
+# typedef void ( * WGPUProcSurfaceSetLabel ) ( WGPUSurface surface , char const * label )
+const WGPUProcSurfaceSetLabel = Ptr{Cvoid}
 
 # typedef void ( * WGPUProcSurfaceUnconfigure ) ( WGPUSurface surface )
 const WGPUProcSurfaceUnconfigure = Ptr{Cvoid}
@@ -1809,7 +1831,7 @@ const WGPUProcSurfaceReference = Ptr{Cvoid}
 # typedef void ( * WGPUProcSurfaceRelease ) ( WGPUSurface surface )
 const WGPUProcSurfaceRelease = Ptr{Cvoid}
 
-# typedef void ( * WGPUProcSurfaceCapabilitiesFreeMembers ) ( WGPUSurfaceCapabilities capabilities )
+# typedef void ( * WGPUProcSurfaceCapabilitiesFreeMembers ) ( WGPUSurfaceCapabilities surfaceCapabilities )
 const WGPUProcSurfaceCapabilitiesFreeMembers = Ptr{Cvoid}
 
 # typedef WGPUTextureView ( * WGPUProcTextureCreateView ) ( WGPUTexture texture , WGPU_NULLABLE WGPUTextureViewDescriptor const * descriptor )
@@ -1872,12 +1894,12 @@ function wgpuAdapterEnumerateFeatures(adapter, features)
     @ccall libWGPU.wgpuAdapterEnumerateFeatures(adapter::WGPUAdapter, features::Ptr{WGPUFeatureName})::Csize_t
 end
 
-function wgpuAdapterGetLimits(adapter, limits)
-    @ccall libWGPU.wgpuAdapterGetLimits(adapter::WGPUAdapter, limits::Ptr{WGPUSupportedLimits})::WGPUBool
+function wgpuAdapterGetInfo(adapter, info)
+    @ccall libWGPU.wgpuAdapterGetInfo(adapter::WGPUAdapter, info::Ptr{WGPUAdapterInfo})::Cvoid
 end
 
-function wgpuAdapterGetProperties(adapter, properties)
-    @ccall libWGPU.wgpuAdapterGetProperties(adapter::WGPUAdapter, properties::Ptr{WGPUAdapterProperties})::Cvoid
+function wgpuAdapterGetLimits(adapter, limits)
+    @ccall libWGPU.wgpuAdapterGetLimits(adapter::WGPUAdapter, limits::Ptr{WGPUSupportedLimits})::WGPUBool
 end
 
 function wgpuAdapterHasFeature(adapter, feature)
@@ -1885,7 +1907,7 @@ function wgpuAdapterHasFeature(adapter, feature)
 end
 
 function wgpuAdapterRequestDevice(adapter, descriptor, callback, userdata)
-    @ccall libWGPU.wgpuAdapterRequestDevice(adapter::WGPUAdapter, descriptor::Ptr{WGPUDeviceDescriptor}, callback::WGPURequestDeviceCallback, userdata::Ptr{Cvoid})::Cvoid
+    @ccall libWGPU.wgpuAdapterRequestDevice(adapter::WGPUAdapter, descriptor::Ptr{WGPUDeviceDescriptor}, callback::WGPUAdapterRequestDeviceCallback, userdata::Ptr{Cvoid})::Cvoid
 end
 
 function wgpuAdapterReference(adapter)
@@ -1894,6 +1916,10 @@ end
 
 function wgpuAdapterRelease(adapter)
     @ccall libWGPU.wgpuAdapterRelease(adapter::WGPUAdapter)::Cvoid
+end
+
+function wgpuAdapterInfoFreeMembers(adapterInfo)
+    @ccall libWGPU.wgpuAdapterInfoFreeMembers(adapterInfo::WGPUAdapterInfo)::Cvoid
 end
 
 function wgpuBindGroupSetLabel(bindGroup, label)
@@ -1945,7 +1971,7 @@ function wgpuBufferGetUsage(buffer)
 end
 
 function wgpuBufferMapAsync(buffer, mode, offset, size, callback, userdata)
-    @ccall libWGPU.wgpuBufferMapAsync(buffer::WGPUBuffer, mode::WGPUMapModeFlags, offset::Csize_t, size::Csize_t, callback::WGPUBufferMapCallback, userdata::Ptr{Cvoid})::Cvoid
+    @ccall libWGPU.wgpuBufferMapAsync(buffer::WGPUBuffer, mode::WGPUMapModeFlags, offset::Csize_t, size::Csize_t, callback::WGPUBufferMapAsyncCallback, userdata::Ptr{Cvoid})::Cvoid
 end
 
 function wgpuBufferSetLabel(buffer, label)
@@ -2121,7 +2147,7 @@ function wgpuDeviceCreateComputePipeline(device, descriptor)
 end
 
 function wgpuDeviceCreateComputePipelineAsync(device, descriptor, callback, userdata)
-    @ccall libWGPU.wgpuDeviceCreateComputePipelineAsync(device::WGPUDevice, descriptor::Ptr{WGPUComputePipelineDescriptor}, callback::WGPUCreateComputePipelineAsyncCallback, userdata::Ptr{Cvoid})::Cvoid
+    @ccall libWGPU.wgpuDeviceCreateComputePipelineAsync(device::WGPUDevice, descriptor::Ptr{WGPUComputePipelineDescriptor}, callback::WGPUDeviceCreateComputePipelineAsyncCallback, userdata::Ptr{Cvoid})::Cvoid
 end
 
 function wgpuDeviceCreatePipelineLayout(device, descriptor)
@@ -2141,7 +2167,7 @@ function wgpuDeviceCreateRenderPipeline(device, descriptor)
 end
 
 function wgpuDeviceCreateRenderPipelineAsync(device, descriptor, callback, userdata)
-    @ccall libWGPU.wgpuDeviceCreateRenderPipelineAsync(device::WGPUDevice, descriptor::Ptr{WGPURenderPipelineDescriptor}, callback::WGPUCreateRenderPipelineAsyncCallback, userdata::Ptr{Cvoid})::Cvoid
+    @ccall libWGPU.wgpuDeviceCreateRenderPipelineAsync(device::WGPUDevice, descriptor::Ptr{WGPURenderPipelineDescriptor}, callback::WGPUDeviceCreateRenderPipelineAsyncCallback, userdata::Ptr{Cvoid})::Cvoid
 end
 
 function wgpuDeviceCreateSampler(device, descriptor)
@@ -2188,10 +2214,6 @@ function wgpuDeviceSetLabel(device, label)
     @ccall libWGPU.wgpuDeviceSetLabel(device::WGPUDevice, label::Ptr{Cchar})::Cvoid
 end
 
-function wgpuDeviceSetUncapturedErrorCallback(device, callback, userdata)
-    @ccall libWGPU.wgpuDeviceSetUncapturedErrorCallback(device::WGPUDevice, callback::WGPUErrorCallback, userdata::Ptr{Cvoid})::Cvoid
-end
-
 function wgpuDeviceReference(device)
     @ccall libWGPU.wgpuDeviceReference(device::WGPUDevice)::Cvoid
 end
@@ -2204,12 +2226,16 @@ function wgpuInstanceCreateSurface(instance, descriptor)
     @ccall libWGPU.wgpuInstanceCreateSurface(instance::WGPUInstance, descriptor::Ptr{WGPUSurfaceDescriptor})::WGPUSurface
 end
 
+function wgpuInstanceHasWGSLLanguageFeature(instance, feature)
+    @ccall libWGPU.wgpuInstanceHasWGSLLanguageFeature(instance::WGPUInstance, feature::WGPUWGSLFeatureName)::WGPUBool
+end
+
 function wgpuInstanceProcessEvents(instance)
     @ccall libWGPU.wgpuInstanceProcessEvents(instance::WGPUInstance)::Cvoid
 end
 
 function wgpuInstanceRequestAdapter(instance, options, callback, userdata)
-    @ccall libWGPU.wgpuInstanceRequestAdapter(instance::WGPUInstance, options::Ptr{WGPURequestAdapterOptions}, callback::WGPURequestAdapterCallback, userdata::Ptr{Cvoid})::Cvoid
+    @ccall libWGPU.wgpuInstanceRequestAdapter(instance::WGPUInstance, options::Ptr{WGPURequestAdapterOptions}, callback::WGPUInstanceRequestAdapterCallback, userdata::Ptr{Cvoid})::Cvoid
 end
 
 function wgpuInstanceReference(instance)
@@ -2257,7 +2283,7 @@ function wgpuQuerySetRelease(querySet)
 end
 
 function wgpuQueueOnSubmittedWorkDone(queue, callback, userdata)
-    @ccall libWGPU.wgpuQueueOnSubmittedWorkDone(queue::WGPUQueue, callback::WGPUQueueWorkDoneCallback, userdata::Ptr{Cvoid})::Cvoid
+    @ccall libWGPU.wgpuQueueOnSubmittedWorkDone(queue::WGPUQueue, callback::WGPUQueueOnSubmittedWorkDoneCallback, userdata::Ptr{Cvoid})::Cvoid
 end
 
 function wgpuQueueSetLabel(queue, label)
@@ -2473,7 +2499,7 @@ function wgpuSamplerRelease(sampler)
 end
 
 function wgpuShaderModuleGetCompilationInfo(shaderModule, callback, userdata)
-    @ccall libWGPU.wgpuShaderModuleGetCompilationInfo(shaderModule::WGPUShaderModule, callback::WGPUCompilationInfoCallback, userdata::Ptr{Cvoid})::Cvoid
+    @ccall libWGPU.wgpuShaderModuleGetCompilationInfo(shaderModule::WGPUShaderModule, callback::WGPUShaderModuleGetCompilationInfoCallback, userdata::Ptr{Cvoid})::Cvoid
 end
 
 function wgpuShaderModuleSetLabel(shaderModule, label)
@@ -2500,12 +2526,12 @@ function wgpuSurfaceGetCurrentTexture(surface, surfaceTexture)
     @ccall libWGPU.wgpuSurfaceGetCurrentTexture(surface::WGPUSurface, surfaceTexture::Ptr{WGPUSurfaceTexture})::Cvoid
 end
 
-function wgpuSurfaceGetPreferredFormat(surface, adapter)
-    @ccall libWGPU.wgpuSurfaceGetPreferredFormat(surface::WGPUSurface, adapter::WGPUAdapter)::WGPUTextureFormat
-end
-
 function wgpuSurfacePresent(surface)
     @ccall libWGPU.wgpuSurfacePresent(surface::WGPUSurface)::Cvoid
+end
+
+function wgpuSurfaceSetLabel(surface, label)
+    @ccall libWGPU.wgpuSurfaceSetLabel(surface::WGPUSurface, label::Ptr{Cchar})::Cvoid
 end
 
 function wgpuSurfaceUnconfigure(surface)
@@ -2520,8 +2546,8 @@ function wgpuSurfaceRelease(surface)
     @ccall libWGPU.wgpuSurfaceRelease(surface::WGPUSurface)::Cvoid
 end
 
-function wgpuSurfaceCapabilitiesFreeMembers(capabilities)
-    @ccall libWGPU.wgpuSurfaceCapabilitiesFreeMembers(capabilities::WGPUSurfaceCapabilities)::Cvoid
+function wgpuSurfaceCapabilitiesFreeMembers(surfaceCapabilities)
+    @ccall libWGPU.wgpuSurfaceCapabilitiesFreeMembers(surfaceCapabilities::WGPUSurfaceCapabilities)::Cvoid
 end
 
 function wgpuTextureCreateView(texture, descriptor)
@@ -2613,6 +2639,19 @@ end
     WGPUNativeFeature_PipelineStatisticsQuery = 196616
     WGPUNativeFeature_StorageResourceBindingArray = 196617
     WGPUNativeFeature_PartiallyBoundBindingArray = 196618
+    WGPUNativeFeature_TextureFormat16bitNorm = 196619
+    WGPUNativeFeature_TextureCompressionAstcHdr = 196620
+    WGPUNativeFeature_MappablePrimaryBuffers = 196622
+    WGPUNativeFeature_BufferBindingArray = 196623
+    WGPUNativeFeature_UniformBufferAndStorageTextureArrayNonUniformIndexing = 196624
+    WGPUNativeFeature_VertexAttribute64bit = 196633
+    WGPUNativeFeature_TextureFormatNv12 = 196634
+    WGPUNativeFeature_RayTracingAccelerationStructure = 196635
+    WGPUNativeFeature_RayQuery = 196636
+    WGPUNativeFeature_ShaderF64 = 196637
+    WGPUNativeFeature_ShaderI16 = 196638
+    WGPUNativeFeature_ShaderPrimitiveIndex = 196639
+    WGPUNativeFeature_ShaderEarlyDepthTest = 196640
     WGPUNativeFeature_Force32 = 2147483647
 end
 
@@ -2818,12 +2857,22 @@ end
 
 mutable struct WGPUSurfaceConfigurationExtras
     chain::WGPUChainedStruct
-    desiredMaximumFrameLatency::WGPUBool
+    desiredMaximumFrameLatency::UInt32
     WGPUSurfaceConfigurationExtras() = new()
 end
 
 # typedef void ( * WGPULogCallback ) ( WGPULogLevel level , char const * message , void * userdata )
 const WGPULogCallback = Ptr{Cvoid}
+
+@cenum WGPUNativeTextureFormat::UInt32 begin
+    WGPUNativeTextureFormat_R16Unorm = 196609
+    WGPUNativeTextureFormat_R16Snorm = 196610
+    WGPUNativeTextureFormat_Rg16Unorm = 196611
+    WGPUNativeTextureFormat_Rg16Snorm = 196612
+    WGPUNativeTextureFormat_Rgba16Unorm = 196613
+    WGPUNativeTextureFormat_Rgba16Snorm = 196614
+    WGPUNativeTextureFormat_NV12 = 196615
+end
 
 function wgpuGenerateReport(instance, report)
     @ccall libWGPU.wgpuGenerateReport(instance::WGPUInstance, report::Ptr{WGPUGlobalReport})::Cvoid
@@ -2892,6 +2941,8 @@ end
 const WGPU_ARRAY_LAYER_COUNT_UNDEFINED = Culong(0xffffffff)
 
 const WGPU_COPY_STRIDE_UNDEFINED = Culong(0xffffffff)
+
+const WGPU_DEPTH_SLICE_UNDEFINED = Culong(0xffffffff)
 
 const WGPU_LIMIT_U32_UNDEFINED = Culong(0xffffffff)
 

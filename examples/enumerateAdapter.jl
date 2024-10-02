@@ -4,37 +4,37 @@ instance = wgpuCreateInstance(C_NULL)
 
 @assert instance != C_NULL
 
-adapterCount = wgpuInstanceEnumerateAdapters(instance, C_NULL, C_NULL)
+adapterOptions = WGPUInstanceEnumerateAdapterOptions() |> Ref
 
-adapters = WGPUAdapter[WGPUAdapter() for _ in 1:adapterCount]
+adapterCount = wgpuInstanceEnumerateAdapters(instance, adapterOptions, C_NULL)
 
-GC.@preserve adapters wgpuInstanceEnumerateAdapters(instance, C_NULL, adapters |> pointer)
+const adapters = Vector{WGPUAdapter}(undef, adapterCount)
 
-for (idx, adapter) in enumerate(adapters)
-	properties = WGPUAdapterProperties()
-	GC.@preserve properties wgpuAdapterGetProperties(adapter, properties |> pointer_from_objref)
-	vendorID = properties.vendorID |> Int
-	architecture = properties.architecture |> unsafe_string
-	deviceID = properties.deviceID |> Int
-	name = properties.name |> unsafe_string
-	vendorName = properties.vendorName |> unsafe_string
-	description = properties.driverDescription |> unsafe_string
-	adapterType = properties.adapterType
-	backendType = properties.backendType
-	@info( name,
-		adapter, 
-		idx, 
-		vendorID,
-		vendorName,
-		architecture,
-		deviceID,
-		description,
-		adapterType,
-		backendType
-	)
-	wgpuAdapterRelease(adapter)
+GC.@preserve adapters wgpuInstanceEnumerateAdapters(instance, adapterOptions, adapters)
+
+for idx = 1:adapterCount
+    adapter = adapters[idx]
+    info = Ref(WGPUAdapterInfo())
+    GC.@preserve info wgpuAdapterGetInfo(adapter, Base.unsafe_convert(Ptr{WGPUAdapterInfo}, info))
+    vendorID = Int(info[].vendorID)
+    architecture = unsafe_load(info[].architecture)
+    deviceID = Int(info[].deviceID)
+    vendorName = unsafe_string(info[].vendor)
+    description = unsafe_string(info[].description)
+    adapterType = info[].adapterType
+    backendType = info[].backendType
+    @info(adapter,
+        idx,
+        vendorID,
+        vendorName,
+        architecture,
+        deviceID,
+        description,
+        adapterType,
+        backendType
+    )
+    wgpuAdapterRelease(adapter)
 end
 
-adapters = WGPUAdapter[]
+empty!(adapters)
 wgpuInstanceRelease(instance)
-
