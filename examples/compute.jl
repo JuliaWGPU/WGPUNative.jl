@@ -143,6 +143,7 @@ wgpuComputePassEncoderSetPipeline(computePassEncoder, computePipeline)
 wgpuComputePassEncoderSetBindGroup(computePassEncoder, 0, bindGroup, 0, C_NULL)
 wgpuComputePassEncoderDispatchWorkgroups(computePassEncoder, length(numbers), 1, 1)
 wgpuComputePassEncoderEnd(computePassEncoder)
+wgpuComputePassEncoderRelease(computePassEncoder)
 
 ## buffer copy buffer
 wgpuCommandEncoderCopyBufferToBuffer(cmdEncoder, storageBuffer, 0, stagingBuffer, 0, sizeof(numbers))
@@ -199,7 +200,6 @@ end
 
 wgpuBufferUnmap(stagingBuffer)
 wgpuCommandBufferRelease(cmdBuffer)
-wgpuComputePassEncoderRelease(computePassEncoder)
 wgpuCommandEncoderRelease(cmdEncoder)
 wgpuBindGroupRelease(bindGroup)
 wgpuBindGroupLayoutRelease(bindgroupLayout)

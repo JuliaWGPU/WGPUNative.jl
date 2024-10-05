@@ -3,3 +3,6 @@ Manifest.toml
 *.zip
 *.gz
 Manifest.toml
+*wgpulib
+gen/mainF.o
+examples/mainF.o

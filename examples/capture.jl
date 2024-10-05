@@ -101,6 +101,7 @@ colorAttachments = GC.@preserve outputAttachment begin
 			C_NULL,
 			outputAttachment,
 			0,
+			0,
 			WGPULoadOp_Clear,
 			WGPUStoreOp_Store,
 			WGPUColor(1.0, 0.0, 0.0, 1.0)
@@ -129,6 +130,7 @@ renderPass = GC.@preserve renderPassDesc colorAttachments wgpuCommandEncoderBegi
 GC.gc()
 ## end renderpass 
 wgpuRenderPassEncoderEnd(renderPass)
+wgpuRenderPassEncoderRelease(renderPass)
 
 ## Copy texture to buffer
 textureDataLayout = WGPUTextureDataLayout(

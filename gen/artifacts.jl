@@ -7,13 +7,13 @@ arch = lowercase(String(Sys.ARCH))
 kernel = lowercase(String(Sys.KERNEL))
 
 # modifying conventions for wgpu specifically based on
-# releases at https://github.com/gfx-rs/wgpu-native/releases/tag/v0.12.0.1
+# releases at https://github.com/gfx-rs/wgpu-native/releases/tag/v22.1.0.5
 
-version = "v0.1.6"
-kernels = ["macos", "linux", "windows"]
+version = "v0.1.7"
+kernels = ["macos", "linux", "windows", "ios", "android"]
 archs = ["aarch64", "i686", "x86_64"]
 
-upstreamVersion = "v0.19.4.1"
+upstreamVersion = "v22.1.0.5"
 
 io = IOBuffer()
 
@@ -39,6 +39,9 @@ remoteurl = "https://github.com/JuliaWGPU/WGPUNative.jl/releases/download/$(vers
 function generateArtifacts()
 	for kernel in kernels
 		for arch in archs
+			if kernel == "windows"
+				arch = "$arch-msvc" # Choosing only msvc for now
+			end
 			releasefile = "wgpu-$kernel-$arch-release.zip"
 			tarfile = "WGPU.$(upstreamVersion).$(arch)-$(kernel).tar.gz"
 			try
@@ -62,6 +65,9 @@ end
 function writeArtifactsTOML()
 	for kernel in kernels
 		for arch in archs
+			if kernel == "windows"
+				arch = "$arch-msvc" # Choosing only msvc for now
+			end
 			releasefile = "wgpu-$kernel-$arch-release.zip"
 			tarfile = "WGPU.$(upstreamVersion).$(arch)-$(kernel).tar.gz"
 			try

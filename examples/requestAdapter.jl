@@ -12,8 +12,8 @@ function request_adapter_callback(
     return nothing
 end
 
-Base.cconvert(::Type{Ptr{WGPUAdapterProperties}}, properties::WGPUAdapterProperties) = begin
-	pointer_from_objref(properties)
+Base.cconvert(::Type{Ptr{WGPUAdapterInfo}}, info::WGPUAdapterInfo) = begin
+	pointer_from_objref(info)
 end
 
 Base.cconvert(::Type{Ptr{WGPUSupportedLimits}}, supportedLimits::WGPUSupportedLimits) = begin\
@@ -37,14 +37,14 @@ wgpuInstanceRequestAdapter(
 
 @assert adapter != C_NULL
 
-propertiesArray = Ptr{WGPUAdapterProperties}()
-function getWGPUAdapterProperties()
-	properties = WGPUAdapterProperties()
-	GC.@preserve adapter propertiesArray wgpuAdapterGetProperties(adapter, properties)
-	return properties
+infoArray = Ptr{WGPUAdapterInfo}()
+function getWGPUAdapterInfo()
+	info = WGPUAdapterInfo()
+	GC.@preserve adapter infoArray wgpuAdapterGetInfo(adapter, info)
+	return info
 end
 
-properties = getWGPUAdapterProperties()
+infos = getWGPUAdapterInfo()
 
 function getWGPUAdapterLimits()
 	supportedLimits = WGPUSupportedLimits()
