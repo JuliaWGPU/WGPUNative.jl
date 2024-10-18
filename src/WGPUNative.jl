@@ -6,6 +6,7 @@ using Reexport
 include("cUtils.jl")
 include("LibWGPU.jl")
 @reexport using .LibWGPU
+@reexport using .CUtils
 
 function __init__()
     if Sys.iswindows()
