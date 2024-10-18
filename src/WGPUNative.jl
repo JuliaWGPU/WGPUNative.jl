@@ -2,6 +2,8 @@ module WGPUNative
 
 using Artifacts
 using Reexport
+
+include("cUtils.jl")
 include("LibWGPU.jl")
 @reexport using .LibWGPU
 
