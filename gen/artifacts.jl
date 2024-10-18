@@ -37,12 +37,13 @@ end
 remoteurl = "https://github.com/JuliaWGPU/WGPUNative.jl/releases/download/$(version)"
 
 function generateArtifacts()
+	buildType = ""
 	for kernel in kernels
 		for arch in archs
 			if kernel == "windows"
-				arch = "$arch-msvc" # Choosing only msvc for now
+				buildType = "-msvc" # Choosing only msvc for now
 			end
-			releasefile = "wgpu-$kernel-$arch-release.zip"
+			releasefile = "wgpu-$kernel-$arch$buildType-release.zip"
 			tarfile = "WGPU.$(upstreamVersion).$(arch)-$(kernel).tar.gz"
 			try
 				url = "https://github.com/gfx-rs/wgpu-native/releases/download/$(upstreamVersion)/$releasefile"
@@ -63,12 +64,13 @@ function generateArtifacts()
 end
 
 function writeArtifactsTOML()
+	buildType = ""
 	for kernel in kernels
 		for arch in archs
 			if kernel == "windows"
-				arch = "$arch-msvc" # Choosing only msvc for now
+				buildType = "-msvc" # Choosing only msvc for now
 			end
-			releasefile = "wgpu-$kernel-$arch-release.zip"
+			releasefile = "wgpu-$kernel-$arch$buildType-release.zip"
 			tarfile = "WGPU.$(upstreamVersion).$(arch)-$(kernel).tar.gz"
 			try
 				# Downloads.download(joinpath(remoteurl, tarfile), tarfile)

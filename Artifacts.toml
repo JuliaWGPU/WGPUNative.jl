@@ -35,7 +35,7 @@ os = "linux"
 	url = "https://github.com/JuliaWGPU/WGPUNative.jl/releases/download/v0.1.7/WGPU.v22.1.0.5.x86_64-linux.tar.gz"
 
 [[WGPUNative]]
-arch = "aarch64-msvc"
+arch = "aarch64"
 git-tree-sha1 = "a8423e1bf241244bbb6d44afa95c12b518950217"
 os = "windows"
 
@@ -44,7 +44,7 @@ os = "windows"
 	url = "https://github.com/JuliaWGPU/WGPUNative.jl/releases/download/v0.1.7/WGPU.v22.1.0.5.aarch64-msvc-windows.tar.gz"
 
 [[WGPUNative]]
-arch = "i686-msvc"
+arch = "i686"
 git-tree-sha1 = "827ca65424be3c22a4733d86344dc0aa06bb0762"
 os = "windows"
 
@@ -53,7 +53,7 @@ os = "windows"
 	url = "https://github.com/JuliaWGPU/WGPUNative.jl/releases/download/v0.1.7/WGPU.v22.1.0.5.i686-msvc-windows.tar.gz"
 
 [[WGPUNative]]
-arch = "x86_64-msvc"
+arch = "x86_64"
 git-tree-sha1 = "c25450d15dc79a7810800e22f69bae9920fd59e0"
 os = "windows"
 

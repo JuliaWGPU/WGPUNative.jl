@@ -4,6 +4,7 @@ authors = ["arhik <arhik23@gmail.com>"]
 version = "0.1.7"
 
 [deps]
+Artifacts = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
 CEnum = "fa961155-64e5-5f13-b03f-caf6b980ea82"
 Infiltrator = "5903a43b-9cc3-4c30-8d17-598619ec4e9b"
 Libdl = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
