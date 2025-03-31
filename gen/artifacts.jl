@@ -6,14 +6,18 @@ using Tar, Inflate, SHA
 arch = lowercase(String(Sys.ARCH))
 kernel = lowercase(String(Sys.KERNEL))
 
+if kernel == "nt"
+	kernel == "windows"
+end
+	
 # modifying conventions for wgpu specifically based on
 # releases at https://github.com/gfx-rs/wgpu-native/releases/tag/v22.1.0.5
 
-version = "v0.1.7"
+version = "v0.1.8"
 kernels = ["macos", "linux", "windows", "ios", "android"]
 archs = ["aarch64", "i686", "x86_64"]
 
-upstreamVersion = "v22.1.0.5"
+upstreamVersion = "v24.0.0.1"
 
 io = IOBuffer()
 
@@ -42,20 +46,20 @@ function generateArtifacts()
 		for arch in archs
 			if kernel == "windows"
 				buildType = "-msvc" # Choosing only msvc for now
+			else
+				buildType = ""
 			end
 			releasefile = "wgpu-$kernel-$arch$buildType-release.zip"
 			tarfile = "WGPU.$(upstreamVersion).$(arch)-$(kernel).tar.gz"
 			try
 				url = "https://github.com/gfx-rs/wgpu-native/releases/download/$(upstreamVersion)/$releasefile"
 				Downloads.download(url, releasefile)
-				run(`rm -rf "wgpulibs$arch$kernel"`)
-				run(`mkdir wgpulibs$arch$kernel`)
+				rm("wgpulibs$arch$kernel", force=true, recursive=true)
+				mkdir("wgpulibs$arch$kernel")
 				run(`unzip $releasefile -d wgpulibs$arch$kernel`)
-				run(`cd "wgpulibs$arch$kernel"`)
 				run(`tar -C wgpulibs$arch$kernel -czvf $tarfile .`)
-				run(`rm -rf "wgpulibs$arch$kernel"`)
-				run(`rm $releasefile`)
-				run(`cd ".."`)
+				rm("wgpulibs$arch$kernel", recursive=true)
+				rm("$releasefile")
 			catch(e)
 				println("$e")
 			end
@@ -86,7 +90,7 @@ function writeArtifactsTOML()
 	f = open("Artifacts.toml", "w")
 	write(f, io)
 	close(f)
-	run(`mv Artifacts.toml ../`)
+	mv("Artifacts.toml", "../Artifacts.toml")
 end
 
 
@@ -96,4 +100,4 @@ generateArtifacts()
 # publish artifacts as a release through github through github API
 # for now we could simply add input for confirmation of upload.
 
-writeArtifactsTOML()
+# writeArtifactsTOML()
