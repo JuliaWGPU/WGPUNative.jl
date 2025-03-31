@@ -6,6 +6,10 @@ using Tar, Inflate, SHA
 arch = lowercase(String(Sys.ARCH))
 kernel = lowercase(String(Sys.KERNEL))
 
+if kernel == "nt"
+	kernel == "windows"
+end
+	
 # modifying conventions for wgpu specifically based on
 # releases at https://github.com/gfx-rs/wgpu-native/releases/tag/v22.1.0.5
 
@@ -48,14 +52,14 @@ function generateArtifacts()
 			try
 				url = "https://github.com/gfx-rs/wgpu-native/releases/download/$(upstreamVersion)/$releasefile"
 				Downloads.download(url, releasefile)
-				run(`rm -rf "wgpulibs$arch$kernel"`)
-				run(`mkdir wgpulibs$arch$kernel`)
+				rm("wgpulibs$arch$kernel", force=true, recursive=true)
+				mkdir("wgpulibs$arch$kernel")
 				run(`unzip $releasefile -d wgpulibs$arch$kernel`)
-				run(`cd "wgpulibs$arch$kernel"`)
+				cd("wgpulibs$arch$kernel")
 				run(`tar -C wgpulibs$arch$kernel -czvf $tarfile .`)
-				run(`rm -rf "wgpulibs$arch$kernel"`)
-				run(`rm $releasefile`)
-				run(`cd ".."`)
+				rm("wgpulibs$arch$kernel", recursive=true, force=true)
+				rm("$releasefile")
+				cd("..")
 			catch(e)
 				println("$e")
 			end
@@ -86,7 +90,7 @@ function writeArtifactsTOML()
 	f = open("Artifacts.toml", "w")
 	write(f, io)
 	close(f)
-	run(`mv Artifacts.toml ../`)
+	mv("Artifacts.toml", "../")
 end
 
 
