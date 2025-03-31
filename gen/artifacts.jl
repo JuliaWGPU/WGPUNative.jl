@@ -90,7 +90,7 @@ function writeArtifactsTOML()
 	f = open("Artifacts.toml", "w")
 	write(f, io)
 	close(f)
-	mv("Artifacts.toml", "../")
+	mv("Artifacts.toml", "../Artifacts.toml")
 end
 
 
