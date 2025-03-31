@@ -3,7 +3,8 @@ module LibWGPU
 using CEnum
 
 # SIZE_MAX needs verification
-const SIZE_MAX = 2^16
+const SIZE_MAX = 2^32
+
 using Libdl
 using Pkg
 using Pkg.Artifacts
@@ -15,7 +16,6 @@ wgpu_hash = artifact_hash("WGPUNative", artifact_toml)
 wgpulibpath = artifact_path(wgpu_hash)
 resourceName = Sys.iswindows() ? "wgpu_native" : "libwgpu_native"
 const libWGPU = "$wgpulibpath/lib/$resourceName.$(Libdl.dlext)" |> normpath
-
 
 
 struct WGPUStringView

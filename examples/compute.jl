@@ -10,14 +10,12 @@ b = read("$(pkgdir(WGPUNative))/examples/shader.wgsl")
 
 function load_wgsl(filename)
     b = read(filename)
-	wgslDescriptor = WGPUShaderModuleWGSLDescriptor()
-	wgslDescriptor.chain = WGPUChainedStruct(C_NULL, WGPUSType_ShaderModuleWGSLDescriptor)
-	wgslDescriptor.code = pointer(b)
+	wgslDescriptor = WGPUShaderSourceWGSL()
+	wgslDescriptor.chain = WGPUChainedStruct(C_NULL, WGPUSType_ShaderSourceWGSL)
+	wgslDescriptor.code = WGPUStringView(pointer(b), length(b))
     descriptor = WGPUShaderModuleDescriptor()
     descriptor.nextInChain = wgslDescriptor |> pointer_from_objref
-    descriptor.label = pointer(filename)
-    descriptor.hintCount = 0
-    descriptor.hints = C_NULL
+    descriptor.label = WGPUStringView(pointer(filename), length(filename))
     return (descriptor, wgslDescriptor)
 end
 
@@ -32,7 +30,7 @@ shader = wgpuDeviceCreateShaderModule(
 ## StagingBuffer 
 stagingDescriptor = WGPUBufferDescriptor()
 stagingDescriptor.nextInChain = C_NULL
-stagingDescriptor.label = pointer("StagingBuffer")
+stagingDescriptor.label = let l = "StagingBuffer"; WGPUStringView(pointer(l), length(l)) end
 stagingDescriptor.usage = WGPUBufferUsage_MapRead | WGPUBufferUsage_CopyDst
 stagingDescriptor.size = sizeof(numbers)
 stagingDescriptor.mappedAtCreation = false

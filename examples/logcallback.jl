@@ -1,5 +1,5 @@
 
-function logCallBack(logLevel::WGPULogLevel, msg::Ptr{Cchar})
+function logCallBack(logLevel::WGPULogLevel, msg::WGPUStringView)
 		if logLevel == WGPULogLevel_Error
 				level_str = "ERROR"
 		elseif logLevel == WGPULogLevel_Warn
@@ -13,10 +13,10 @@ function logCallBack(logLevel::WGPULogLevel, msg::Ptr{Cchar})
 		else
 				level_str = "UNKNOWN LOG LEVEL"
 		end
-        println("$(level_str) $(unsafe_string(msg))")
+        println("$(level_str) $(unsafe_string(msg.data, msg.length))")
 end
 
-logcallback = @cfunction(logCallBack, Cvoid, (WGPULogLevel, Ptr{Cchar}))
+logcallback = @cfunction(logCallBack, Cvoid, (WGPULogLevel, WGPUStringView))
 
 GC.@preserve logcallback wgpuSetLogCallback(logcallback, Ptr{Cvoid}())
 wgpuSetLogLevel(WGPULogLevel_Debug)

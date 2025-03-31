@@ -14,11 +14,16 @@ end
 
 requestDeviceCallback = @cfunction(request_device_callback, Cvoid, (WGPURequestDeviceStatus, WGPUDevice, Ptr{Cchar}, Ptr{Cvoid}))
 
+deviceCBInfo = WGPURequestDeviceCallbackInfo()
+
+deviceCBInfo.nextInChain = C_NULL
+deviceCBInfo.callback = requestDeviceCallback
+deviceCBInfo.userdata1 = device
+
 GC.@preserve adapter device requestDeviceCallback wgpuAdapterRequestDevice(
 	adapter,
 	C_NULL,
-	requestDeviceCallback,
-	device
+	deviceCBInfo,
 )
 
 
