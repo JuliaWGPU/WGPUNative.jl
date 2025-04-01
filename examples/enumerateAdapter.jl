@@ -4,13 +4,11 @@ instance = wgpuCreateInstance(C_NULL)
 
 @assert instance != C_NULL
 
-adapterOptions = WGPUInstanceEnumerateAdapterOptions() |> Ref
-
-adapterCount = wgpuInstanceEnumerateAdapters(instance, adapterOptions, C_NULL)
+adapterCount = wgpuInstanceEnumerateAdapters(instance, C_NULL, C_NULL)
 
 const adapters = Vector{WGPUAdapter}(undef, adapterCount)
 
-GC.@preserve adapters wgpuInstanceEnumerateAdapters(instance, adapterOptions, adapters)
+GC.@preserve adapters wgpuInstanceEnumerateAdapters(instance, C_NULL, adapters)
 
 for idx = 1:adapterCount
     adapter = adapters[idx]
@@ -41,3 +39,4 @@ end
 
 empty!(adapters)
 wgpuInstanceRelease(instance)
+

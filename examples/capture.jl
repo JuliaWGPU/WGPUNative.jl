@@ -32,10 +32,10 @@ bufferSize = bufferDimensions.padded_bytes_per_row*bufferDimensions.height
 bufferLabel = m"Output Buffer"
 
 bufferDesc = GC.@preserve bufferSize bufferLabel begin
-	bufferDesc = WGPUBufferDescriptor()
+	bufferDesc = WGPUBufferDescriptor |> CStruct
 	bufferDesc.nextInChain = C_NULL
-	bufferDesc.label = pointer(bufferLabel)
-	bufferDesc.usage = WGPUBufferUsage_MapRead | WGPUBufferUsage_CopyDst
+	bufferDesc.label = WGPUStringView(pointer(bufferLabel), length(bufferLabel))
+	bufferDesc.usage = WGPUBufferUsage(WGPUBufferUsage_MapRead | WGPUBufferUsage_CopyDst)
 	bufferDesc.size = bufferSize
 	bufferDesc.mappedAtCreation = false
 	bufferDesc
@@ -43,7 +43,7 @@ end
 
 outputBuffer = GC.@preserve bufferDesc bufferLabel wgpuDeviceCreateBuffer(
     device,
-    pointer_from_objref(bufferDesc)
+    bufferDesc |> ptr
 )
 
 free(bufferLabel)
@@ -56,35 +56,34 @@ textureExtent = WGPUExtent3D(
     1 # depth of array layers
 )
 
+ltext = "TextureDescriptor"
 ## texture
 textureDesc = GC.@preserve textureExtent begin
-	textureDesc = WGPUTextureDescriptor()
+	textureDesc = WGPUTextureDescriptor |> CStruct
 	textureDesc.nextInChain = C_NULL
-	textureDesc.label = C_NULL
+	textureDesc.label = WGPUStringView(pointer(ltext), length(ltext))
 	textureDesc.size = textureExtent
 	textureDesc.mipLevelCount = 1
 	textureDesc.sampleCount = 1
 	textureDesc.dimension = WGPUTextureDimension_2D
 	textureDesc.format = WGPUTextureFormat_RGBA8UnormSrgb
-	textureDesc.usage = WGPUTextureUsage_RenderAttachment | WGPUTextureUsage_CopySrc
-	textureDesc.viewFormatCount = 0
-	textureDesc.viewFormats = C_NULL
+	textureDesc.usage = WGPUTextureUsage(WGPUTextureUsage_RenderAttachment | WGPUTextureUsage_CopySrc)
 	textureDesc
 end
 
 
-texture = GC.@preserve device textureDesc wgpuDeviceCreateTexture(
+texture = wgpuDeviceCreateTexture(
     device,
-    pointer_from_objref(textureDesc)
+    textureDesc |> ptr
 )
 
 ## encoder
-encoderDesc = WGPUCommandEncoderDescriptor()
+encoderDesc = WGPUCommandEncoderDescriptor |> CStruct
 encoderDesc.nextInChain = C_NULL
-encoderDesc.label = C_NULL
+encoderDesc.label = WGPUStringView(C_NULL, 0)
 encoder = GC.@preserve device encoderDesc wgpuDeviceCreateCommandEncoder(
         device, 
-        pointer_from_objref(encoderDesc)
+        (encoderDesc) |> ptr
 )
 
 ## outputAttachment

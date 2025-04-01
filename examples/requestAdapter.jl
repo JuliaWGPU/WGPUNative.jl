@@ -1,13 +1,14 @@
 ## Load WGPU
 using WGPUNative
-using Infiltrator
+
 adapter = WGPUAdapter()
 
 function request_adapter_callback(
 				status::WGPURequestAdapterStatus,
 				returnAdapter::WGPUAdapter,
-			   message::Ptr{Cchar},
-			   userData::Ptr{Cvoid})
+			   message::WGPUStringView,
+			   userdata::Ptr{Cvoid}
+		   )
     global adapter = returnAdapter
     return nothing
 end
@@ -25,7 +26,7 @@ Base.cconvert(::Type{Ptr{WGPULimits}}, supportedLimits::Array{WGPULimits, 1}) = 
 end
 
 
-requestAdapterCallback = @cfunction(request_adapter_callback, Cvoid, (WGPURequestAdapterStatus, WGPUAdapter, Ptr{Cchar}, Ptr{Cvoid}))
+requestAdapterCallback = @cfunction(request_adapter_callback, Cvoid, (WGPURequestAdapterStatus, WGPUAdapter, WGPUStringView, Ptr{Cvoid}))
 
 callbackInfo = WGPURequestAdapterCallbackInfo()
 callbackInfo.nextInChain = C_NULL
@@ -42,31 +43,24 @@ wgpuInstanceRequestAdapter(
 
 @assert adapter != C_NULL
 
-infoArray = Ptr{WGPUAdapterInfo}()
 function getWGPUAdapterInfo()
 	info = WGPUAdapterInfo()
-	GC.@preserve adapter infoArray wgpuAdapterGetInfo(adapter, info)
+	GC.@preserve adapter wgpuAdapterGetInfo(adapter, info)
 	return info
 end
 
 infos = getWGPUAdapterInfo()
 
-nativelimits = WGPUNativeLimits()
-supportedLimits = WGPULimits(
-	nativelimits.chain.next,
-	zeros(UInt32, 14)...,
-	zeros(UInt64, 2)...,
-	zeros(UInt32, 3)...,
-	UInt64(0),
-	zeros(UInt32, 11)...
-) |> Ref
+nativelimits = CStruct(WGPUNativeLimits)
+supportedLimits = CStruct(WGPULimits)
+supportedLimits.nextInChain = nativelimits.chain.next
 
-function getWGPUAdapterLimits(suportedLimits)
+function getWGPUAdapterLimits(supportedLimits)
 	chainsOutSet = wgpuAdapterGetLimits(adapter, supportedLimits)
 	return chainsOutSet
 end
-
-status = getWGPUAdapterLimits(supportedLimits)
+supportedLimitsPtr = ptr(supportedLimits)
+status = getWGPUAdapterLimits(supportedLimitsPtr)
 
 if status == WGPUStatus_Success
 	# Print supportedLimits here

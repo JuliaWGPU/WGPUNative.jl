@@ -21,36 +21,38 @@ end
 
 (shaderSource, _) = load_wgsl("$(pkgdir(WGPUNative))/examples/shader.wgsl")
 
-##
+## 
 shader = wgpuDeviceCreateShaderModule(
     device,
     shaderSource |> pointer_from_objref
 )
 
 ## StagingBuffer 
-stagingDescriptor = WGPUBufferDescriptor()
+stagingDescriptor = WGPUBufferDescriptor |> CStruct
+l = "StagingBuffer"
 stagingDescriptor.nextInChain = C_NULL
-stagingDescriptor.label = let l = "StagingBuffer"; WGPUStringView(pointer(l), length(l)) end
-stagingDescriptor.usage = WGPUBufferUsage_MapRead | WGPUBufferUsage_CopyDst
+stagingDescriptor.label = WGPUStringView(pointer(l), length(l))
+stagingDescriptor.usage = WGPUBufferUsage(WGPUBufferUsage_MapRead | WGPUBufferUsage_CopyDst)
 stagingDescriptor.size = sizeof(numbers)
 stagingDescriptor.mappedAtCreation = false
 
 stagingBuffer = wgpuDeviceCreateBuffer(
                     device,
-                    stagingDescriptor |> pointer_from_objref
+                    stagingDescriptor |> ptr
                 )
 ## StorageBuffer 
-storageDescriptor = WGPUBufferDescriptor()
+l = "StorageBuffer"
+storageDescriptor = WGPUBufferDescriptor |> CStruct
 storageDescriptor.nextInChain = C_NULL
-storageDescriptor.label = pointer("StorageBuffer")
-storageDescriptor.usage = WGPUBufferUsage_Storage | WGPUBufferUsage_CopyDst | WGPUBufferUsage_CopySrc
+storageDescriptor.label = WGPUStringView(pointer(l), length(l))
+storageDescriptor.usage = WGPUBufferUsage(WGPUBufferUsage_Storage | WGPUBufferUsage_CopyDst | WGPUBufferUsage_CopySrc)
 storageDescriptor.size = sizeof(numbers)
 storageDescriptor.mappedAtCreation = false
 
 storageBuffer = wgpuDeviceCreateBuffer(
-                    device, 
-                    storageDescriptor |> pointer_from_objref
-                )
+				    device, 
+				    storageDescriptor |> ptr
+				)
 
 
 # compute pipeline
@@ -58,20 +60,21 @@ name = "main"
 computeStageDesc = GC.@preserve name WGPUProgrammableStageDescriptor(
 	C_NULL, 
 	shader,
-	pointer(name),
+	WGPUStringView(pointer(name), length(name)),
 	0,
 	C_NULL
 )
 
-computePipelineDesc = WGPUComputePipelineDescriptor()
+pipelinename = "compute_pipeline"
+computePipelineDesc = CStruct(WGPUComputePipelineDescriptor)
 computePipelineDesc.nextInChain = C_NULL
-computePipelineDesc.label = pointer("compute_pipeline")
+computePipelineDesc.label = WGPUStringView(pointer(pipelinename), length(pipelinename))
 computePipelineDesc.layout = C_NULL
 computePipelineDesc.compute = computeStageDesc
 
 computePipeline = GC.@preserve computePipelineDesc wgpuDeviceCreateComputePipeline(
 	device,
-	computePipelineDesc |> pointer_from_objref
+	computePipelineDesc |> ptr
 )
 
 ## BindGroupLayout
@@ -93,9 +96,9 @@ bgentries = WGPUBindGroupEntry[]
 push!(bgentries, bgEntry)
 
 bgDescriptor = GC.@preserve bgName bgentries begin
-	bgDescriptor = WGPUBindGroupDescriptor()
+	bgDescriptor = CStruct(WGPUBindGroupDescriptor)
 	bgDescriptor.nextInChain = C_NULL
-	bgDescriptor.label = pointer(bgName)
+	bgDescriptor.label = WGPUStringView(pointer(bgName), length(bgName))
 	bgDescriptor.entries = bgentries |> pointer
 	bgDescriptor.entryCount = 1
 	bgDescriptor.layout = bindgroupLayout
@@ -104,36 +107,36 @@ end
 
 bindGroup = GC.@preserve bgDescriptor wgpuDeviceCreateBindGroup(
     device,
-    bgDescriptor |> pointer_from_objref
+    bgDescriptor |> ptr
 )
 
 @assert bindGroup != C_NULL
 
 ## encoder
 cmdName = "CmdEncoder"
-cmdEncoderDesc = WGPUCommandEncoderDescriptor()
+cmdEncoderDesc = WGPUCommandEncoderDescriptor |> CStruct
 cmdEncoderDesc.nextInChain = C_NULL
-cmdEncoderDesc.label = pointer(name)
+cmdEncoderDesc.label = WGPUStringView(pointer(name), length(name))
 
 cmdEncoder = GC.@preserve cmdName cmdEncoderDesc wgpuDeviceCreateCommandEncoder(
             device,
-            cmdEncoderDesc |> pointer_from_objref
+            cmdEncoderDesc |> ptr
         )
 
 
 ## computePass
 computepassName = "compute pass"
 computePassDesc = GC.@preserve computepassName begin
-	computePassDesc = WGPUComputePassDescriptor()
+	computePassDesc = WGPUComputePassDescriptor |> CStruct
 	computePassDesc.nextInChain = C_NULL
 	computePassDesc.timestampWrites = C_NULL
-	computePassDesc.label = pointer(computepassName)
+	computePassDesc.label = WGPUStringView(pointer(computepassName), length(computepassName))
 	computePassDesc
 end
 
 computePassEncoder = wgpuCommandEncoderBeginComputePass(
     cmdEncoder,
-    computePassDesc |> pointer_from_objref
+    computePassDesc |> ptr
 )
 
 ## set pipeline
@@ -152,15 +155,15 @@ queue = wgpuDeviceGetQueue(device)
 ## commandBuffer
 cmdBufferName = "cmd Buffer"
 cmdBufferDesc = GC.@preserve cmdBufferName begin
-	cmdBufferDesc = WGPUCommandBufferDescriptor()
+	cmdBufferDesc = WGPUCommandBufferDescriptor |> CStruct
 	cmdBufferDesc.nextInChain = C_NULL
-	cmdBufferDesc.label = pointer("cmd buffer")
+	cmdBufferDesc.label = WGPUStringView(pointer(cmdBufferName), length(cmdBufferName))
 	cmdBufferDesc
 end
 
 cmdBuffer = wgpuCommandEncoderFinish(
     cmdEncoder,
-    cmdBufferDesc |> pointer_from_objref
+    cmdBufferDesc |> ptr
 )
 
 
@@ -171,23 +174,26 @@ wgpuQueueWriteBuffer(queue, storageBuffer, 0, pointer(numbers), sizeof(numbers))
 wgpuQueueSubmit(queue, 1, Ref(cmdBuffer))
 
 ## MapAsync
-asyncstatus = WGPUBufferMapAsyncStatus(2)
+asyncstatus = WGPUMapAsyncStatus(2)
 
-function readBufferMap(status::WGPUBufferMapAsyncStatus, userData)
+function readBufferMap(status::WGPUMapAsyncStatus, userData)
 	global asyncstatus
     asyncstatus = status
     return nothing
 end
 
-readbuffermap = @cfunction(readBufferMap, Cvoid, (WGPUBufferMapAsyncStatus, Ptr{Cvoid}))
 
-wgpuBufferMapAsync(stagingBuffer, WGPUMapMode_Read, 0, sizeof(numbers), readbuffermap, C_NULL)
+readbuffermap = @cfunction(readBufferMap, Cvoid, (WGPUMapAsyncStatus, Ptr{Cvoid}))
+readBufferMapInfo = WGPUBufferMapCallbackInfo |> CStruct
+readBufferMapInfo.callback = readbuffermap
+
+wgpuBufferMapAsync(stagingBuffer, WGPUMapMode_Read, 0, sizeof(numbers), readBufferMapInfo |> concrete)
 
 
 ## device polling
 wgpuDevicePoll(device, true, C_NULL)
 
-@assert asyncstatus == WGPUBufferMapAsyncStatus_Success
+@assert asyncstatus == WGPUMapAsyncStatus_Success
 ## times
 times = convert(Ptr{UInt32}, wgpuBufferGetMappedRange(stagingBuffer, 0, sizeof(numbers)))
 
