@@ -17,9 +17,11 @@ upstreamVersion = "v24.0.0.1"
 
 url = "https://github.com/gfx-rs/wgpu-native/releases/download/$(upstreamVersion)/wgpu-$kernel-$arch-release.zip"
 download(url, location)
+
 rm("wgpulib", recursive=true, force=true)
 mkdir("wgpulib")
 run(`unzip $location -d wgpulib`)
+
 rm("$releasefile")
 mv("$(joinpath("wgpulib", "include", "webgpu", "webgpu.h"))", "$(joinpath("wgpulib", "include", "webgpu.h"))")
 mv("$(joinpath("wgpulib", "include", "webgpu", "wgpu.h"))", "$(joinpath("wgpulib", "include", "wgpu.h"))")
@@ -37,4 +39,3 @@ ctx = create_context(WGPU_HEADERS, args, options)
 build!(ctx)
 
 rm("wgpulib", recursive=true, force=true)
-

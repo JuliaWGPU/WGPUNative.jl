@@ -6,6 +6,14 @@ export_symbol_prefixes = ["WGPU", "wgpu"]
 use_deterministic_symbol = true
 prologue_file_path = "./prologue.jl"
 auto_mutability = true
+output_ignorelist = [
+	"WGPUFlags", 
+	"WGPUBufferUsage",
+	"WGPUColorWriteMask",
+	"WGPUMapMode",
+	"WGPUShaderStage",
+	"WGPUTextureUsage",
+]
 
 [codegen]
 use_ccall_macro = true
