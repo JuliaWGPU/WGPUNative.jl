@@ -10,10 +10,10 @@ b = read("$(pkgdir(WGPUNative))/examples/shader.wgsl")
 
 function load_wgsl(filename)
     b = read(filename)
-	wgslDescriptor = WGPUShaderSourceWGSL()
+	wgslDescriptor = WGPUShaderSourceWGSL |> CStruct
 	wgslDescriptor.chain = WGPUChainedStruct(C_NULL, WGPUSType_ShaderSourceWGSL)
 	wgslDescriptor.code = WGPUStringView(pointer(b), length(b))
-    descriptor = WGPUShaderModuleDescriptor()
+    descriptor = WGPUShaderModuleDescriptor |> CStruct
     descriptor.nextInChain = wgslDescriptor |> pointer_from_objref
     descriptor.label = WGPUStringView(pointer(filename), length(filename))
     return (descriptor, wgslDescriptor)
@@ -24,7 +24,7 @@ end
 ## 
 shader = wgpuDeviceCreateShaderModule(
     device,
-    shaderSource |> pointer_from_objref
+    shaderSource |> ptr
 )
 
 ## StagingBuffer 
