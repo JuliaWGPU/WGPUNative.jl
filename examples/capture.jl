@@ -7,8 +7,7 @@ include("$(pkgdir(WGPUNative))/examples/requestAdapter.jl")
 include("$(pkgdir(WGPUNative))/examples/requestDevice.jl")
 
 ## Buffer dimensions
-width, height = (20, 20)
-using StaticTools
+width, height = (2, 2)
 
 struct BufferDimensions
     height::UInt32
@@ -25,52 +24,60 @@ struct BufferDimensions
     end
 end
 
-
 bufferDimensions = BufferDimensions(width, height)
 
 bufferSize = bufferDimensions.padded_bytes_per_row*bufferDimensions.height
-bufferLabel = m"Output Buffer"
+bufferLabel = "Output Buffer"
 
-bufferDesc = GC.@preserve bufferSize bufferLabel begin
-	bufferDesc = WGPUBufferDescriptor |> CStruct
-	bufferDesc.nextInChain = C_NULL
-	bufferDesc.label = WGPUStringView(pointer(bufferLabel), length(bufferLabel))
-	bufferDesc.usage = WGPUBufferUsage(WGPUBufferUsage_MapRead | WGPUBufferUsage_CopyDst)
-	bufferDesc.size = bufferSize
-	bufferDesc.mappedAtCreation = false
-	bufferDesc
-end
+bufferDesc = WGPUBufferDescriptor |> CStruct
+bufferDesc.nextInChain = C_NULL
+bufferDesc.label = WGPUStringView(pointer(bufferLabel), length(bufferLabel))
+bufferDesc.usage = WGPUBufferUsage(WGPUBufferUsage_MapRead | WGPUBufferUsage_CopyDst)
+bufferDesc.size = bufferSize
+bufferDesc.mappedAtCreation = false
 
 outputBuffer = GC.@preserve bufferDesc bufferLabel wgpuDeviceCreateBuffer(
     device,
     bufferDesc |> ptr
 )
 
-free(bufferLabel)
-
 ## textureExtent 
 
-textureExtent = WGPUExtent3D(
-    bufferDimensions.width,
-    bufferDimensions.height,
-    1 # depth of array layers
-)
+textureExtent = WGPUExtent3D |> CStruct
+textureExtent.width = bufferDimensions.width
+textureExtent.height = bufferDimensions.height
+textureExtent.depthOrArrayLayers = 1
 
-ltext = "TextureDescriptor"
+# textureExtent = WGPUExtent3D(
+#     bufferDimensions.width,
+#     bufferDimensions.height,
+#     1 # depth of array layers
+# ) |> CStruct
+
+ltext = "texture"
 ## texture
-textureDesc = GC.@preserve textureExtent begin
-	textureDesc = WGPUTextureDescriptor |> CStruct
-	textureDesc.nextInChain = C_NULL
-	textureDesc.label = WGPUStringView(pointer(ltext), length(ltext))
-	textureDesc.size = textureExtent
-	textureDesc.mipLevelCount = 1
-	textureDesc.sampleCount = 1
-	textureDesc.dimension = WGPUTextureDimension_2D
-	textureDesc.format = WGPUTextureFormat_RGBA8UnormSrgb
-	textureDesc.usage = WGPUTextureUsage(WGPUTextureUsage_RenderAttachment | WGPUTextureUsage_CopySrc)
-	textureDesc
-end
+# textureDesc = WGPUTextureDescriptor(
+#     C_NULL,
+#     WGPUStringView(pointer(ltext), length(ltext)),
+#     WGPUTextureUsage(WGPUTextureUsage_RenderAttachment | WGPUTextureUsage_CopySrc),
+#     WGPUTextureDimension_2D,
+#     textureExtent,
+#     WGPUTextureFormat_RGBA8UnormSrgb,
+#     1,
+#     1,
+#     0, 
+#     C_NULL
+# )
 
+textureDesc = WGPUTextureDescriptor |> CStruct
+textureDesc.nextInChain = C_NULL
+textureDesc.label = WGPUStringView(pointer(ltext), length(ltext))
+textureDesc.size = textureExtent |> concrete
+textureDesc.mipLevelCount = 1
+textureDesc.sampleCount = 1
+textureDesc.dimension = WGPUTextureDimension_2D
+textureDesc.format = WGPUTextureFormat_RGBA8UnormSrgb
+textureDesc.usage = WGPUTextureUsage(WGPUTextureUsage_RenderAttachment | WGPUTextureUsage_CopySrc)
 
 texture = wgpuDeviceCreateTexture(
     device,

@@ -5,7 +5,7 @@ module_name = "LibWGPU"
 export_symbol_prefixes = ["WGPU", "wgpu"]
 use_deterministic_symbol = true
 prologue_file_path = "./prologue.jl"
-auto_mutability = true
+auto_mutability = false
 output_ignorelist = [
 	"WGPUFlags", 
 	"WGPUBufferUsage",

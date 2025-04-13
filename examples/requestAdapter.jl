@@ -28,7 +28,7 @@ end
 
 requestAdapterCallback = @cfunction(request_adapter_callback, Cvoid, (WGPURequestAdapterStatus, WGPUAdapter, WGPUStringView, Ptr{Cvoid}))
 
-callbackInfo = WGPURequestAdapterCallbackInfo()
+callbackInfo = WGPURequestAdapterCallbackInfo |> CStruct
 callbackInfo.nextInChain = C_NULL
 callbackInfo.userdata1 = adapter
 callbackInfo.callback = requestAdapterCallback
@@ -38,14 +38,14 @@ instance = wgpuCreateInstance(C_NULL)
 wgpuInstanceRequestAdapter(
 	instance, 
 	C_NULL, 
-	callbackInfo,
+	callbackInfo |> concrete,
 )
 
 @assert adapter != C_NULL
 
 function getWGPUAdapterInfo()
-	info = WGPUAdapterInfo()
-	GC.@preserve adapter wgpuAdapterGetInfo(adapter, info)
+	info = WGPUAdapterInfo |> CStruct
+	GC.@preserve adapter wgpuAdapterGetInfo(adapter, info |> ptr)
 	return info
 end
 
@@ -65,3 +65,5 @@ status = getWGPUAdapterLimits(supportedLimitsPtr)
 if status == WGPUStatus_Success
 	# Print supportedLimits here
 end
+
+status

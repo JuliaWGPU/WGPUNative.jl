@@ -19,4 +19,4 @@ end
 logcallback = @cfunction(logCallBack, Cvoid, (WGPULogLevel, WGPUStringView))
 
 GC.@preserve logcallback wgpuSetLogCallback(logcallback, Ptr{Cvoid}())
-wgpuSetLogLevel(WGPULogLevel_Debug)
+wgpuSetLogLevel(WGPULogLevel_Trace)

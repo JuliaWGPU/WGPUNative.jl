@@ -786,40 +786,36 @@ struct WGPUChainedStructOut
     sType::WGPUSType
 end
 
-mutable struct WGPUBufferMapCallbackInfo
+struct WGPUBufferMapCallbackInfo
     nextInChain::Ptr{WGPUChainedStruct}
     mode::WGPUCallbackMode
     callback::WGPUBufferMapCallback
     userdata1::Ptr{Cvoid}
     userdata2::Ptr{Cvoid}
-    WGPUBufferMapCallbackInfo() = new()
 end
 
-mutable struct WGPUCompilationInfoCallbackInfo
+struct WGPUCompilationInfoCallbackInfo
     nextInChain::Ptr{WGPUChainedStruct}
     mode::WGPUCallbackMode
     callback::WGPUCompilationInfoCallback
     userdata1::Ptr{Cvoid}
     userdata2::Ptr{Cvoid}
-    WGPUCompilationInfoCallbackInfo() = new()
 end
 
-mutable struct WGPUCreateComputePipelineAsyncCallbackInfo
+struct WGPUCreateComputePipelineAsyncCallbackInfo
     nextInChain::Ptr{WGPUChainedStruct}
     mode::WGPUCallbackMode
     callback::WGPUCreateComputePipelineAsyncCallback
     userdata1::Ptr{Cvoid}
     userdata2::Ptr{Cvoid}
-    WGPUCreateComputePipelineAsyncCallbackInfo() = new()
 end
 
-mutable struct WGPUCreateRenderPipelineAsyncCallbackInfo
+struct WGPUCreateRenderPipelineAsyncCallbackInfo
     nextInChain::Ptr{WGPUChainedStruct}
     mode::WGPUCallbackMode
     callback::WGPUCreateRenderPipelineAsyncCallback
     userdata1::Ptr{Cvoid}
     userdata2::Ptr{Cvoid}
-    WGPUCreateRenderPipelineAsyncCallbackInfo() = new()
 end
 
 struct WGPUDeviceLostCallbackInfo
@@ -830,40 +826,36 @@ struct WGPUDeviceLostCallbackInfo
     userdata2::Ptr{Cvoid}
 end
 
-mutable struct WGPUPopErrorScopeCallbackInfo
+struct WGPUPopErrorScopeCallbackInfo
     nextInChain::Ptr{WGPUChainedStruct}
     mode::WGPUCallbackMode
     callback::WGPUPopErrorScopeCallback
     userdata1::Ptr{Cvoid}
     userdata2::Ptr{Cvoid}
-    WGPUPopErrorScopeCallbackInfo() = new()
 end
 
-mutable struct WGPUQueueWorkDoneCallbackInfo
+struct WGPUQueueWorkDoneCallbackInfo
     nextInChain::Ptr{WGPUChainedStruct}
     mode::WGPUCallbackMode
     callback::WGPUQueueWorkDoneCallback
     userdata1::Ptr{Cvoid}
     userdata2::Ptr{Cvoid}
-    WGPUQueueWorkDoneCallbackInfo() = new()
 end
 
-mutable struct WGPURequestAdapterCallbackInfo
+struct WGPURequestAdapterCallbackInfo
     nextInChain::Ptr{WGPUChainedStruct}
     mode::WGPUCallbackMode
     callback::WGPURequestAdapterCallback
     userdata1::Ptr{Cvoid}
     userdata2::Ptr{Cvoid}
-    WGPURequestAdapterCallbackInfo() = new()
 end
 
-mutable struct WGPURequestDeviceCallbackInfo
+struct WGPURequestDeviceCallbackInfo
     nextInChain::Ptr{WGPUChainedStruct}
     mode::WGPUCallbackMode
     callback::WGPURequestDeviceCallback
     userdata1::Ptr{Cvoid}
     userdata2::Ptr{Cvoid}
-    WGPURequestDeviceCallbackInfo() = new()
 end
 
 struct WGPUUncapturedErrorCallbackInfo
@@ -873,7 +865,7 @@ struct WGPUUncapturedErrorCallbackInfo
     userdata2::Ptr{Cvoid}
 end
 
-mutable struct WGPUAdapterInfo
+struct WGPUAdapterInfo
     nextInChain::Ptr{WGPUChainedStructOut}
     vendor::WGPUStringView
     architecture::WGPUStringView
@@ -883,7 +875,6 @@ mutable struct WGPUAdapterInfo
     adapterType::WGPUAdapterType
     vendorID::UInt32
     deviceID::UInt32
-    WGPUAdapterInfo() = new()
 end
 
 struct WGPUBindGroupEntry
@@ -909,13 +900,12 @@ struct WGPUBufferBindingLayout
     minBindingSize::UInt64
 end
 
-mutable struct WGPUBufferDescriptor
+struct WGPUBufferDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::WGPUStringView
     usage::WGPUBufferUsage
     size::UInt64
     mappedAtCreation::WGPUBool
-    WGPUBufferDescriptor() = new()
 end
 
 struct WGPUColor
@@ -925,16 +915,14 @@ struct WGPUColor
     a::Cdouble
 end
 
-mutable struct WGPUCommandBufferDescriptor
+struct WGPUCommandBufferDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::WGPUStringView
-    WGPUCommandBufferDescriptor() = new()
 end
 
-mutable struct WGPUCommandEncoderDescriptor
+struct WGPUCommandEncoderDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::WGPUStringView
-    WGPUCommandEncoderDescriptor() = new()
 end
 
 struct WGPUCompilationMessage
@@ -1023,12 +1011,11 @@ struct WGPUOrigin3D
     z::UInt32
 end
 
-mutable struct WGPUPipelineLayoutDescriptor
+struct WGPUPipelineLayoutDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::WGPUStringView
     bindGroupLayoutCount::Csize_t
     bindGroupLayouts::Ptr{WGPUBindGroupLayout}
-    WGPUPipelineLayoutDescriptor() = new()
 end
 
 struct WGPUPrimitiveState
@@ -1040,12 +1027,11 @@ struct WGPUPrimitiveState
     unclippedDepth::WGPUBool
 end
 
-mutable struct WGPUQuerySetDescriptor
+struct WGPUQuerySetDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::WGPUStringView
     type::WGPUQueryType
     count::UInt32
-    WGPUQuerySetDescriptor() = new()
 end
 
 struct WGPUQueueDescriptor
@@ -1053,13 +1039,12 @@ struct WGPUQueueDescriptor
     label::WGPUStringView
 end
 
-mutable struct WGPURenderBundleDescriptor
+struct WGPURenderBundleDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::WGPUStringView
-    WGPURenderBundleDescriptor() = new()
 end
 
-mutable struct WGPURenderBundleEncoderDescriptor
+struct WGPURenderBundleEncoderDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::WGPUStringView
     colorFormatCount::Csize_t
@@ -1068,7 +1053,6 @@ mutable struct WGPURenderBundleEncoderDescriptor
     sampleCount::UInt32
     depthReadOnly::WGPUBool
     stencilReadOnly::WGPUBool
-    WGPURenderBundleEncoderDescriptor() = new()
 end
 
 struct WGPURenderPassDepthStencilAttachment
@@ -1083,10 +1067,9 @@ struct WGPURenderPassDepthStencilAttachment
     stencilReadOnly::WGPUBool
 end
 
-mutable struct WGPURenderPassMaxDrawCount
+struct WGPURenderPassMaxDrawCount
     chain::WGPUChainedStruct
     maxDrawCount::UInt64
-    WGPURenderPassMaxDrawCount() = new()
 end
 
 struct WGPURenderPassTimestampWrites
@@ -1095,14 +1078,13 @@ struct WGPURenderPassTimestampWrites
     endOfPassWriteIndex::UInt32
 end
 
-mutable struct WGPURequestAdapterOptions
+struct WGPURequestAdapterOptions
     nextInChain::Ptr{WGPUChainedStruct}
     featureLevel::WGPUFeatureLevel
     powerPreference::WGPUPowerPreference
     forceFallbackAdapter::WGPUBool
     backendType::WGPUBackendType
     compatibleSurface::WGPUSurface
-    WGPURequestAdapterOptions() = new()
 end
 
 struct WGPUSamplerBindingLayout
@@ -1110,7 +1092,7 @@ struct WGPUSamplerBindingLayout
     type::WGPUSamplerBindingType
 end
 
-mutable struct WGPUSamplerDescriptor
+struct WGPUSamplerDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::WGPUStringView
     addressModeU::WGPUAddressMode
@@ -1123,26 +1105,22 @@ mutable struct WGPUSamplerDescriptor
     lodMaxClamp::Cfloat
     compare::WGPUCompareFunction
     maxAnisotropy::UInt16
-    WGPUSamplerDescriptor() = new()
 end
 
-mutable struct WGPUShaderModuleDescriptor
+struct WGPUShaderModuleDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::WGPUStringView
-    WGPUShaderModuleDescriptor() = new()
 end
 
-mutable struct WGPUShaderSourceSPIRV
+struct WGPUShaderSourceSPIRV
     chain::WGPUChainedStruct
     codeSize::UInt32
     code::Ptr{UInt32}
-    WGPUShaderSourceSPIRV() = new()
 end
 
-mutable struct WGPUShaderSourceWGSL
+struct WGPUShaderSourceWGSL
     chain::WGPUChainedStruct
     code::WGPUStringView
-    WGPUShaderSourceWGSL() = new()
 end
 
 struct WGPUStencilFaceState
@@ -1159,19 +1137,17 @@ struct WGPUStorageTextureBindingLayout
     viewDimension::WGPUTextureViewDimension
 end
 
-mutable struct WGPUSupportedFeatures
+struct WGPUSupportedFeatures
     featureCount::Csize_t
     features::Ptr{WGPUFeatureName}
-    WGPUSupportedFeatures() = new()
 end
 
-mutable struct WGPUSupportedWGSLLanguageFeatures
+struct WGPUSupportedWGSLLanguageFeatures
     featureCount::Csize_t
     features::Ptr{WGPUWGSLLanguageFeatureName}
-    WGPUSupportedWGSLLanguageFeatures() = new()
 end
 
-mutable struct WGPUSurfaceCapabilities
+struct WGPUSurfaceCapabilities
     nextInChain::Ptr{WGPUChainedStructOut}
     usages::WGPUTextureUsage
     formatCount::Csize_t
@@ -1180,10 +1156,9 @@ mutable struct WGPUSurfaceCapabilities
     presentModes::Ptr{WGPUPresentMode}
     alphaModeCount::Csize_t
     alphaModes::Ptr{WGPUCompositeAlphaMode}
-    WGPUSurfaceCapabilities() = new()
 end
 
-mutable struct WGPUSurfaceConfiguration
+struct WGPUSurfaceConfiguration
     nextInChain::Ptr{WGPUChainedStruct}
     device::WGPUDevice
     format::WGPUTextureFormat
@@ -1194,60 +1169,51 @@ mutable struct WGPUSurfaceConfiguration
     viewFormats::Ptr{WGPUTextureFormat}
     alphaMode::WGPUCompositeAlphaMode
     presentMode::WGPUPresentMode
-    WGPUSurfaceConfiguration() = new()
 end
 
-mutable struct WGPUSurfaceDescriptor
+struct WGPUSurfaceDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::WGPUStringView
-    WGPUSurfaceDescriptor() = new()
 end
 
-mutable struct WGPUSurfaceSourceAndroidNativeWindow
+struct WGPUSurfaceSourceAndroidNativeWindow
     chain::WGPUChainedStruct
     window::Ptr{Cvoid}
-    WGPUSurfaceSourceAndroidNativeWindow() = new()
 end
 
-mutable struct WGPUSurfaceSourceMetalLayer
+struct WGPUSurfaceSourceMetalLayer
     chain::WGPUChainedStruct
     layer::Ptr{Cvoid}
-    WGPUSurfaceSourceMetalLayer() = new()
 end
 
-mutable struct WGPUSurfaceSourceWaylandSurface
+struct WGPUSurfaceSourceWaylandSurface
     chain::WGPUChainedStruct
     display::Ptr{Cvoid}
     surface::Ptr{Cvoid}
-    WGPUSurfaceSourceWaylandSurface() = new()
 end
 
-mutable struct WGPUSurfaceSourceWindowsHWND
+struct WGPUSurfaceSourceWindowsHWND
     chain::WGPUChainedStruct
     hinstance::Ptr{Cvoid}
     hwnd::Ptr{Cvoid}
-    WGPUSurfaceSourceWindowsHWND() = new()
 end
 
-mutable struct WGPUSurfaceSourceXCBWindow
+struct WGPUSurfaceSourceXCBWindow
     chain::WGPUChainedStruct
     connection::Ptr{Cvoid}
     window::UInt32
-    WGPUSurfaceSourceXCBWindow() = new()
 end
 
-mutable struct WGPUSurfaceSourceXlibWindow
+struct WGPUSurfaceSourceXlibWindow
     chain::WGPUChainedStruct
     display::Ptr{Cvoid}
     window::UInt64
-    WGPUSurfaceSourceXlibWindow() = new()
 end
 
-mutable struct WGPUSurfaceTexture
+struct WGPUSurfaceTexture
     nextInChain::Ptr{WGPUChainedStructOut}
     texture::WGPUTexture
     status::WGPUSurfaceGetCurrentTextureStatus
-    WGPUSurfaceTexture() = new()
 end
 
 struct WGPUTexelCopyBufferLayout
@@ -1263,7 +1229,7 @@ struct WGPUTextureBindingLayout
     multisampled::WGPUBool
 end
 
-mutable struct WGPUTextureViewDescriptor
+struct WGPUTextureViewDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::WGPUStringView
     format::WGPUTextureFormat
@@ -1274,7 +1240,6 @@ mutable struct WGPUTextureViewDescriptor
     arrayLayerCount::UInt32
     aspect::WGPUTextureAspect
     usage::WGPUTextureUsage
-    WGPUTextureViewDescriptor() = new()
 end
 
 struct WGPUVertexAttribute
@@ -1283,13 +1248,12 @@ struct WGPUVertexAttribute
     shaderLocation::UInt32
 end
 
-mutable struct WGPUBindGroupDescriptor
+struct WGPUBindGroupDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::WGPUStringView
     layout::WGPUBindGroupLayout
     entryCount::Csize_t
     entries::Ptr{WGPUBindGroupEntry}
-    WGPUBindGroupDescriptor() = new()
 end
 
 struct WGPUBindGroupLayoutEntry
@@ -1307,18 +1271,16 @@ struct WGPUBlendState
     alpha::WGPUBlendComponent
 end
 
-mutable struct WGPUCompilationInfo
+struct WGPUCompilationInfo
     nextInChain::Ptr{WGPUChainedStruct}
     messageCount::Csize_t
     messages::Ptr{WGPUCompilationMessage}
-    WGPUCompilationInfo() = new()
 end
 
-mutable struct WGPUComputePassDescriptor
+struct WGPUComputePassDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::WGPUStringView
     timestampWrites::Ptr{WGPUComputePassTimestampWrites}
-    WGPUComputePassDescriptor() = new()
 end
 
 struct WGPUDepthStencilState
@@ -1335,7 +1297,7 @@ struct WGPUDepthStencilState
     depthBiasClamp::Cfloat
 end
 
-mutable struct WGPUDeviceDescriptor
+struct WGPUDeviceDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::WGPUStringView
     requiredFeatureCount::Csize_t
@@ -1344,7 +1306,6 @@ mutable struct WGPUDeviceDescriptor
     defaultQueue::WGPUQueueDescriptor
     deviceLostCallbackInfo::WGPUDeviceLostCallbackInfo
     uncapturedErrorCallbackInfo::WGPUUncapturedErrorCallbackInfo
-    WGPUDeviceDescriptor() = new()
 end
 
 struct WGPUFutureWaitInfo
@@ -1352,10 +1313,9 @@ struct WGPUFutureWaitInfo
     completed::WGPUBool
 end
 
-mutable struct WGPUInstanceDescriptor
+struct WGPUInstanceDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     features::WGPUInstanceCapabilities
-    WGPUInstanceDescriptor() = new()
 end
 
 struct WGPUProgrammableStageDescriptor
@@ -1376,10 +1336,9 @@ struct WGPURenderPassColorAttachment
     clearValue::WGPUColor
 end
 
-mutable struct WGPUTexelCopyBufferInfo
+struct WGPUTexelCopyBufferInfo
     layout::WGPUTexelCopyBufferLayout
     buffer::WGPUBuffer
-    WGPUTexelCopyBufferInfo() = new()
 end
 
 struct WGPUTexelCopyTextureInfo
@@ -1389,7 +1348,7 @@ struct WGPUTexelCopyTextureInfo
     aspect::WGPUTextureAspect
 end
 
-mutable struct WGPUTextureDescriptor
+struct WGPUTextureDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::WGPUStringView
     usage::WGPUTextureUsage
@@ -1400,7 +1359,6 @@ mutable struct WGPUTextureDescriptor
     sampleCount::UInt32
     viewFormatCount::Csize_t
     viewFormats::Ptr{WGPUTextureFormat}
-    WGPUTextureDescriptor() = new()
 end
 
 struct WGPUVertexBufferLayout
@@ -1410,12 +1368,11 @@ struct WGPUVertexBufferLayout
     attributes::Ptr{WGPUVertexAttribute}
 end
 
-mutable struct WGPUBindGroupLayoutDescriptor
+struct WGPUBindGroupLayoutDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::WGPUStringView
     entryCount::Csize_t
     entries::Ptr{WGPUBindGroupLayoutEntry}
-    WGPUBindGroupLayoutDescriptor() = new()
 end
 
 struct WGPUColorTargetState
@@ -1425,15 +1382,14 @@ struct WGPUColorTargetState
     writeMask::WGPUColorWriteMask
 end
 
-mutable struct WGPUComputePipelineDescriptor
+struct WGPUComputePipelineDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::WGPUStringView
     layout::WGPUPipelineLayout
     compute::WGPUProgrammableStageDescriptor
-    WGPUComputePipelineDescriptor() = new()
 end
 
-mutable struct WGPURenderPassDescriptor
+struct WGPURenderPassDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::WGPUStringView
     colorAttachmentCount::Csize_t
@@ -1441,7 +1397,6 @@ mutable struct WGPURenderPassDescriptor
     depthStencilAttachment::Ptr{WGPURenderPassDepthStencilAttachment}
     occlusionQuerySet::WGPUQuerySet
     timestampWrites::Ptr{WGPURenderPassTimestampWrites}
-    WGPURenderPassDescriptor() = new()
 end
 
 struct WGPUVertexState
@@ -1464,7 +1419,7 @@ struct WGPUFragmentState
     targets::Ptr{WGPUColorTargetState}
 end
 
-mutable struct WGPURenderPipelineDescriptor
+struct WGPURenderPipelineDescriptor
     nextInChain::Ptr{WGPUChainedStruct}
     label::WGPUStringView
     layout::WGPUPipelineLayout
@@ -1473,7 +1428,6 @@ mutable struct WGPURenderPipelineDescriptor
     depthStencil::Ptr{WGPUDepthStencilState}
     multisample::WGPUMultisampleState
     fragment::Ptr{WGPUFragmentState}
-    WGPURenderPipelineDescriptor() = new()
 end
 
 # typedef WGPUInstance ( * WGPUProcCreateInstance ) ( WGPU_NULLABLE WGPUInstanceDescriptor const * descriptor )
@@ -2895,7 +2849,7 @@ end
     WGPUNativeQueryType_Force32 = 2147483647
 end
 
-mutable struct WGPUInstanceExtras
+struct WGPUInstanceExtras
     chain::WGPUChainedStruct
     backends::WGPUInstanceBackend
     flags::WGPUInstanceFlag
@@ -2903,20 +2857,17 @@ mutable struct WGPUInstanceExtras
     gles3MinorVersion::WGPUGles3MinorVersion
     dxilPath::WGPUStringView
     dxcPath::WGPUStringView
-    WGPUInstanceExtras() = new()
 end
 
-mutable struct WGPUDeviceExtras
+struct WGPUDeviceExtras
     chain::WGPUChainedStruct
     tracePath::WGPUStringView
-    WGPUDeviceExtras() = new()
 end
 
-mutable struct WGPUNativeLimits
+struct WGPUNativeLimits
     chain::WGPUChainedStructOut
     maxPushConstantSize::UInt32
     maxNonSamplerBindings::UInt32
-    WGPUNativeLimits() = new()
 end
 
 struct WGPUPushConstantRange
@@ -2925,11 +2876,10 @@ struct WGPUPushConstantRange
     _end::UInt32
 end
 
-mutable struct WGPUPipelineLayoutExtras
+struct WGPUPipelineLayoutExtras
     chain::WGPUChainedStruct
     pushConstantRangeCount::Csize_t
     pushConstantRanges::Ptr{WGPUPushConstantRange}
-    WGPUPipelineLayoutExtras() = new()
 end
 
 const WGPUSubmissionIndex = UInt64
@@ -2939,20 +2889,18 @@ struct WGPUShaderDefine
     value::WGPUStringView
 end
 
-mutable struct WGPUShaderModuleGLSLDescriptor
+struct WGPUShaderModuleGLSLDescriptor
     chain::WGPUChainedStruct
     stage::WGPUShaderStage
     code::WGPUStringView
     defineCount::UInt32
     defines::Ptr{WGPUShaderDefine}
-    WGPUShaderModuleGLSLDescriptor() = new()
 end
 
-mutable struct WGPUShaderModuleDescriptorSpirV
+struct WGPUShaderModuleDescriptorSpirV
     label::WGPUStringView
     sourceSize::UInt32
     source::Ptr{UInt32}
-    WGPUShaderModuleDescriptorSpirV() = new()
 end
 
 struct WGPURegistryReport
@@ -2982,19 +2930,17 @@ struct WGPUHubReport
     samplers::WGPURegistryReport
 end
 
-mutable struct WGPUGlobalReport
+struct WGPUGlobalReport
     surfaces::WGPURegistryReport
     hub::WGPUHubReport
-    WGPUGlobalReport() = new()
 end
 
-mutable struct WGPUInstanceEnumerateAdapterOptions
+struct WGPUInstanceEnumerateAdapterOptions
     nextInChain::Ptr{WGPUChainedStruct}
     backends::WGPUInstanceBackend
-    WGPUInstanceEnumerateAdapterOptions() = new()
 end
 
-mutable struct WGPUBindGroupEntryExtras
+struct WGPUBindGroupEntryExtras
     chain::WGPUChainedStruct
     buffers::Ptr{WGPUBuffer}
     bufferCount::Csize_t
@@ -3002,26 +2948,22 @@ mutable struct WGPUBindGroupEntryExtras
     samplerCount::Csize_t
     textureViews::Ptr{WGPUTextureView}
     textureViewCount::Csize_t
-    WGPUBindGroupEntryExtras() = new()
 end
 
-mutable struct WGPUBindGroupLayoutEntryExtras
+struct WGPUBindGroupLayoutEntryExtras
     chain::WGPUChainedStruct
     count::UInt32
-    WGPUBindGroupLayoutEntryExtras() = new()
 end
 
-mutable struct WGPUQuerySetDescriptorExtras
+struct WGPUQuerySetDescriptorExtras
     chain::WGPUChainedStruct
     pipelineStatistics::Ptr{WGPUPipelineStatisticName}
     pipelineStatisticCount::Csize_t
-    WGPUQuerySetDescriptorExtras() = new()
 end
 
-mutable struct WGPUSurfaceConfigurationExtras
+struct WGPUSurfaceConfigurationExtras
     chain::WGPUChainedStruct
     desiredMaximumFrameLatency::UInt32
-    WGPUSurfaceConfigurationExtras() = new()
 end
 
 # typedef void ( * WGPULogCallback ) ( WGPULogLevel level , WGPUStringView message , void * userdata )
