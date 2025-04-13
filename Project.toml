@@ -9,11 +9,9 @@ CEnum = "fa961155-64e5-5f13-b03f-caf6b980ea82"
 Infiltrator = "5903a43b-9cc3-4c30-8d17-598619ec4e9b"
 Libdl = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
-PrettyPrint = "8162dcfd-2161-5ef2-ae6c-7681170c5f98"
 Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
 
 [compat]
 CEnum = "^0.5"
-PrettyPrint = "0.2.0"
 Reexport = "^1.2.0"
 julia = "^1.10.0"

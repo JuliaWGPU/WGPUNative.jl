@@ -10,7 +10,8 @@ elseif kernel == "nt"
 	kernel = "windows"
 end
 
-releasefile = "wgpu-$kernel-$arch-release.zip"
+releaseType = "debug"
+releasefile = "wgpu-$kernel-$arch-$releaseType.zip"
 location = "$releasefile"
 
 upstreamVersion = "v24.0.0.1"

@@ -3,7 +3,7 @@ const SIZE_MAX = 2^32
 const UINT32_MAX = 0xffffffff
 const UINT64_MAX = 0xffffffffffffffff
 
-const WGPUFlags = UInt32
+const WGPUFlags = UInt64
 
 @cenum WGPUBufferUsage::WGPUFlags begin
 	WGPUBufferUsage_None = 0x0000000000000000;
