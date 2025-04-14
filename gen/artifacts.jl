@@ -17,6 +17,8 @@ version = "v0.1.8"
 kernels = ["macos", "linux", "windows", "ios", "android"]
 archs = ["aarch64", "i686", "x86_64"]
 
+releaseType = "debug"
+
 upstreamVersion = "v24.0.0.1"
 
 io = IOBuffer()
@@ -49,7 +51,7 @@ function generateArtifacts()
 			else
 				buildType = ""
 			end
-			releasefile = "wgpu-$kernel-$arch$buildType-release.zip"
+			releasefile = "wgpu-$kernel-$arch$buildType-$releaseType.zip"
 			tarfile = "WGPU.$(upstreamVersion).$(arch)-$(kernel).tar.gz"
 			try
 				url = "https://github.com/gfx-rs/wgpu-native/releases/download/$(upstreamVersion)/$releasefile"
@@ -74,7 +76,7 @@ function writeArtifactsTOML()
 			if kernel == "windows"
 				buildType = "-msvc" # Choosing only msvc for now
 			end
-			releasefile = "wgpu-$kernel-$arch$buildType-release.zip"
+			releasefile = "wgpu-$kernel-$arch$buildType-$releaseType.zip"
 			tarfile = "WGPU.$(upstreamVersion).$(arch)-$(kernel).tar.gz"
 			try
 				# Downloads.download(joinpath(remoteurl, tarfile), tarfile)
@@ -90,14 +92,19 @@ function writeArtifactsTOML()
 	f = open("Artifacts.toml", "w")
 	write(f, io)
 	close(f)
-	mv("Artifacts.toml", "../Artifacts.toml")
+	mv("Artifacts.toml", "../Artifacts.toml", force=true)
 end
 
 
 generateArtifacts()
 
-# TODO 
-# publish artifacts as a release through github through github API
-# for now we could simply add input for confirmation of upload.
+println("Please upload the generated tar.gz files in gen folder to the github release")
+response = readline()
 
-# writeArtifactsTOML()
+if occursin(response, "yY")
+	# TODO 
+	# publish artifacts as a release through github through github API
+	# for now we could simply add input for confirmation of upload.
+	writeArtifactsTOML()
+end
+

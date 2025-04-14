@@ -1,19 +1,12 @@
 ## Load WGPU
 using WGPUNative
-
+using CEnum
 include("$(pkgdir(WGPUNative))/examples/logcallback.jl")
 include("$(pkgdir(WGPUNative))/examples/requestAdapter.jl")
 include("$(pkgdir(WGPUNative))/examples/requestDevice.jl")
 
-supportedLimits =  GC.@preserve getWGPUAdapterLimits()
+adapterFeatures = CStruct(WGPUSupportedFeatures)
+wgpuAdapterGetFeatures(adapter, adapterFeatures |> ptr)
 
-featureCount = wgpuAdapterEnumerateFeatures(adapter, C_NULL)
-
-featureList = map(WGPUFeatureName, zeros(Int, featureCount))
-
-wgpuAdapterEnumerateFeatures(adapter, featureList)
-
-devFeatureCount = wgpuDeviceEnumerateFeatures(device, C_NULL)
-devFeatureList = map(WGPUFeatureName, zeros(Int, devFeatureCount))
-
-wgpuDeviceEnumerateFeatures(device, devFeatureList)
+deviceFeatures = CStruct(WGPUSupportedFeatures)
+wgpuDeviceGetFeatures(device, deviceFeatures |> ptr)
