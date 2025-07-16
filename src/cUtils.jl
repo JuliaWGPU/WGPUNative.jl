@@ -101,9 +101,13 @@ end
 function toCString(s::String)
 	sNullTerminated = s*"\0"
 	sPtr = pointer(sNullTerminated)
-	dPtr = Libc.malloc(sizeof(sNullTerminated))
+	# Use length instead of sizeof for proper string handling
+	string_length = length(sNullTerminated)
+	dPtr = Libc.malloc(string_length)
 	dUInt8Ptr = convert(Ptr{UInt8}, dPtr)
-	unsafe_copyto!(dUInt8Ptr, sPtr, sizeof(sNullTerminated))
+	# Copy the actual string bytes, not sizeof which can be wrong
+	unsafe_copyto!(dUInt8Ptr, sPtr, string_length)
+	return dUInt8Ptr
 end
 
 function fromCString(s::Ptr{Int8})

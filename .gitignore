@@ -6,3 +6,4 @@ Manifest.toml
 *wgpulib
 gen/mainF.o
 examples/mainF.o
+*.arrow
