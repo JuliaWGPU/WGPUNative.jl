@@ -1,6 +1,6 @@
 module LibWGPU
 
-using CEnum
+using CEnum: CEnum, @cenum
 
 # SIZE_MAX needs verification
 const SIZE_MAX = 2^32
