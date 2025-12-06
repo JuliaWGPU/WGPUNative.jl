@@ -13,7 +13,7 @@ end
 # modifying conventions for wgpu specifically based on
 # releases at https://github.com/gfx-rs/wgpu-native/releases/tag/v22.1.0.5
 
-version = "v0.1.8"
+version = "v0.1.5"
 kernels = ["macos", "linux", "windows", "ios", "android"]
 archs = ["aarch64", "i686", "x86_64"]
 
