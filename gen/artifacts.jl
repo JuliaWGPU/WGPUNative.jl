@@ -9,7 +9,7 @@ kernel = lowercase(String(Sys.KERNEL))
 if kernel == "nt"
 	kernel == "windows"
 end
-	
+
 # modifying conventions for wgpu specifically based on
 # releases at https://github.com/gfx-rs/wgpu-native/releases/tag/v22.1.0.5
 
@@ -17,7 +17,7 @@ version = "v0.1.8"
 kernels = ["macos", "linux", "windows", "ios", "android"]
 archs = ["aarch64", "i686", "x86_64"]
 
-releaseType = "debug"
+releaseType = "release"
 
 upstreamVersion = "v24.0.0.1"
 
@@ -34,8 +34,8 @@ function writeIO(io, arch, kernel, sha1, sha256, filename, url)
 
 			[[WGPUNative.download]]
 			sha256 = "$sha256"
-			url = "$url"
-		
+			url = "$(url)/$(filename)"
+
 		"""
 	)
 end
@@ -82,7 +82,7 @@ function writeArtifactsTOML()
 				# Downloads.download(joinpath(remoteurl, tarfile), tarfile)
 				sha256Val = bytes2hex(open(sha256, tarfile))
 				sha1Val = Tar.tree_hash(IOBuffer(inflate_gzip(tarfile)))
-				writeIO(io, arch, kernel, sha1Val, sha256Val, "", joinpath(remoteurl, tarfile))
+				writeIO(io, arch, kernel, sha1Val, sha256Val, tarfile, remoteurl)
 			catch(e)
 				println("$e")
 			end
@@ -102,9 +102,8 @@ println("Please upload the generated tar.gz files in gen folder to the github re
 response = readline()
 
 if occursin(response, "yY")
-	# TODO 
+	# TODO
 	# publish artifacts as a release through github through github API
 	# for now we could simply add input for confirmation of upload.
 	writeArtifactsTOML()
 end
-
