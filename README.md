@@ -6,8 +6,12 @@ Supports following architectures
 
 * `macOS aarch64` (`aarch64-apple-darwin`)
 * `Linux aarch64 {libc=glibc}` (`aarch64-linux-gnu`)
+* `Windows aarch64` (`aarch64-w64-mingw32`)
+* `android aarch64` (`aarch64-linux-android`)
+* `ios aarch64` (`aarch64-apple-ios`)
+* `android i686` (`i686-linux-android`)
 * `Windows i686` (`i686-w64-mingw32`)
+* `android x86_64` (`x86_64-linux-android`)
 * `macOS x86_64` (`x86_64-apple-darwin`)
 * `Linux x86_64 {libc=glibc}` (`x86_64-linux-gnu`)
 * `Windows x86_64` (`x86_64-w64-mingw32`)
-
